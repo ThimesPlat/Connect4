@@ -2,14 +2,13 @@
  * Created by eps on 2017-06-13.
  */
 package GameLogic;
-
 import PlayerLogic.Player;
 
 public class Game {
     GameStatus gameStatus;
     Board board;
-    Player p1;
-    Player p2;
+    PlayerLogic.Player p1;
+    PlayerLogic.Player p2;
 
     public Game(){
         p1 = new Player(SlotState.RED);
@@ -35,7 +34,7 @@ public class Game {
     }
 
     private boolean checkWin(Slot slot){
-        return true;
+        return false;
     }
 
     private boolean checkHorizontal(Slot slot) {
@@ -69,7 +68,7 @@ public class Game {
     }
 
     private boolean checkDiagonal (Slot slot) {
-        return true;
+        return false;
     }
 
     private boolean checkLeft(Slot slot){
@@ -78,10 +77,11 @@ public class Game {
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         boolean win = true ;
         for(int i= column-1 ; i> column-4; column--) {
-
-          //  if (slotColor != playerColor) {
+            Slot sl;
+            SlotState slotColor = null;
+			if (slotColor != playerColor) {
                 win = false;
-           // }
+            }
         }
         return win;
     }
