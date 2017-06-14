@@ -35,8 +35,6 @@ public class Board {
                 Circle c = s.getSlot();
                 c.setLayoutY((((ringSize+spacingY)*i)+ringSize)+yStartingPoint);
                 c.setLayoutX((((ringSize+spacingX)*q)+ringSize));
-                System.out.print("row: " + i);
-                System.out.println(" col: " + q);
                 slots[i][q] = s;
                 circleNumber++;
                 this.layout.getChildren().add(c);
