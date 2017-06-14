@@ -39,7 +39,7 @@ public class Game {
         return false;
     }
 
-    private boolean checkHorizontal(Slot slot) {
+    private boolean checkHorizontal(Slot slot) {  //handle null slots
         int column = slot.getColumn();
         boolean win;
         if (column == 3) {
@@ -55,7 +55,7 @@ public class Game {
         }
     }
 
-    private boolean checkVertical(Slot slot) {
+    private boolean checkVertical(Slot slot) {               //handle null slots
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         int row = slot.getRow();
         int column = slot.getColumn();
@@ -70,10 +70,10 @@ public class Game {
     }
 
     private boolean checkDiagonal (Slot slot) {
-        return false;
+
     }
 
-    private boolean checkLeft(Slot slot){
+    private boolean checkLeft(Slot slot){                //handle null slots
         int row = slot.getRow();
         int column = slot.getColumn();
         SlotState playerColor = gameStatus.currentPlayer.getColor();
@@ -88,7 +88,7 @@ public class Game {
         return win;
     }
 
-    private boolean checkRight(Slot slot){
+    private boolean checkRight(Slot slot){               //handle null slots
         int row = slot.getRow();
         int column = slot.getColumn();
         SlotState playerColor = gameStatus.currentPlayer.getColor();
@@ -102,4 +102,35 @@ public class Game {
         return win;
     }
 
+    private boolean checkDownLeft(Slot slot) {
+        int row = slot.getRow();
+        int column = slot.getColumn();
+        SlotState playerColor = gameStatus.currentPlayer.getColor();
+        boolean win = true;
+
+        for(int i = row + 1; i < row+4; i++) {
+            column--;
+            Slot nextSlot = board.getSlot(i,column);
+            if (nextSlot == null) {
+                return false;
+            }
+            SlotState slotColor = nextSlot.getSlotState();
+            if (playerColor != slotColor) {
+                return false;
+            }
+        }
+        return win;
+    }
+
+    private boolean checkDownRight(Slot slot) {
+
+    }
+
+    private boolean checkUpLeft(Slot slot) {
+
+    }
+
+    private boolean checkUpRight(Slot slot) {
+
+    }
 }
