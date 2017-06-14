@@ -70,7 +70,30 @@ public class Game {
     }
 
     private boolean checkDiagonal (Slot slot) {
-
+        int row = slot.getRow();
+        int column = slot.getColumn();
+        SlotState playerColor = gameStatus.currentPlayer.getColor();
+        if (row >= 3) {
+            if (column == 3) {
+                boolean win = checkUpLeft(slot);
+                if (win == true) return win;
+                else return checkUpRight(slot);
+            } else if(column < 3) {
+                return checkUpRight(slot);
+            } else if(column > 3){
+                return checkUpLeft(slot);
+            }
+        } else {
+            if (column == 3) {
+                boolean win = checkDownLeft(slot);
+                if (win == true) return win;
+                else return checkDownRight(slot);
+            } else if(column < 3) {
+                return checkDownRight(slot);
+            } else if(column > 3){
+                return checkDownLeft(slot);
+            }
+        }
     }
 
     private boolean checkLeft(Slot slot){                //handle null slots
@@ -171,6 +194,21 @@ public class Game {
     }
 
     private boolean checkUpRight(Slot slot) {
-
+        int row = slot.getRow();
+        int column = slot.getColumn();
+        SlotState playerColor = gameStatus.currentPlayer.getColor();
+        boolean win = true;
+        for(int i = row - 1; i > row-4; i--) {
+            column++;
+            Slot nextSlot = board.getSlot(i,column);
+            if (nextSlot == null) {
+                return false;
+            }
+            SlotState slotColor = nextSlot.getSlotState();
+            if (playerColor != slotColor) {
+                return false;
+            }
+        }
+        return win;
     }
 }
