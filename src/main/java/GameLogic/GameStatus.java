@@ -2,6 +2,10 @@
 /**
  * Created by eps on 2017-06-13.
  */
+package GameLogic;
+
+import PlayerLogic.Player;
+
 public class GameStatus {
 
     Board board;

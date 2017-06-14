@@ -1,6 +1,10 @@
 /**
  * Created by eps on 2017-06-13.
  */
+package GameLogic;
+
+import PlayerLogic.Player;
+
 public class Game {
     GameStatus gameStatus;
     Board board;
@@ -31,7 +35,7 @@ public class Game {
     }
 
     private boolean checkWin(Slot slot){
-
+        return true;
     }
 
     private boolean checkHorizontal(Slot slot) {
@@ -65,7 +69,7 @@ public class Game {
     }
 
     private boolean checkDiagonal (Slot slot) {
-
+        return true;
     }
 
     private boolean checkLeft(Slot slot){
@@ -74,10 +78,10 @@ public class Game {
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         boolean win = true ;
         for(int i= column-1 ; i> column-4; column--) {
-            Slot sl
-            if (slotColor != playerColor) {
+
+          //  if (slotColor != playerColor) {
                 win = false;
-            }
+           // }
         }
         return win;
     }
