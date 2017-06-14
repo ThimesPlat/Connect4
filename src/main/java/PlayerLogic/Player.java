@@ -1,11 +1,11 @@
 package PlayerLogic;
-import  GameLogic.SlotState;
+import GameLogic.SlotState;
 
-public class Player {	
+public class Player {
 	
 	private SlotState color;
 
-	public Player(SlotState color) {
+	public Player(GameLogic.SlotState color) {
 		this.color = color;
 	}
 
