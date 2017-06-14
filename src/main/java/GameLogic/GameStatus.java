@@ -1,14 +1,14 @@
+package GameLogic ;
 
 /**
  * Created by eps on 2017-06-13.
  */
-package GameLogic;
-import PlayerLogic.Player;
 
 public class GameStatus {
 
     Board board;
     PlayerLogic.Player currentPlayer;
+    Slot changedSlot;
     boolean gameOver;
     PlayerLogic.Player winner;
 
@@ -48,5 +48,13 @@ public class GameStatus {
 
     public void setWinner(PlayerLogic.Player winner) {
         this.winner = winner;
+    }
+
+    public Slot getChangedSlot() {
+        return changedSlot;
+    }
+
+    public void setChangedSlot(Slot changedSlot) {
+        this.changedSlot = changedSlot;
     }
 }
