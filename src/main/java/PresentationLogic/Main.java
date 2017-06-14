@@ -4,6 +4,7 @@ import GameLogic.Game;
 import GameLogic.GameStatus;
 import GameLogic.Slot;
 import GameLogic.SlotState;
+import PlayerLogic.Player;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -14,14 +15,13 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
 
 
-public class Main extends Application {
+public class Main extends Application implements java.util.Observer{
 
     double windowWidth = 600;
     double windowHeight = 600;
@@ -45,53 +45,12 @@ public class Main extends Application {
         this.layout = new Pane();
         startGame = new Button("Start Button");
         startGame.setOnAction((ActionEvent event)-> {
-
-
-
-
-
-
-
             test.hejsan();
-
-/*
-            Timer timer = new Timer();
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    Platform.runLater(() -> {
-                        fillMatix();
-                    });
-                }
-            }, 1000, 1000);
-*/
-/*
-            while(true){
-                fillMatix();
-                i++;
-                try{
-                    Thread.sleep(500);
-                }catch (Exception e){
-                    System.out.println(e);
-                }
-            }
-
-*/
-/*
-            for(GraphicalSlot[] row : slots){
-                for(GraphicalSlot value: row){
-                    System.out.print(value.getColor());
-                }
-                System.out.println();
-            }
-
-*/
-
-
-
         });
         game = new Game();
         test = new TestObservers();
+
+       // game.getGameStatus().getBoard()
 
         test.i.addListener(new ChangeListener<Boolean>() {
             @Override
@@ -111,6 +70,8 @@ public class Main extends Application {
         });
 
 
+        Main self = new Main();
+        game.getGameStatus().addObserver(self);
 
 
         board = new Board(layout,(int)windowWidth,(int)windowHeight);
@@ -176,6 +137,11 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        System.out.println("FUNKAR!!!!");
     }
 }
 
