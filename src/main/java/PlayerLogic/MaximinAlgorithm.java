@@ -1,6 +1,13 @@
+package PlayerLogic;
+import GameLogic.Board;
 
-public class MaxiMinAlgorithm {
+import java.util.List;
+public class MaximinAlgorithm {
 	private int col, analyze, maxDepth;
-	
-	
+	private List<Integer> score;
+	private Board board;
+
+	public MaximinAlgorithm(){
+
+    }
 }
