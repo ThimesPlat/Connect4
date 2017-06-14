@@ -3,6 +3,7 @@ package PresentationLogic;
 import GameLogic.Game;
 import GameLogic.GameStatus;
 import GameLogic.Slot;
+import GameLogic.SlotState;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -95,13 +96,17 @@ public class Main extends Application {
         test.i.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                // matrixChanged();
 
+                /*
                 GameStatus gameStatus = game.getGameStatus();
                 Slot changedSlot = gameStatus.getChangedSlot();
                 int row = changedSlot.getRow();
                 int col = changedSlot.getColumn();
-               //  updateBoard();
+
+                SlotState slotState = gameStatus.getCurrentPlayer().getColor();
+                Color color = (slotState == SlotState.RED) ? Color.RED : Color.YELLOW;
+                updateBoard(row,col,color);
+                */
             }
         });
 
