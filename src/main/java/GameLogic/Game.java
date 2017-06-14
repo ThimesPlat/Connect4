@@ -108,7 +108,7 @@ public class Game {
         }
     }
 
-    private boolean checkLeft(Slot slot){                //handle null slots
+    private boolean checkLeft(Slot slot){
         int row = slot.getRow();
         int column = slot.getColumn();
         SlotState playerColor = gameStatus.currentPlayer.getColor();
@@ -126,7 +126,7 @@ public class Game {
         return win;
     }
 
-    private boolean checkRight(Slot slot){               //handle null slots
+    private boolean checkRight(Slot slot){
         int row = slot.getRow();
         int column = slot.getColumn();
         SlotState playerColor = gameStatus.currentPlayer.getColor();
