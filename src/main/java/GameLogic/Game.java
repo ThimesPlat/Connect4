@@ -1,6 +1,11 @@
 package GameLogic ;
 
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import PlayerLogic.Player;
+import javafx.application.Platform;
 
 /**
  * Created by eps on 2017-06-13.
@@ -11,12 +16,72 @@ public class Game {
     Board board;
     PlayerLogic.Player p1;
     PlayerLogic.Player p2;
+    PlayerLogic.Player currentPlayer;
+    Timer timer = new Timer();
 
     public Game(){
         p1 = new Player(SlotState.RED);
         p2 = new Player(SlotState.YELLOW);
-        Board board = new Board();
+        currentPlayer = p1;
+        board = new Board();
         gameStatus = new GameStatus(board, p1);
+    }
+    
+    public void startGame() {
+    	
+    	
+    	timer.scheduleAtFixedRate(new TimerTask() {
+    		@Override
+    		public void run() {
+    			Platform.runLater(() -> {
+    				newMove();
+    			});
+    		}
+    	}, 100, 1000);
+    }
+    
+    public void newMove() {
+    	Random random = new Random();
+    	int row = random.nextInt(5);
+    	int column = random.nextInt(6);
+    	Slot slot = new Slot(SlotState.RED);
+    	
+    	slot.setRow(row);
+    	slot.setColumn(column);
+    	
+    	if(validateMove(column)) {
+    		discDrop(column);
+    	}
+    	
+    	if (checkWin(slot)) {
+			gameStatus.setGameOver(true);
+			gameStatus.setWinner(currentPlayer);
+			timer.cancel();
+		}
+    	
+		if (checkBoardFull(slot)) {
+			gameStatus.setGameOver(true);
+			timer.cancel();
+		}
+		
+		gameStatus.setBoard(board);
+		gameStatus.setChangedSlot(slot);
+		if (currentPlayer.getColor() == p1.getColor()) {
+			currentPlayer = p2;
+		} else {
+			currentPlayer = p1;
+		}
+		gameStatus.setCurrentPlayer(currentPlayer);
+		
+		
+		
+    	
+    	
+    	
+    	
+    	
+    	
+    	
     }
 
     public GameStatus getGameStatus() {
@@ -38,7 +103,7 @@ public class Game {
     private boolean checkWin(Slot slot){
         boolean win = false;
         win = checkHorizontal(slot) || checkVertical(slot) || checkDiagonal(slot);
-        return win ;
+        return win;
     }
     
     private boolean checkBoardFull(Slot slot) {
