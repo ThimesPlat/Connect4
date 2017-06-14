@@ -129,6 +129,25 @@ public class Game {
     }
 
     private boolean checkDownRight(Slot slot) {
+    	int row = slot.getRow();
+    	int column = slot.getColumn();
+    	SlotState playerColor = gameStatus.currentPlayer.getColor();
+		boolean win = true;
+    	
+    	for(int i = column + 1; i > row + 4; i++ ) {
+    		row++;
+    		Slot nextSlot = board.getSlot(i, column);
+            if (nextSlot == null) {
+                return false;
+            }
+            SlotState slotColor = nextSlot.getSlotState();
+            if (playerColor != slotColor) {
+                return false;
+            }
+        }
+        return win;
+    		
+    	}
 
     }
 
