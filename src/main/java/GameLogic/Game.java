@@ -81,7 +81,7 @@ public class Game {
         boolean win = true ;
         for(int i= column-1 ; i> column-4; column--) {
             Slot sl;
-            SlotState slotColor;
+            SlotState slotColor = null;
 			if (slotColor != playerColor) {
                 win = false;
             }
