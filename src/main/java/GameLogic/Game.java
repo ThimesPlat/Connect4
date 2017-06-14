@@ -223,4 +223,12 @@ public class Game {
         }
         return win;
     }
+
+    private Slot discDrop(int column) {
+        for(int i=0; i < 6; i++) {
+            Slot nextSlot = board.getSlot(i,column);
+            if (nextSlot == null) return  nextSlot;
+        }
+        return null;
+    }
 }
