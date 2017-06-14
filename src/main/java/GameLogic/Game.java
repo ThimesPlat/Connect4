@@ -4,7 +4,6 @@
 package GameLogic;
 import PlayerLogic.Player;
 
-
 public class Game {
     GameStatus gameStatus;
     Board board;
@@ -35,8 +34,7 @@ public class Game {
     }
 
     private boolean checkWin(Slot slot){
-		return false;
-
+        return false;
     }
 
     private boolean checkHorizontal(Slot slot) {
@@ -70,8 +68,7 @@ public class Game {
     }
 
     private boolean checkDiagonal (Slot slot) {
-		return false;
-
+        return false;
     }
 
     private boolean checkLeft(Slot slot){
