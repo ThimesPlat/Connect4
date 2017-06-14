@@ -27,10 +27,9 @@ public class TestObservers extends Observable {
             public void run() {
                 Platform.runLater(() -> {
                     i.set(!i.get());
-                    System.out.println(i);
                 });
             }
-        }, 1000, 100);
+        }, 100, 100);
     }
 
 
