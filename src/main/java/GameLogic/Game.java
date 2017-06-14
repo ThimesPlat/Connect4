@@ -225,10 +225,22 @@ public class Game {
     }
 
     private Slot discDrop(int column) {
-        for(int i=0; i < 6; i++) {
+        for(int i=5; i >= 0 ; i--) {
             Slot nextSlot = board.getSlot(i,column);
             if (nextSlot == null) return  nextSlot;
         }
         return null;
+    }
+
+    private boolean validateMove(int column){
+        return (validateColumn(column) && columnFull(column));
+    }
+
+    private boolean validateColumn(int column){
+        return (column >= 0 && column < 6) ;
+    }
+
+    private boolean columnFull(int column) {
+        return (board.getSlot(0,column) != null);
     }
 }
