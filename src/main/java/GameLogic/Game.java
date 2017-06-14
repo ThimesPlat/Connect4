@@ -79,8 +79,11 @@ public class Game {
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         boolean win = true ;
         for(int i= column-1 ; i> column-4; column--) {
-            Slot sl;
-            SlotState slotColor = null;
+            Slot nextSlot = board.getSlot(row,i);
+            if (nextSlot == null) {
+                return false;
+            }
+            SlotState slotColor = nextSlot.getSlotState();
 			if (slotColor != playerColor) {
                 win = false;
             }
@@ -94,7 +97,11 @@ public class Game {
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         boolean win = true ;
         for(int i= column+1 ; i< column+4; column++) {
-            SlotState slotColor = board.getSlot(i,row).getSlotState();
+            Slot nextSlot = board.getSlot(row, i);
+            if (nextSlot == null) {
+                return false;
+            }
+            SlotState slotColor = nextSlot.getSlotState();
             if (slotColor != playerColor) {
                 win = false;
             }
@@ -107,7 +114,6 @@ public class Game {
         int column = slot.getColumn();
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         boolean win = true;
-
         for(int i = row + 1; i < row+4; i++) {
             column--;
             Slot nextSlot = board.getSlot(i,column);
@@ -127,7 +133,22 @@ public class Game {
     }
 
     private boolean checkUpLeft(Slot slot) {
-
+        int row = slot.getRow();
+        int column = slot.getColumn();
+        SlotState playerColor = gameStatus.currentPlayer.getColor();
+        boolean win = true;
+        for(int i = row - 1; i > row-4; i--) {
+            column--;
+            Slot nextSlot = board.getSlot(i,column);
+            if (nextSlot == null) {
+                return false;
+            }
+            SlotState slotColor = nextSlot.getSlotState();
+            if (playerColor != slotColor) {
+                return false;
+            }
+        }
+        return win;
     }
 
     private boolean checkUpRight(Slot slot) {
