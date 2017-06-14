@@ -1,5 +1,6 @@
+package PlayerLogic;
 
-public class MaxiMinAlgorithm {
+public class MaximinAlgorithm {
 	private int col, analyze, maxDepth;
 	
 	

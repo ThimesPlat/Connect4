@@ -2,14 +2,17 @@
 /**
  * Created by eps on 2017-06-13.
  */
+package GameLogic;
+
+
 public class GameStatus {
 
     Board board;
-    Player currentPlayer;
+    PlayerLogic.Player currentPlayer;
     boolean gameOver;
-    Player winner;
+    PlayerLogic.Player winner;
 
-    public GameStatus(Board board, Player currentPlayer) {
+    public GameStatus(Board board, PlayerLogic.Player currentPlayer) {
         this.board = board;
         this.currentPlayer = currentPlayer;
         gameOver = false ;
@@ -23,11 +26,11 @@ public class GameStatus {
         this.board = board;
     }
 
-    public Player getCurrentPlayer() {
+    public PlayerLogic.Player getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
+    public void setCurrentPlayer(PlayerLogic.Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
@@ -39,11 +42,11 @@ public class GameStatus {
         this.gameOver = gameOver;
     }
 
-    public Player getWinner() {
+    public PlayerLogic.Player getWinner() {
         return winner;
     }
 
-    public void setWinner(Player winner) {
+    public void setWinner(PlayerLogic.Player winner) {
         this.winner = winner;
     }
 }

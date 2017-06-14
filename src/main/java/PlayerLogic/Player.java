@@ -1,3 +1,6 @@
+package PlayerLogic;
+import  GameLogic.SlotState;
+
 public class Player {	
 	
 	private SlotState color;
