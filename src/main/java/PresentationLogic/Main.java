@@ -1,6 +1,8 @@
 package PresentationLogic;
 
 import GameLogic.Game;
+import GameLogic.GameStatus;
+import GameLogic.Slot;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -94,7 +96,12 @@ public class Main extends Application {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 // matrixChanged();
-                // updateBoard();
+
+                GameStatus gameStatus = game.getGameStatus();
+                Slot changedSlot = gameStatus.getChangedSlot();
+                int row = changedSlot.getRow();
+                int col = changedSlot.getColumn();
+               //  updateBoard();
             }
         });
 
