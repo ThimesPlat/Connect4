@@ -1,5 +1,6 @@
 package PresentationLogic;
 
+import GameLogic.Game;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -30,6 +31,7 @@ public class Main extends Application {
     int turn = 1;
     int i = 0;
     TestObservers test;
+    Game game;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -40,6 +42,10 @@ public class Main extends Application {
         this.layout = new Pane();
         startGame = new Button("Start Button");
         startGame.setOnAction((ActionEvent event)-> {
+
+
+
+
 
 
 
@@ -81,13 +87,14 @@ public class Main extends Application {
 
 
         });
-
+        game = new Game();
         test = new TestObservers();
 
         test.i.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                matrixChanged();
+                // matrixChanged();
+                // updateBoard();
             }
         });
 
@@ -111,11 +118,8 @@ public class Main extends Application {
     private void setupUserLabel(){
         this.usersTurn = new Label("Yellow users turn");
         this.usersTurn.setLayoutX(windowWidth/2);
-
-
         this.usersTurn.setScaleX(2);
         this.usersTurn.setScaleY(2);
-
         this.layout.getChildren().add(this.usersTurn);
     }
 
@@ -129,29 +133,9 @@ public class Main extends Application {
         }
     }
 
-    public void fillMatix(){
-        /*
-        try {
-            //  System.out.println("Game sleeping...");
-            Random rand = new Random();
-            int randomPositionRow = rand.nextInt(6);
-            int randomPositionCol = rand.nextInt(7);
-            if (turn == 1) {
-                board.changeCircleColor(randomPositionRow,randomPositionCol, Color.YELLOW);
-                System.out.println("Changing color!");
-                turn = 2;
-            }
-            else{
-                board.changeCircleColor(randomPositionRow,randomPositionCol, Color.RED);
-                System.out.println("Changing color!");
-                turn = 1;
-            }
+    public void updateBoard(int row, int col, Color color){
+            board.changeCircleColor(row,col, color);
             changeLabel(turn);
-            //  layout.getChildren().remove(startGame);
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        */
     }
 
 
