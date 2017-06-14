@@ -117,7 +117,7 @@ public class Game {
     	
     }
 
-    private boolean checkHorizontal(Slot slot) {  //handle null slots
+    private boolean checkHorizontal(Slot slot) {
         int column = slot.getColumn();
         boolean win;
         if (column == 3) {
@@ -133,7 +133,7 @@ public class Game {
         }
     }
 
-    private boolean checkVertical(Slot slot) {               //handle null slots
+    private boolean checkVertical(Slot slot) {
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         int row = slot.getRow();
         int column = slot.getColumn();
@@ -248,8 +248,6 @@ public class Game {
         return win;
     		
     	}
-
-
 
     private boolean checkUpLeft(Slot slot) {
         int row = slot.getRow();
