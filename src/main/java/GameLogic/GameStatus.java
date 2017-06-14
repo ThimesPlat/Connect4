@@ -1,21 +1,28 @@
 package GameLogic ;
 
+import javafx.beans.InvalidationListener;
+
+import java.util.ArrayList;
+import java.util.Observable;
+
 /**
  * Created by eps on 2017-06-13.
  */
 
-public class GameStatus {
+public class GameStatus extends Observable {
 
     Board board;
     PlayerLogic.Player currentPlayer;
     Slot changedSlot;
     boolean gameOver;
     PlayerLogic.Player winner;
+    ArrayList<InvalidationListener> listOfObservers;
 
     public GameStatus(Board board, PlayerLogic.Player currentPlayer) {
         this.board = board;
         this.currentPlayer = currentPlayer;
         gameOver = false ;
+        listOfObservers = new ArrayList<>();
     }
 
     public Board getBoard() {
@@ -24,6 +31,7 @@ public class GameStatus {
 
     public void setBoard(Board board) {
         this.board = board;
+       // notifyObservers();
     }
 
     public PlayerLogic.Player getCurrentPlayer() {
@@ -57,4 +65,5 @@ public class GameStatus {
     public void setChangedSlot(Slot changedSlot) {
         this.changedSlot = changedSlot;
     }
+
 }
