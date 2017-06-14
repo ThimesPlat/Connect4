@@ -134,8 +134,8 @@ public class Game {
     	SlotState playerColor = gameStatus.currentPlayer.getColor();
 		boolean win = true;
     	
-    	for(int i = column + 1; i > row + 4; i++ ) {
-    		row++;
+    	for(int i = row + 1; i > row + 4; i++ ) {
+    		column++;
     		Slot nextSlot = board.getSlot(i, column);
             if (nextSlot == null) {
                 return false;
