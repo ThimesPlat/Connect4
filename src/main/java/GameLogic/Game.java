@@ -38,6 +38,10 @@ public class Game {
     private boolean checkWin(Slot slot){
         return false;
     }
+    
+    private boolean checkBoardFull(Slot slot) {
+    	
+    }
 
     private boolean checkHorizontal(Slot slot) {  //handle null slots
         int column = slot.getColumn();
@@ -172,7 +176,6 @@ public class Game {
     		
     	}
 
-    }
 
     private boolean checkUpLeft(Slot slot) {
         int row = slot.getRow();
