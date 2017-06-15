@@ -24,19 +24,17 @@ public class Board {
 
 
         this.layout.getChildren().add(r);
-        double ringSize = 40;
+        double ringSize = 42;
         double spacingX = (width-(ringSize*8))/6;
         double spacingY = (height-(ringSize*8))/6;
-        double yStartingPoint = height-(ringSize*6*2)-spacingY;
-        int circleNumber = 0;
+        double yStartingPoint = height-(ringSize*6*2)-10;
         for (int i = 0;i<6;i++){
             for (int q = 0;q<7;q++){
-                GraphicalSlot s = new GraphicalSlot(ringSize,Color.WHITE);
+                GraphicalSlot s = new GraphicalSlot(ringSize,Color.grayRgb(240));
                 Circle c = s.getSlot();
                 c.setLayoutY((((ringSize+spacingY)*i)+ringSize)+yStartingPoint);
                 c.setLayoutX((((ringSize+spacingX)*q)+ringSize));
                 slots[i][q] = s;
-                circleNumber++;
                 this.layout.getChildren().add(c);
             }
 

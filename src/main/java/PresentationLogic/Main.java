@@ -2,8 +2,10 @@ package PresentationLogic;
 
 import GameLogic.Game;
 
+import GameLogic.GameStatus;
 import GameLogic.Slot;
 import GameLogic.SlotState;
+import PlayerLogic.Player;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -36,6 +38,9 @@ public class Main extends Application implements Observer{
 
         this.layout = new Pane();
         startGame = new Button("Start Button");
+        startGame.setLayoutX(10);
+        startGame.setLayoutY(20);
+        startGame.setStyle("-fx-font: 22 arial; -fx-base: #2dcddc;");
         startGame.setOnAction((ActionEvent event) -> {
             game.startGame();
             setupUserLabel();
@@ -51,6 +56,8 @@ public class Main extends Application implements Observer{
 
         Scene scene = new Scene(layout,windowWidth,windowHeight);
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.sizeToScene();
         primaryStage.show();
     }
 
@@ -58,20 +65,26 @@ public class Main extends Application implements Observer{
     private void setupUserLabel(){
         this.usersTurn = new Label("Yellow users turn");
         this.usersTurn.setLayoutY(20);
-        this.usersTurn.setScaleX(2);
-        this.usersTurn.setScaleY(2);
+        this.usersTurn.setScaleX(3);
+        this.usersTurn.setScaleY(3);
         this.layout.getChildren().add(this.usersTurn);
         this.usersTurn.setLayoutX(windowWidth/2-40);
 
     }
 
-    private void changeLabel(int player){
-        if(player == 1){
-            this.usersTurn.setText("Red users turn");
-            this.usersTurn.setTextFill(Color.RED);
-        }else{
-            this.usersTurn.setText("Yellow users turn");
-            this.usersTurn.setTextFill(Color.YELLOW);
+    private void changeLabel(int player, Boolean isGameOver, Player winner){
+        if (isGameOver){
+            String winnerText = (winner.getColor() == SlotState.RED) ? "RED":"YELLOW";
+            usersTurn.setText(winnerText + " IS THE WINNER! :D");
+        }
+        else {
+            if (player == 1) {
+                this.usersTurn.setText("Red users turn");
+                this.usersTurn.setTextFill(Color.RED);
+            } else {
+                this.usersTurn.setText("Yellow users turn");
+                this.usersTurn.setTextFill(Color.YELLOW);
+            }
         }
     }
 
@@ -83,10 +96,11 @@ public class Main extends Application implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        Slot newlyChangedSlot = game.getGameStatus().getChangedSlot();
+        GameStatus newGameStatus = game.getGameStatus();
+        Slot newlyChangedSlot = newGameStatus.getChangedSlot();
         Color color = (newlyChangedSlot.getSlotState() == SlotState.RED) ? Color.RED : Color.YELLOW;
         board.changeCircleColor(newlyChangedSlot.getRow(),newlyChangedSlot.getColumn(),color);
-        changeLabel(turn);
+        changeLabel(turn,newGameStatus.isGameOver(),newGameStatus.getWinner());
     }
 }
 
