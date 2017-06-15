@@ -43,24 +43,15 @@ public class Game {
     public void newMove() {
         System.out.println("new move");
         Random random = new Random();
-<<<<<<< HEAD
-    	int row = random.nextInt(6);
-    	int column = random.nextInt(5);
-=======
     	int row = 5;
     	int column = 1;
->>>>>>> 577ab1ad81c4ca3e7a173f43617f2f4fb776b5eb
     	Slot slot = new Slot(SlotState.RED);
     	
     	slot.setRow(row);
     	slot.setColumn(column);
-<<<<<<< HEAD
-/*
-    	if(validateMove(column)) {
-=======
+
     
     	if(validateMove(column, row)) {
->>>>>>> 577ab1ad81c4ca3e7a173f43617f2f4fb776b5eb
     		discDrop(column);
     	}
 
@@ -74,12 +65,7 @@ public class Game {
 			gameStatus.setGameOver(true);
 			timer.cancel();
 		}
-<<<<<<< HEAD
 
-*/
-=======
-		
->>>>>>> 577ab1ad81c4ca3e7a173f43617f2f4fb776b5eb
 		gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
 		if (currentPlayer.getColor() == p1.getColor()) {
@@ -88,16 +74,6 @@ public class Game {
 			currentPlayer = p1;
 		}
 		gameStatus.setCurrentPlayer(currentPlayer);
-		
-		
-		
-    	
-    	
-    	
-    	
-    	
-    	
-    	
     }
 
     public GameStatus getGameStatus() {
@@ -125,6 +101,8 @@ public class Game {
     private boolean checkBoardFull(Slot slot) {
     	Slot[][] slots = board.getBoard();
     	for(int i = 0; i < slots[0].length; i++) {
+    		System.out.println(i);
+    		System.out.println(slots[i]);
 			if(slots[i] == null) {
 				return false;
 			}
@@ -137,11 +115,12 @@ public class Game {
         int column = slot.getColumn();
         boolean win;
         if (column == 3) {
-            win = checkLeft(slot);
+        	return checkLeft(slot) || checkRight(slot);
+            /*win = checkLeft(slot);
             if (win) return true;
             else {
                 return checkRight(slot);
-            }
+            }*/
         } else if(column < 3) {
             return  checkRight(slot);
         } else {
