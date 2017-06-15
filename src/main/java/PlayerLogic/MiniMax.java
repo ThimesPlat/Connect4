@@ -58,14 +58,14 @@ public class MiniMax {
         //Determine if game is over in current state
         //Determine if game is a draw
         //Determine pathValue using eval() if depth is reached
-        if (depth == maxDepth) {
+       /* if (depth == maxDepth) {
             int mid = (eval(board, player));
             if (mid != 0) {
                 bestValue = mid - depth;
             } else {
                 bestValue = mid;
             }
-        } else {
+        }*/ if(true) {
             // Generates the best movement for each column and give the best score to coulmn
 
             for (int column = 0; column < 7; column++) {
