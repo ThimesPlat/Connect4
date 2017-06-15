@@ -43,13 +43,13 @@ public class Game {
     public void newMove() {
         System.out.println("new move");
         Random random = new Random();
-    	int row = random.nextInt(5);
-    	int column = random.nextInt(6);
+    	int row = random.nextInt(6);
+    	int column = random.nextInt(5);
     	Slot slot = new Slot(SlotState.RED);
     	
     	slot.setRow(row);
     	slot.setColumn(column);
-    /*
+/*
     	if(validateMove(column)) {
     		discDrop(column);
     	}
@@ -64,7 +64,8 @@ public class Game {
 			gameStatus.setGameOver(true);
 			timer.cancel();
 		}
-		*/
+
+*/
 		gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
 		if (currentPlayer.getColor() == p1.getColor()) {

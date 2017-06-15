@@ -40,6 +40,7 @@ public class GameStatus extends Observable {
     public void setCurrentPlayer(PlayerLogic.Player currentPlayer) {
         this.currentPlayer = currentPlayer;
         System.out.println("updating observer..");
+        setChanged();
         notifyObservers();
     }
 
