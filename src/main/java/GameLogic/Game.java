@@ -42,13 +42,14 @@ public class Game {
     
     public void newMove() {
         Random random = new Random();
-    	int row = 0;
+    	int row = 4;
     	int column = 1;
     	Slot slot = new Slot(SlotState.RED);
     	
     	slot.setRow(row);
     	slot.setColumn(column);
-
+    	
+    	
     
     	if(validateMove(column, row)) {
     		slot = discDrop(column);
