@@ -65,26 +65,11 @@ public class Game {
 			gameStatus.setGameOver(true);
 			timer.cancel();
 		}
-
-
+		
 		gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
-		if (currentPlayer.getColor() == p1.getColor()) {
-			currentPlayer = p2;
-		} else {
-			currentPlayer = p1;
-		}
+		updateCurrentPlayer();
 		gameStatus.setCurrentPlayer(currentPlayer);
-		
-		
-		
-    	
-    	
-    	
-    	
-    	
-    	
-    	
     }
 
     public GameStatus getGameStatus() {
@@ -92,10 +77,10 @@ public class Game {
     }
 
     private Player updateCurrentPlayer(){
-        if (gameStatus.currentPlayer == p1) {
+        if (gameStatus.currentPlayer.getColor() == p1.getColor()) {
             return p2;
         }
-        else if (gameStatus.currentPlayer == p2) {
+        else if (gameStatus.currentPlayer.getColor() == p2.getColor()) {
                 return p1;
             } else {
                 System.err.println("updateNextPlayer error : gameStatus next player is something inappropriate");
@@ -112,7 +97,8 @@ public class Game {
     private boolean checkBoardFull(Slot slot) {
     	Slot[][] slots = board.getBoard();
     	for(int i = 0; i < slots[0].length; i++) {
-			if(slots[i] == null) {
+
+			if(slots[0][i] == null) {
 				return false;
 			}
     	}
@@ -124,11 +110,12 @@ public class Game {
         int column = slot.getColumn();
         boolean win;
         if (column == 3) {
-            win = checkLeft(slot);
+        	return checkLeft(slot) || checkRight(slot);
+            /*win = checkLeft(slot);
             if (win) return true;
             else {
                 return checkRight(slot);
-            }
+            }*/
         } else if(column < 3) {
             return  checkRight(slot);
         } else {
