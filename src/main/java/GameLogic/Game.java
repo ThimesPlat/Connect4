@@ -42,19 +42,20 @@ public class Game {
     
     public void newMove() {
         Random random = new Random();
-    	int row = 4;
-    	int column = 1;
+    	int row = random.nextInt(6);
+    	int column = random.nextInt(5);
     	Slot slot = new Slot(SlotState.RED);
     	
-    	slot.setRow(row);
-    	slot.setColumn(column);
+    	
     	
     	
     
     	if(validateMove(column, row)) {
     		slot = discDrop(column);
+        } else {
+        	return;
         }
-
+    	
     	if (checkWin(slot)) {
 			gameStatus.setGameOver(true);
 			gameStatus.setWinner(currentPlayer);
@@ -286,6 +287,8 @@ public class Game {
             if (temp == null){
                 nextSlot.setColumn(column);
                 nextSlot.setRow(i);
+                System.out.println("Col: " + nextSlot.getColumn());
+                System.out.println("Row: " + nextSlot.getRow());
                 return nextSlot;}
         }
         return null;
