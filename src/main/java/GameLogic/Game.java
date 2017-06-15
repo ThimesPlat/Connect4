@@ -43,24 +43,15 @@ public class Game {
     public void newMove() {
         System.out.println("new move");
         Random random = new Random();
-<<<<<<< HEAD
-    	int row = random.nextInt(6);
-    	int column = random.nextInt(5);
-=======
     	int row = 5;
     	int column = 1;
->>>>>>> 577ab1ad81c4ca3e7a173f43617f2f4fb776b5eb
     	Slot slot = new Slot(SlotState.RED);
     	
     	slot.setRow(row);
     	slot.setColumn(column);
-<<<<<<< HEAD
-/*
-    	if(validateMove(column)) {
-=======
+
     
     	if(validateMove(column, row)) {
->>>>>>> 577ab1ad81c4ca3e7a173f43617f2f4fb776b5eb
     		discDrop(column);
     	}
 
@@ -74,12 +65,8 @@ public class Game {
 			gameStatus.setGameOver(true);
 			timer.cancel();
 		}
-<<<<<<< HEAD
 
-*/
-=======
-		
->>>>>>> 577ab1ad81c4ca3e7a173f43617f2f4fb776b5eb
+
 		gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
 		if (currentPlayer.getColor() == p1.getColor()) {

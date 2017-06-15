@@ -36,7 +36,11 @@ public class Main extends Application implements Observer{
 
         this.layout = new Pane();
         startGame = new Button("Start Button");
-        startGame.setOnAction((ActionEvent event)-> game.startGame());
+        startGame.setOnAction((ActionEvent event) -> {
+            game.startGame();
+            setupUserLabel();
+            layout.getChildren().remove(this.startGame);
+        });
         game = new Game();
         game.getGameStatus().addObserver(this);
         board = new Board(layout,(int)windowWidth,(int)windowHeight);
@@ -44,7 +48,7 @@ public class Main extends Application implements Observer{
         layout = board.getBoardLayout();
         layout.getChildren().add(startGame);
 
-        setupUserLabel();
+
         Scene scene = new Scene(layout,windowWidth,windowHeight);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -53,10 +57,12 @@ public class Main extends Application implements Observer{
 
     private void setupUserLabel(){
         this.usersTurn = new Label("Yellow users turn");
-        this.usersTurn.setLayoutX(windowWidth/2);
+        this.usersTurn.setLayoutY(20);
         this.usersTurn.setScaleX(2);
         this.usersTurn.setScaleY(2);
         this.layout.getChildren().add(this.usersTurn);
+        this.usersTurn.setLayoutX(windowWidth/2-40);
+
     }
 
     private void changeLabel(int player){
