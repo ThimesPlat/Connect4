@@ -44,7 +44,7 @@ public class Game {
         Random random = new Random();
     	int row = random.nextInt(6);
     	int column = random.nextInt(5);
-    	Slot slot = new Slot(SlotState.RED);
+    	Slot slot;
     	
     	
     	
@@ -52,16 +52,17 @@ public class Game {
     
     	if(validateMove(column, row)) {
     		slot = discDrop(column);
+    		board.setSlot(slot,slot.getRow(),slot.getColumn());
         } else {
         	return;
         }
     	
-    	if (checkWin(slot)) {
-			gameStatus.setGameOver(true);
+    	/*if (checkWin(slot)) {
+            gameStatus.setGameOver(true);
 			gameStatus.setWinner(currentPlayer);
 			timer.cancel();
 		}
-    	
+    	*/
 		if (checkBoardFull(slot)) {
 			gameStatus.setGameOver(true);
 			timer.cancel();
@@ -90,7 +91,7 @@ public class Game {
     }
 
     public boolean checkWin(Slot slot){
-        boolean win = false;
+        boolean win;
         win = checkHorizontal(slot) || checkVertical(slot) || checkDiagonal(slot);
         return win;
     }
@@ -287,8 +288,6 @@ public class Game {
             if (temp == null){
                 nextSlot.setColumn(column);
                 nextSlot.setRow(i);
-                System.out.println("Col: " + nextSlot.getColumn());
-                System.out.println("Row: " + nextSlot.getRow());
                 return nextSlot;}
         }
         return null;
