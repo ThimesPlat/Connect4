@@ -43,18 +43,20 @@ public class Game {
     public void newMove() {
         System.out.println("new move");
         Random random = new Random();
-    	int row = 5;
+    	int row = 4;
     	int column = 1;
     	Slot slot = new Slot(SlotState.RED);
     	
     	slot.setRow(row);
     	slot.setColumn(column);
-
+    	
+    	
     
     	if(validateMove(column, row)) {
     		discDrop(column);
+    		
     	}
-
+    	
     	if (checkWin(slot)) {
 			gameStatus.setGameOver(true);
 			gameStatus.setWinner(currentPlayer);
@@ -281,8 +283,10 @@ public class Game {
 
     public Slot discDrop(int column) {
         for(int i=5; i >= 0 ; i--) {
+        	
             Slot nextSlot = board.getSlot(i,column);
-            if (nextSlot == null) return  nextSlot;
+            System.out.println(nextSlot);
+            if (nextSlot == null) return nextSlot;
         }
         return null;
     }
@@ -300,7 +304,7 @@ public class Game {
     }
     
     private boolean columnFull(int column) {
-        return (board.getSlot(0,column) != null);
+        return (board.getSlot(0,column) == null);
     }
 
     public Board getBoard() {

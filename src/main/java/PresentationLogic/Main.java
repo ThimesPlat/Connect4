@@ -86,6 +86,7 @@ public class Main extends Application implements Observer{
         Slot newlyChangedSlot = game.getGameStatus().getChangedSlot();
         Color color = (newlyChangedSlot.getSlotState() == SlotState.RED) ? Color.RED : Color.YELLOW;
         board.changeCircleColor(newlyChangedSlot.getRow(),newlyChangedSlot.getColumn(),color);
+
         changeLabel(turn);
     }
 }
