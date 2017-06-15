@@ -43,14 +43,24 @@ public class Game {
     public void newMove() {
         System.out.println("new move");
         Random random = new Random();
+<<<<<<< HEAD
     	int row = random.nextInt(6);
     	int column = random.nextInt(5);
+=======
+    	int row = 5;
+    	int column = 1;
+>>>>>>> 577ab1ad81c4ca3e7a173f43617f2f4fb776b5eb
     	Slot slot = new Slot(SlotState.RED);
     	
     	slot.setRow(row);
     	slot.setColumn(column);
+<<<<<<< HEAD
 /*
     	if(validateMove(column)) {
+=======
+    
+    	if(validateMove(column, row)) {
+>>>>>>> 577ab1ad81c4ca3e7a173f43617f2f4fb776b5eb
     		discDrop(column);
     	}
 
@@ -64,8 +74,12 @@ public class Game {
 			gameStatus.setGameOver(true);
 			timer.cancel();
 		}
+<<<<<<< HEAD
 
 */
+=======
+		
+>>>>>>> 577ab1ad81c4ca3e7a173f43617f2f4fb776b5eb
 		gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
 		if (currentPlayer.getColor() == p1.getColor()) {
@@ -138,10 +152,12 @@ public class Game {
     private boolean checkVertical(Slot slot) {
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         int row = slot.getRow();
+        if (row > 2) return false ;
         int column = slot.getColumn();
         boolean win = true;
         for(int i= row+1; i< row+4; i++){
             SlotState slotColor = board.getSlot(i,column).getSlotState();
+
             if (slotColor != playerColor) {
                 win = false;
             }
@@ -297,14 +313,18 @@ public class Game {
         return null;
     }
 
-    private boolean validateMove(int column){
-        return (validateColumn(column) && columnFull(column));
+    private boolean validateMove(int column, int row){
+        return (validateColumn(column) && columnFull(column) && validateRow(row));
     }
 
     private boolean validateColumn(int column){
         return (column >= 0 && column < 6) ;
     }
 
+    private boolean validateRow(int row){
+        return (row >= 0 && row < 5) ;
+    }
+    
     private boolean columnFull(int column) {
         return (board.getSlot(0,column) != null);
     }
