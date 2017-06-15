@@ -101,9 +101,8 @@ public class Game {
     private boolean checkBoardFull(Slot slot) {
     	Slot[][] slots = board.getBoard();
     	for(int i = 0; i < slots[0].length; i++) {
-    		System.out.println(i);
-    		System.out.println(slots[i]);
-			if(slots[i] == null) {
+
+			if(slots[0][i] == null) {
 				return false;
 			}
     	}
