@@ -21,7 +21,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
 
 
-public class Main extends Application implements java.util.Observer{
+public class Main extends Application implements Observer{
 
     double windowWidth = 600;
     double windowHeight = 600;
@@ -45,33 +45,16 @@ public class Main extends Application implements java.util.Observer{
         this.layout = new Pane();
         startGame = new Button("Start Button");
         startGame.setOnAction((ActionEvent event)-> {
-            test.hejsan();
+            game.startGame();
         });
         game = new Game();
         test = new TestObservers();
 
        // game.getGameStatus().getBoard()
 
-        test.i.addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 
-                /*
-                GameStatus gameStatus = game.getGameStatus();
-                Slot changedSlot = gameStatus.getChangedSlot();
-                int row = changedSlot.getRow();
-                int col = changedSlot.getColumn();
-
-                SlotState slotState = gameStatus.getCurrentPlayer().getColor();
-                Color color = (slotState == SlotState.RED) ? Color.RED : Color.YELLOW;
-                updateBoard(row,col,color);
-                */
-            }
-        });
-
-
-        Main self = new Main();
-        game.getGameStatus().addObserver(self);
+       // Main self = new Main();
+        game.getGameStatus().addObserver(this);
 
 
         board = new Board(layout,(int)windowWidth,(int)windowHeight);

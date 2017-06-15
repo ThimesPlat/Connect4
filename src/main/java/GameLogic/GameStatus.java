@@ -31,7 +31,6 @@ public class GameStatus extends Observable {
 
     public void setBoard(Board board) {
         this.board = board;
-       // notifyObservers();
     }
 
     public PlayerLogic.Player getCurrentPlayer() {
@@ -40,6 +39,8 @@ public class GameStatus extends Observable {
 
     public void setCurrentPlayer(PlayerLogic.Player currentPlayer) {
         this.currentPlayer = currentPlayer;
+        System.out.println("updating observer..");
+        notifyObservers();
     }
 
     public boolean isGameOver() {
