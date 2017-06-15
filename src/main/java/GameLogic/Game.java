@@ -69,19 +69,23 @@ public class Game {
 
 		gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
-		updateCurrentPlayer();
-		gameStatus.setCurrentPlayer(currentPlayer);
+		setCurrentPlayer(currentPlayer);
+		
     }
 
     public GameStatus getGameStatus() {
         return gameStatus;
     }
-
+    private void setCurrentPlayer(Player currentPlayer) {
+    	gameStatus.setCurrentPlayer(updateCurrentPlayer());
+    	this.currentPlayer = gameStatus.currentPlayer;
+    }
     private Player updateCurrentPlayer(){
-        if (gameStatus.currentPlayer.getColor() == p1.getColor()) {
+    	System.out.println(currentPlayer.getColor());
+        if (gameStatus.currentPlayer.getColor() == SlotState.RED) {
             return p2;
         }
-        else if (gameStatus.currentPlayer.getColor() == p2.getColor()) {
+        else if (gameStatus.currentPlayer.getColor() == SlotState.YELLOW) {
                 return p1;
             } else {
                 System.err.println("updateNextPlayer error : gameStatus next player is something inappropriate");
@@ -285,11 +289,12 @@ public class Game {
         for(int i=5; i >= 0 ; i--) {
             Slot temp = board.getSlot(i,column);
             if (temp == null){
-                nextSlot.setColumn(column);
+            	nextSlot.setColumn(column);
                 nextSlot.setRow(i);
                 System.out.println("Col: " + nextSlot.getColumn());
                 System.out.println("Row: " + nextSlot.getRow());
-                return nextSlot;}
+                return nextSlot;
+            }
         }
         return null;
     }
