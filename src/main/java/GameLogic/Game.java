@@ -101,7 +101,7 @@ public class Game {
         return null;
     }
 
-    private boolean checkWin(Slot slot){
+    public boolean checkWin(Slot slot){
         boolean win = false;
         win = checkHorizontal(slot) || checkVertical(slot) || checkDiagonal(slot);
         return win;
@@ -288,7 +288,7 @@ public class Game {
         return win;
     }
 
-    private Slot discDrop(int column) {
+    public Slot discDrop(int column) {
         for(int i=5; i >= 0 ; i--) {
             Slot nextSlot = board.getSlot(i,column);
             if (nextSlot == null) return  nextSlot;
@@ -306,5 +306,9 @@ public class Game {
 
     private boolean columnFull(int column) {
         return (board.getSlot(0,column) != null);
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }
