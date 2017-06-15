@@ -137,6 +137,7 @@ public class Game {
     private boolean checkVertical(Slot slot) {
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         int row = slot.getRow();
+        if (row > 2) return false ;
         int column = slot.getColumn();
         boolean win = true;
         for(int i= row+1; i< row+4; i++){
