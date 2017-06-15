@@ -68,11 +68,7 @@ public class Game {
 
 		gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
-		if (currentPlayer.getColor() == p1.getColor()) {
-			currentPlayer = p2;
-		} else {
-			currentPlayer = p1;
-		}
+		updateCurrentPlayer();
 		gameStatus.setCurrentPlayer(currentPlayer);
     }
 
@@ -81,10 +77,10 @@ public class Game {
     }
 
     private Player updateCurrentPlayer(){
-        if (gameStatus.currentPlayer == p1) {
+        if (gameStatus.currentPlayer.getColor() == p1.getColor()) {
             return p2;
         }
-        else if (gameStatus.currentPlayer == p2) {
+        else if (gameStatus.currentPlayer.getColor() == p2.getColor()) {
                 return p1;
             } else {
                 System.err.println("updateNextPlayer error : gameStatus next player is something inappropriate");
