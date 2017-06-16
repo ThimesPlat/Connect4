@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
+
 import java.util.*;
 
 
@@ -29,22 +30,34 @@ public class Main extends Application implements Observer{
     private Label usersTurn;
     private GraphicalSlot[][] slots;
     private int turn = 1;
-    private int i = 0;
     private Game game;
+    private boolean gameStartedOnce = false;
+    private double startGameButtonWidth;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Connect-4");
 
         this.layout = new Pane();
-        startGame = new Button("Start Button");
+        startGame = new Button();
         startGame.setLayoutX(10);
         startGame.setLayoutY(20);
-        startGame.setStyle("-fx-font: 22 arial; -fx-base: #2dcddc;");
+        startGame = buttonSetup(startGame,"Start Button","2dcddc");
         startGame.setOnAction((ActionEvent event) -> {
-            game.startGame();
+            startGameButtonWidth = startGame.getWidth();
+            if (gameStartedOnce) {  // called second time game starts
+                game.getGameStatus().deleteObserver(this);
+                this.game = new Game();
+                game.getGameStatus().addObserver(this);
+                board.clearBoard();
+            }
+            else{
+
+            }
             setupUserLabel();
-            layout.getChildren().remove(this.startGame);
+            game.startGame();
+            this.startGame.setVisible(false);
+            gameStartedOnce=true;
         });
         game = new Game();
         game.getGameStatus().addObserver(this);
@@ -67,7 +80,9 @@ public class Main extends Application implements Observer{
         this.usersTurn.setLayoutY(20);
         this.usersTurn.setScaleX(3);
         this.usersTurn.setScaleY(3);
-        this.layout.getChildren().add(this.usersTurn);
+        if (!gameStartedOnce) {
+            this.layout.getChildren().add(this.usersTurn);
+        }
         this.usersTurn.setLayoutX(windowWidth/2-40);
 
     }
@@ -75,7 +90,10 @@ public class Main extends Application implements Observer{
     private void changeLabel(int player, Boolean isGameOver, Player winner){
         if (isGameOver){
             String winnerText = (winner.getColor() == SlotState.RED) ? "RED":"YELLOW";
-            usersTurn.setText(winnerText + " IS THE WINNER! :D");
+            Color winnerColor = (winner.getColor() == SlotState.RED) ? Color.RED:Color.YELLOW;
+            this.usersTurn.setText(winnerText + " IS THE WINNER!");
+            this.usersTurn.setTextFill(winnerColor);
+            gameIsOver();
         }
         else {
             if (player == 1) {
@@ -88,6 +106,18 @@ public class Main extends Application implements Observer{
         }
     }
 
+    public void gameIsOver(){
+        usersTurn.setLayoutX((startGame.getLayoutX()+startGameButtonWidth)*2);
+        System.out.println(usersTurn.getLayoutX());
+        startGame.setVisible(true);
+    }
+
+    public Button buttonSetup(Button button,String text,String color){
+        button.setText(text);
+        button.setStyle("-fx-font: 22 arial; -fx-base: #"+color+";");
+
+        return button;
+    }
 
 
     public static void main(String[] args) {
@@ -100,7 +130,12 @@ public class Main extends Application implements Observer{
         Slot newlyChangedSlot = newGameStatus.getChangedSlot();
         Color color = (newlyChangedSlot.getSlotState() == SlotState.RED) ? Color.RED : Color.YELLOW;
         board.changeCircleColor(newlyChangedSlot.getRow(),newlyChangedSlot.getColumn(),color);
+        turn = (game.getGameStatus().getCurrentPlayer().getColor() == SlotState.RED)?2:1;
+        System.out.println("TURN: " + turn);
         changeLabel(turn,newGameStatus.isGameOver(),newGameStatus.getWinner());
     }
 }
+
+
+
 

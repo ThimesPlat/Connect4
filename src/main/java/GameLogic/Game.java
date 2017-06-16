@@ -29,7 +29,6 @@ public class Game {
     }
     
     public void startGame() {
-
         timer.scheduleAtFixedRate(new TimerTask() {
     		@Override
     		public void run() {
@@ -37,7 +36,7 @@ public class Game {
     				newMove();
     			});
     		}
-    	}, 100, 1000);
+    	}, 100, 100);
     }
     
     public void newMove() {
@@ -177,6 +176,8 @@ public class Game {
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         boolean win = true;
         for(int i= column-1 ; i> column-4; i--) {
+            System.out.println("i: " + i);
+            System.out.println("goes to: " + (column-4));
             Slot nextSlot = board.getSlot(row,i);
             if (nextSlot == null) {
                 System.out.println("check left returning: false");
@@ -238,8 +239,9 @@ public class Game {
     	int column = slot.getColumn();
     	SlotState playerColor = gameStatus.currentPlayer.getColor();
 		boolean win = true;
-    	
-    	for(int i = row + 1; i > row + 4; i++ ) {
+        System.out.println("ROW: " + row);
+        System.out.println("COL: " + column);
+        for(int i = row + 1; i < row + 4; i++ ) {
     		column++;
     		Slot nextSlot = board.getSlot(i, column);
             if (nextSlot == null) {
