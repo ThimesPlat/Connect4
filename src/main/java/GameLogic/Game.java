@@ -1,11 +1,11 @@
 package GameLogic ;
 
+import PlayerLogic.Player;
+import javafx.application.Platform;
+
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import PlayerLogic.Player;
-import javafx.application.Platform;
 
 /**
  * Created by eps on 2017-06-13.
@@ -99,7 +99,7 @@ public class Game {
     private boolean checkBoardFull() {
     	Slot[][] slots = board.getBoard();
     	for(int i = 0; i < slots[0].length; i++) {
-			if(slots[0][i] == null) {
+			if(board.getSlot(0,i).getSlotState() == SlotState.EMPTY) {
 				return false;
 			}
     	}
