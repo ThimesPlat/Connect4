@@ -55,9 +55,10 @@ public class Main extends Application implements Observer{
                 this.game = new Game();
                 game.getGameStatus().addObserver(this);
                 board.clearBoard();
-            }
-            else{
-
+                firstTimer.cancel();
+                secondTimer.cancel();
+                firstTimer = new Timer();
+                secondTimer = new Timer();
             }
             setupUserLabel();
             game.startGame();
@@ -84,18 +85,19 @@ public class Main extends Application implements Observer{
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    for(Slot currentSlot: game.getBoard().getWinningSequence()){
-                        slots[currentSlot.getRow()][currentSlot.getColumn()].setColor(Color.GREEN);
+                    for(Slot currentSlot: game.getGameStatus().getBoard().getWinningSequence()){
+                        slots[currentSlot.getRow()][currentSlot.getColumn()].setColor(Color.rgb(102, 255, 102));
                     }
                 });
             }
         }, 500, 500);
+
         firstTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
                     Color color = (game.getGameStatus().getWinner().getColor()==SlotState.RED)?Color.RED:Color.YELLOW;
-                    for(Slot currentSlot: game.getBoard().getWinningSequence()){
+                    for(Slot currentSlot: game.getGameStatus().getBoard().getWinningSequence()){
                         slots[currentSlot.getRow()][currentSlot.getColumn()].setColor(color);
                     }
                 });

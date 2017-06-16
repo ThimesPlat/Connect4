@@ -3,11 +3,18 @@
  */
 package GameLogic;
 
+import java.util.ArrayList;
+
 public class Board {
     private Slot[][] board;
-    private Slot[] winningSequence;
+
+
+
+    //private Slot[] winningSequence;
+    private ArrayList<Slot> winningSequence;
 
     public Board() {
+        winningSequence = new ArrayList<>();
         board = new Slot[6][7];
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
@@ -46,11 +53,11 @@ public class Board {
         board[row][column].setSlotState(slotState);
     }
 
-    public Slot[] getWinningSequence() {
+    public ArrayList<Slot> getWinningSequence() {
         return winningSequence;
     }
 
-    public void setWinningSequence(Slot[] winningSequence) {
+    public void setWinningSequence(ArrayList<Slot> winningSequence) {
         this.winningSequence = winningSequence;
     }
 
