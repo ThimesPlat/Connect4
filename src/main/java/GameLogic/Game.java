@@ -44,8 +44,8 @@ public class Game {
     	int column = random.nextInt(7);
     	Slot slot;
         rounds++;
-        System.out.println("Round " + rounds);
 
+        System.out.println(gameStatus.currentPlayer.getColor());
         if(validateMove(column)) {
     		slot = discDrop(column);
     		board.setSlot(slot,slot.getRow(),slot.getColumn());
@@ -91,7 +91,7 @@ public class Game {
     }
 
     public boolean checkWin(Slot slot){
-    	System.out.format("checkHorizontal: %b%n checkVertical: %b%n checkDiagonal: ", checkHorizontal(slot));
+    	System.out.format("checkHorizontal: %b%n checkVertical: %b%n checkDiagonal: %b%n", checkHorizontal(slot), checkVertical(slot), checkDiagonal(slot));
         return checkHorizontal(slot) || checkVertical(slot) || checkDiagonal(slot);
     }
     
@@ -106,23 +106,73 @@ public class Game {
     }
 
     private boolean checkHorizontal(Slot slot) {
+    	int column = slot.getColumn();
+    	int row = slot.getRow();
+    	SlotState playerColor = gameStatus.currentPlayer.getColor();
+    	boolean win = true;
+    	int counter = 0;
+
+    	while(counter<4) {
+	    	if (checkLeft(slot) != true) {
+
+		    		System.out.println(counter);
+		    		System.out.println(checkLeft(slot));
+	    	
+	    	}
+    	}
+    	/*
         int column = slot.getColumn();
         if (column == 3) {
         	return checkLeft(slot) || checkRight(slot);
         } else if(column < 3) {
             return checkRight(slot);
-        } else if (column > 3){
-            return checkLeft(slot);
         } else {
-        	return false;
+            return checkLeft(slot);
+        }*/
+		return false;
+    }
+    private boolean checkLeft(Slot slot){
+        int row = slot.getRow();
+        int column = slot.getColumn();
+        SlotState playerColor = gameStatus.currentPlayer.getColor();
+        boolean win = true;
+
+        for(int i = column-1; i > column-4; i--) {
+            Slot nextSlot = board.getSlot(row,i);
+            if (nextSlot == null) {
+                return false;
+            }
+            SlotState slotColor = nextSlot.getSlotState();
+			if (slotColor != playerColor) {
+                win = false;
+                return false;
+            }
         }
+        return win;
+    }
+
+    private boolean checkRight(Slot slot){
+        int row = slot.getRow();
+        int column = slot.getColumn();
+        SlotState playerColor = gameStatus.currentPlayer.getColor();
+        boolean win = true;
+        for(int i= column+1 ; i< column+4; i++) {
+            Slot nextSlot = board.getSlot(row, i);
+            if (nextSlot == null) {
+                return false;
+            }
+            SlotState slotColor = nextSlot.getSlotState();
+            if (slotColor != playerColor) {
+                win = false;
+            }
+        }
+        return win;
     }
 
     private boolean checkVertical(Slot slot) {
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         int row = slot.getRow();
         if (row > 2) {
-            System.out.println("check vertical returning: false");
             return false;
         }
         int column = slot.getColumn();
@@ -163,52 +213,7 @@ public class Game {
         }
     }
 
-    private boolean checkLeft(Slot slot){
-        int row = slot.getRow();
-        int column = slot.getColumn();
-        SlotState playerColor = gameStatus.currentPlayer.getColor();
-        boolean win = true;
-
-        System.out.println("row: " + row);
-        System.out.println("col: " + column);
-        for(int i = column-1; i > column-4; i--) {
-            Slot nextSlot = board.getSlot(row,i);
-            if (nextSlot == null) {
-                System.out.println("check left returning: false");
-                return false;
-            }
-            SlotState slotColor = nextSlot.getSlotState();
-			if (slotColor != playerColor) {
-                win = false;
-            }
-        }
-        System.out.println("check left returning: "+win);
-        return win;
-    }
-
-    private boolean checkRight(Slot slot){
-        int row = slot.getRow();
-        int column = slot.getColumn();
-
-        System.out.println("row: " + row);
-        System.out.println("col: " + column);
-        SlotState playerColor = gameStatus.currentPlayer.getColor();
-        boolean win = true;
-        for(int i= column+1 ; i< column+4; i++) {
-            Slot nextSlot = board.getSlot(row, i);
-            if (nextSlot == null) {
-                System.out.println("check right returning: false");
-                return false;
-            }
-            SlotState slotColor = nextSlot.getSlotState();
-            if (slotColor != playerColor) {
-                win = false;
-            }
-        }
-        System.out.println("check right returning: false");
-        return win;
-    }
-
+ 
     private boolean checkDownLeft(Slot slot) {
         int row = slot.getRow();
         int column = slot.getColumn();
@@ -218,16 +223,13 @@ public class Game {
             column--;
             Slot nextSlot = board.getSlot(i,column);
             if (nextSlot == null) {
-                System.out.println("check down left returning: false");
                 return false;
             }
             SlotState slotColor = nextSlot.getSlotState();
             if (playerColor != slotColor) {
-                System.out.println("check down left returning: false");
                 return false;
             }
         }
-        System.out.println("check down left returning: " + win);
         return win;
     }
 
@@ -241,21 +243,16 @@ public class Game {
     	for(int i = row + 1; i < row + 4; i++ ) {
 
     		column++;
-    		System.out.println("col: " + column);
-    		System.out.println("row: " + i);
     		Slot nextSlot = board.getSlot(i, column);
             if (nextSlot == null) {
-                System.out.println("check down right returning: false");
                 return false;
             }
             SlotState slotColor = nextSlot.getSlotState();
             
             if (playerColor != slotColor) {
-                System.out.println("check down right returning: false");
                 return false;
             }
         }
-        System.out.println("check down right returning: "+win);
       
         return win;
     		
@@ -270,16 +267,13 @@ public class Game {
             column--;
             Slot nextSlot = board.getSlot(i,column);
             if (nextSlot == null) {
-                System.out.println("check up left returning: false");
                 return false;
             }
             SlotState slotColor = nextSlot.getSlotState();
             if (playerColor != slotColor) {
-                System.out.println("check up left returning: false");
                 return false;
             }
         }
-        System.out.println("check up left returning: "+win);
         return win;
     }
 
@@ -292,16 +286,13 @@ public class Game {
             column++;
             Slot nextSlot = board.getSlot(i,column);
             if (nextSlot == null) {
-                System.out.println("check up right returning: false");
                 return false;
             }
             SlotState slotColor = nextSlot.getSlotState();
             if (playerColor != slotColor) {
-                System.out.println("check up right returning: false");
                 return false;
             }
         }
-        System.out.println("check up right returning: "+win);
         return win;
     }
 
