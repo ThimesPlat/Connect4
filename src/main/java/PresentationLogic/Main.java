@@ -102,6 +102,7 @@ public class Main extends Application implements Observer{
                 this.usersTurn.setTextFill(Color.RED);
             } else {
                 this.usersTurn.setText("Yellow users turn");
+                
                 this.usersTurn.setTextFill(Color.YELLOW);
             }
         }

@@ -8,6 +8,11 @@ public class Board {
 
     public Board() {
         board = new Slot[6][7];
+        for (int row = 0; row < 6; row++) {
+            for (int col = 0; col < 7; col++) {
+               board[row][col] = new Slot(SlotState.EMPTY);
+            }
+        }
     }
 
     public void copyBoard(Board board) {
