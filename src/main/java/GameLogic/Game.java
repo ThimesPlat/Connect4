@@ -66,7 +66,6 @@ public class Game {
 			timer.cancel();
 		}
 */
-        System.out.println("LOLr");
         gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
 		setCurrentPlayer(currentPlayer);
@@ -77,7 +76,6 @@ public class Game {
         return gameStatus;
     }
     private void setCurrentPlayer(Player currentPlayer) {
-        System.out.println("SETTING CURRENT PLAYER");
         gameStatus.setCurrentPlayer(updateCurrentPlayer());
     	this.currentPlayer = gameStatus.currentPlayer;
     }
@@ -140,50 +138,35 @@ public class Game {
         return win;
     }
 
-    private boolean checkDiagonalUpLeftAndDownRight(Slot slot){
-
+    private boolean checkDiagonal(Slot slot,Boolean upLeftAndDownRight){
         int counter = 0;
-        Boolean keepLookiingLeft = true;
-        Boolean keepLookiingRight = true;
-        int row=slot.getRow();
-        int col=slot.getColumn();
-        int tempRow = row;
-        int tempCol = col;
+        Boolean keepLookingLeft = true;
+        Boolean keepLookingRight = true;
+        int tempRow = slot.getRow();
+        int tempCol = slot.getColumn();
 
-        while(counter<4 && keepLookiingLeft){
+        while(counter<4 && keepLookingLeft){
             tempCol--;
-            tempRow--;
-            if (board.getSlot(tempRow,tempCol).getSlotState()!=SlotState.EMPTY){
-
-            }
-
-
-        }
-        while(counter<4 && keepLookiingRight){
-
-         //   if ()
-
-
-
+            if (upLeftAndDownRight) tempRow--;
+            else tempRow++;
+            if (board.getSlot(tempRow,tempCol).getSlotState()==currentPlayer.getColor()) counter++;
+            else keepLookingLeft=false;
         }
 
-
-
-        return true;
-    }
-
-    private boolean checkDiagonalUpRightAndDownLeft(Slot slot){
-
-
-
-
-
-
-        return true;
+        tempRow=slot.getRow();
+        tempCol=slot.getColumn();
+        while(counter<4 && keepLookingRight){
+            tempCol++;
+            if (upLeftAndDownRight) tempRow++;
+            else tempRow--;
+            if (board.getSlot(tempRow,tempCol).getSlotState()==currentPlayer.getColor()) counter++;
+            else keepLookingRight=false;
+        }
+        return (counter>=3);    // all colors in the same line - the slot you are in.
     }
 
     private boolean checkDiagonal (Slot slot) {
-        return true/*checkDiagonalUpLeftAndDownRight(slot) || checkDiagonalUpRightAndDownLeft(slot)*/;
+        return checkDiagonal(slot,true) || checkDiagonal(slot,false);
         /*
         int row = slot.getRow();
         int column = slot.getColumn();
