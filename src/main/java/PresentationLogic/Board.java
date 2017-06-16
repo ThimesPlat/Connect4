@@ -55,5 +55,13 @@ public class Board {
         return slots;
     }
 
+    public void clearBoard(){
+        for (int i = 0;i<6;i++){
+            for (int q = 0;q<7;q++){
+                slots[i][q].setColor(Color.grayRgb(240));
+            }
+
+        }
+    }
 
 }
