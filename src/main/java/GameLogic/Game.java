@@ -91,7 +91,7 @@ public class Game {
     }
 
     public boolean checkWin(Slot slot){
-    	System.out.format("checkHorizontal: %b", checkHorizontal(slot));
+    	System.out.format("checkHorizontal: %b%n checkVertical: %b%n checkDiagonal: ", checkHorizontal(slot));
         return checkHorizontal(slot) || checkVertical(slot) || checkDiagonal(slot);
     }
     
