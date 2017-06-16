@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import PlayerLogic.MiniMax;
 import PlayerLogic.Player;
 import javafx.application.Platform;
 
@@ -19,12 +20,18 @@ public class Game {
     PlayerLogic.Player currentPlayer;
     Timer timer = new Timer();
     int rounds = 0;
+    MiniMax miniMax;
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
 
     public Game(){
         p1 = new Player(SlotState.RED);
         p2 = new Player(SlotState.YELLOW);
         currentPlayer = p1;
         board = new Board();
+
         gameStatus = new GameStatus(board, p1);
     }
     
@@ -40,8 +47,10 @@ public class Game {
     }
     
     public void newMove() {
-        Random random = new Random();
-    	int column = random.nextInt(7);
+        //Random random = new Random();
+        miniMax = new MiniMax(board, 2);
+    	int column = miniMax.calcValue(currentPlayer);
+    	System.out.println(column);
     	Slot slot;
         rounds++;
         System.out.println("Round " + rounds);
