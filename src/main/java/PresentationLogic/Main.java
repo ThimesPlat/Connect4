@@ -42,10 +42,11 @@ public class Main extends Application implements Observer{
         startGame = new Button();
         startGame.setLayoutX(10);
         startGame.setLayoutY(20);
-        startGame = buttonSetup(startGame,"Start Button","2dcddc");
+        startGame = buttonSetup(startGame,"Start Game","2dcddc");
         startGame.setOnAction((ActionEvent event) -> {
             startGameButtonWidth = startGame.getWidth();
             if (gameStartedOnce) {  // called second time game starts
+                layout.getChildren().remove(this.usersTurn);
                 game.getGameStatus().deleteObserver(this);
                 this.game = new Game();
                 game.getGameStatus().addObserver(this);
@@ -80,9 +81,9 @@ public class Main extends Application implements Observer{
         this.usersTurn.setLayoutY(20);
         this.usersTurn.setScaleX(3);
         this.usersTurn.setScaleY(3);
-        if (!gameStartedOnce) {
+     //   if (!gameStartedOnce) {
             this.layout.getChildren().add(this.usersTurn);
-        }
+   //     }
         this.usersTurn.setLayoutX(windowWidth/2-40);
 
     }
@@ -108,7 +109,7 @@ public class Main extends Application implements Observer{
 
     public void gameIsOver(){
         usersTurn.setLayoutX((startGame.getLayoutX()+startGameButtonWidth)*2);
-        System.out.println(usersTurn.getLayoutX());
+        usersTurn.setLayoutY(startGame.getLayoutY()+10);
         startGame.setVisible(true);
     }
 
@@ -131,7 +132,6 @@ public class Main extends Application implements Observer{
         Color color = (newlyChangedSlot.getSlotState() == SlotState.RED) ? Color.RED : Color.YELLOW;
         board.changeCircleColor(newlyChangedSlot.getRow(),newlyChangedSlot.getColumn(),color);
         turn = (game.getGameStatus().getCurrentPlayer().getColor() == SlotState.RED)?2:1;
-        System.out.println("TURN: " + turn);
         changeLabel(turn,newGameStatus.isGameOver(),newGameStatus.getWinner());
     }
 }
