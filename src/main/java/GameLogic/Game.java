@@ -117,6 +117,7 @@ public class Game {
     		column++;
             if(!checkMatrixBoundaries(row,column)) break;
     		currentSlot = board.getSlot(row, column);
+    	
 			if(playerColor != currentSlot.getSlotState()) {
 				break;
 			} else {
@@ -128,12 +129,15 @@ public class Game {
     	while(counter < 4 && checkLeft) {
     		column--;
             if(!checkMatrixBoundaries(row,column)) break;
+
+    		currentSlot = board.getSlot(row, column);
 			if(playerColor != currentSlot.getSlotState()) {
 				break;
 			} else {
 				counter++;
 			}
     	}
+    	System.out.println(counter);
 		return (counter >= 3);
 	}
   
