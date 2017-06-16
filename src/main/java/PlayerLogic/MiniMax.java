@@ -12,11 +12,11 @@ public class MiniMax {
 
     public MiniMax(Board board, int depth) {
         this.game = new Game();
-        this.game.getBoard().copyBoard(board);
+     //   this.game.getBoard().copyBoard(board);
         maxDepth = depth;
     }
 // decide which column we have to pick, in case of it is RED
-    public int calcValue(Player player) {
+  /*  public int calcValue(Player player) {
         int count = 0;
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
@@ -36,8 +36,8 @@ public class MiniMax {
             }
         }
         //If it is not the first round, return negamax
-        return negamax(this.game.getBoard(), -100, 0, player);
-    }
+        //return negamax(this.game.getBoard(), -100, 0, player);
+    }*/
 // calls it self  and returns the best column that player will choose
     private int negamax(Board board, int alpha, int depth, Player player) {
         int bestPath = 0;
@@ -54,7 +54,7 @@ public class MiniMax {
         }*/
 
         Game game = new Game();
-        game.getBoard().copyBoard(board);
+      //  game.getBoard().copyBoard(board);
 
         //Determine if game is over in current state
         //Determine if game is a draw
@@ -71,7 +71,7 @@ public class MiniMax {
 
             for (int column = 0; column < 7; column++) {
                 Game simulationGame = new Game();
-                simulationGame.getBoard().copyBoard(game.getBoard());
+                //simulationGame.getBoard().copyBoard(game.getBoard());
                 Slot slot = simulationGame.discDrop(column);
 
 

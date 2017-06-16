@@ -108,29 +108,33 @@ public class Game {
     	int row = slot.getRow();
     	boolean checkLeft = true;
     	boolean checkRight = true;
+    	
 		Slot currentSlot = board.getSlot(row, column);
     	SlotState playerColor = gameStatus.getCurrentPlayer().getColor();
   
     	int counter = 0;
-    	while(counter < 4 && checkLeft) {
+    	while(counter < 4 && checkRight) {
+    		column++;
+            if(!checkMatrixBoundaries(row,column)) break;
+    		currentSlot = board.getSlot(row, column);
 			if(playerColor != currentSlot.getSlotState()) {
-				column++;
-				checkLeft = false;
+				break;
 			} else {
 				counter++;
 			}
 
     	} 
-  
-    	while(counter < 4 && checkRight) {
+    	column = slot.getColumn();
+    	while(counter < 4 && checkLeft) {
+    		column--;
+            if(!checkMatrixBoundaries(row,column)) break;
 			if(playerColor != currentSlot.getSlotState()) {
-				column--;
-				checkRight = false;
+				break;
 			} else {
 				counter++;
 			}
     	}
-		return (counter == 4);
+		return (counter >= 3);
 	}
   
 
