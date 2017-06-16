@@ -36,7 +36,7 @@ public class Game {
     				newMove();
     			});
     		}
-    	}, 100, 100);
+    	}, 100, 500);
     }
     
     public void newMove() {
@@ -47,14 +47,14 @@ public class Game {
 
         //System.out.println(gameStatus.currentPlayer.getColor());
         if(validateMove(column)) {
-    		slot = discDrop(column);
+            slot = discDrop(column);
     		board.setSlot(slot,slot.getRow(),slot.getColumn());
         } else {
         	return;
         }
-    	
-        /*
-    	if (checkWin(slot)) {
+
+
+    	if (checkHorizontal(slot)) {
             System.out.println("WE HAVE A WINNER: " + currentPlayer.getColor());
             gameStatus.setGameOver(true);
 			gameStatus.setWinner(currentPlayer);
@@ -64,11 +64,10 @@ public class Game {
         if (checkBoardFull()) {
 			gameStatus.setGameOver(true);
 			timer.cancel();
-		}*/
 
-		gameStatus.setBoard(board);
+		}
+        gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
-		
 		setCurrentPlayer(currentPlayer);
 		
     }
@@ -77,7 +76,7 @@ public class Game {
         return gameStatus;
     }
     private void setCurrentPlayer(Player currentPlayer) {
-    	gameStatus.setCurrentPlayer(updateCurrentPlayer());
+        gameStatus.setCurrentPlayer(updateCurrentPlayer());
     	this.currentPlayer = gameStatus.currentPlayer;
     }
     private Player updateCurrentPlayer(){
@@ -92,9 +91,8 @@ public class Game {
         return null;
     }
 
-    public boolean checkWin(Slot slot){
-    	System.out.format("checkHorizontal: %b%n", checkHorizontal(slot));
-        return checkHorizontal(slot) || checkVertical(slot) || checkDiagonal(slot);
+   public boolean checkWin(Slot slot){  	
+        return checkHorizontal(slot);
     }
     
     private boolean checkBoardFull() {
@@ -111,15 +109,20 @@ public class Game {
     	int column = slot.getColumn();
     	int row = slot.getRow();
     	SlotState playerColor = gameStatus.currentPlayer.getColor();
-    	boolean win = true;
+  
     	int counter = 0;
+    	do {
+			Slot nextSlot = board.getSlot(row, column);
+			
+			if(playerColor != nextSlot.getSlotState()) {
+				column++;
+				return false;
+			} else {
+				counter++;
+				return true;
+			}
 
-    	while(counter < 4) {
-    		column--;
-    		counter++;
-    		//System.out.println(column);
-    	}
-		return win;
+    	} while(counter < 4);
 	}
   
 
@@ -180,7 +183,51 @@ public class Game {
         return win;
     }
 
+    private boolean checkDiagonalUpLeftAndDownRight(Slot slot){
+
+        int counter = 0;
+        Boolean keepLookiingLeft = true;
+        Boolean keepLookiingRight = true;
+        int row=slot.getRow();
+        int col=slot.getColumn();
+        int tempRow = row;
+        int tempCol = col;
+
+        while(counter<4 && keepLookiingLeft){
+            tempCol--;
+            tempRow--;
+            if (board.getSlot(tempRow,tempCol).getSlotState()!=SlotState.EMPTY){
+
+            }
+
+
+        }
+        while(counter<4 && keepLookiingRight){
+
+         //   if ()
+
+
+
+        }
+
+
+
+        return true;
+    }
+
+    private boolean checkDiagonalUpRightAndDownLeft(Slot slot){
+
+
+
+
+
+
+        return true;
+    }
+
     private boolean checkDiagonal (Slot slot) {
+        return true/*checkDiagonalUpLeftAndDownRight(slot) || checkDiagonalUpRightAndDownLeft(slot)*/;
+        /*
         int row = slot.getRow();
         int column = slot.getColumn();
         if (row >= 3) {
@@ -204,6 +251,7 @@ public class Game {
                 return checkDownLeft(slot);
             }
         }
+        */
     }
 
  
@@ -293,7 +341,7 @@ public class Game {
         Slot nextSlot = new Slot(currentPlayer.getColor());
         for(int i=5; i >= 0 ; i--) {
             Slot temp = board.getSlot(i,column);
-            if (temp == null){
+            if (temp.getSlotState() == SlotState.EMPTY){
             	nextSlot.setColumn(column);
                 nextSlot.setRow(i);
                 return nextSlot;
@@ -303,7 +351,7 @@ public class Game {
     }
 
     private boolean validateMove(int column){
-        return (validateColumn(column) && columnNotFull(column) /*&& validateRow(row)*/);
+        return (validateColumn(column) && columnNotFull(column));
     }
 
     private boolean validateColumn(int column){
@@ -315,7 +363,7 @@ public class Game {
     }
     
     private boolean columnNotFull(int column) {
-        return (board.getSlot(0,column) == null);
+        return (board.getSlot(0,column).getSlotState() == SlotState.EMPTY);
     }
 
     public Board getBoard() {
