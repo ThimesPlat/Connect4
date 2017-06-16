@@ -37,6 +37,18 @@ public class BoardTest extends BoardTestDataProvider
     }
 
     @Test
+    public void testConstructor(){
+        Board board = new Board();
+        assertNotNull(board);
+        for (int row= 0; row < 6; row ++) {
+            for (int col= 0; col < 7; col++){
+                Slot slot = board.getSlot(row,col);
+                assertEquals(SlotState.EMPTY,slot.getSlotState());
+            }
+        }
+}
+
+    @Test
     public void getBoard()
     {
         assertNotNull(mockBoard.getBoard());
