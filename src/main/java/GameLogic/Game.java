@@ -37,7 +37,7 @@ public class Game {
     				newMove();
     			});
     		}
-    	}, 100, 500);
+    	}, 100, 5);
     }
     
     public void newMove() {
