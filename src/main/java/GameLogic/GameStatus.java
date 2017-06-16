@@ -42,7 +42,6 @@ public class GameStatus extends Observable {
         this.currentPlayer = currentPlayer;
         setChanged();
         notifyObservers();
-        System.out.println("NOTIFING OBSERVERS");
     }
 
     public boolean isGameOver() {
