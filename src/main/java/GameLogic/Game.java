@@ -56,12 +56,13 @@ public class Game {
         System.out.println("Round " + rounds);
 
         if(validateMove(column)) {
-    		slot = discDrop(column);
+            System.out.println("ASDSADASD");
+            slot = discDrop(column);
     		board.setSlot(slot,slot.getRow(),slot.getColumn());
         } else {
         	return;
         }
-    	
+/*
     	if (checkWin(slot)) {
             System.out.println("WE HAVE A WINNER: " + currentPlayer.getColor());
             gameStatus.setGameOver(true);
@@ -73,8 +74,9 @@ public class Game {
 			gameStatus.setGameOver(true);
 			timer.cancel();
 		}
-
-		gameStatus.setBoard(board);
+*/
+        System.out.println("LOLr");
+        gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
 		setCurrentPlayer(currentPlayer);
 		
@@ -84,7 +86,8 @@ public class Game {
         return gameStatus;
     }
     private void setCurrentPlayer(Player currentPlayer) {
-    	gameStatus.setCurrentPlayer(updateCurrentPlayer());
+        System.out.println("SETTING CURRENT PLAYER");
+        gameStatus.setCurrentPlayer(updateCurrentPlayer());
     	this.currentPlayer = gameStatus.currentPlayer;
     }
     private Player updateCurrentPlayer(){
@@ -159,7 +162,7 @@ public class Game {
         while(counter<4 && keepLookiingLeft){
             tempCol--;
             tempRow--;
-            if (board.getSlot(tempRow,tempCol).getSlotState()!=SlotState.RED){
+            if (board.getSlot(tempRow,tempCol).getSlotState()!=SlotState.EMPTY){
 
             }
 
@@ -175,7 +178,7 @@ public class Game {
 
 
 
-        return false;
+        return true;
     }
 
     private boolean checkDiagonalUpRightAndDownLeft(Slot slot){
@@ -185,11 +188,11 @@ public class Game {
 
 
 
-        return false;
+        return true;
     }
 
     private boolean checkDiagonal (Slot slot) {
-        return checkDiagonalUpLeftAndDownRight(slot) || checkDiagonalUpRightAndDownLeft(slot);
+        return true/*checkDiagonalUpLeftAndDownRight(slot) || checkDiagonalUpRightAndDownLeft(slot)*/;
         /*
         int row = slot.getRow();
         int column = slot.getColumn();
@@ -363,7 +366,7 @@ public class Game {
         Slot nextSlot = new Slot(currentPlayer.getColor());
         for(int i=5; i >= 0 ; i--) {
             Slot temp = board.getSlot(i,column);
-            if (temp == null){
+            if (temp.getSlotState() == SlotState.EMPTY){
             	nextSlot.setColumn(column);
                 nextSlot.setRow(i);
                 return nextSlot;
@@ -373,7 +376,7 @@ public class Game {
     }
 
     private boolean validateMove(int column){
-        return (validateColumn(column) && columnNotFull(column) /*&& validateRow(row)*/);
+        return (validateColumn(column) && columnNotFull(column));
     }
 
     private boolean validateColumn(int column){
@@ -385,7 +388,7 @@ public class Game {
     }
     
     private boolean columnNotFull(int column) {
-        return (board.getSlot(0,column) == null);
+        return (board.getSlot(0,column).getSlotState() == SlotState.EMPTY);
     }
 
     public Board getBoard() {
