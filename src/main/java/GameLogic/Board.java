@@ -15,14 +15,16 @@ public class Board {
         }
     }
 
-    public void copyBoard(Board board) {
+    public Board copyBoard(Board board) {
         Slot[][] newSlot = new Slot[6][7];
+        Board newBoard = new Board();
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
                 newSlot[row][col] = board.getSlot(row, col);
             }
         }
-        this.setBoard(newSlot);
+        newBoard.setBoard(newSlot);
+        return newBoard;
     }
 
     public Slot[][] getBoard() {
