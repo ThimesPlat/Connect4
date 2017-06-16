@@ -45,7 +45,7 @@ public class Game {
     	Slot slot;
         rounds++;
 
-        System.out.println(gameStatus.currentPlayer.getColor());
+        //System.out.println(gameStatus.currentPlayer.getColor());
         if(validateMove(column)) {
     		slot = discDrop(column);
     		board.setSlot(slot,slot.getRow(),slot.getColumn());
@@ -53,6 +53,7 @@ public class Game {
         	return;
         }
     	
+        /*
     	if (checkWin(slot)) {
             System.out.println("WE HAVE A WINNER: " + currentPlayer.getColor());
             gameStatus.setGameOver(true);
@@ -63,10 +64,11 @@ public class Game {
         if (checkBoardFull()) {
 			gameStatus.setGameOver(true);
 			timer.cancel();
-		}
+		}*/
 
 		gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
+		
 		setCurrentPlayer(currentPlayer);
 		
     }
@@ -91,7 +93,7 @@ public class Game {
     }
 
     public boolean checkWin(Slot slot){
-    	System.out.format("checkHorizontal: %b%n checkVertical: %b%n checkDiagonal: %b%n", checkHorizontal(slot), checkVertical(slot), checkDiagonal(slot));
+    	System.out.format("checkHorizontal: %b%n", checkHorizontal(slot));
         return checkHorizontal(slot) || checkVertical(slot) || checkDiagonal(slot);
     }
     
@@ -112,25 +114,16 @@ public class Game {
     	boolean win = true;
     	int counter = 0;
 
-    	while(counter<4) {
-	    	if (checkLeft(slot) != true) {
-
-		    		System.out.println(counter);
-		    		System.out.println(checkLeft(slot));
-	    	
-	    	}
+    	while(counter < 4) {
+    		column--;
+    		counter++;
+    		//System.out.println(column);
     	}
-    	/*
-        int column = slot.getColumn();
-        if (column == 3) {
-        	return checkLeft(slot) || checkRight(slot);
-        } else if(column < 3) {
-            return checkRight(slot);
-        } else {
-            return checkLeft(slot);
-        }*/
-		return false;
-    }
+		return win;
+	}
+  
+
+
     private boolean checkLeft(Slot slot){
         int row = slot.getRow();
         int column = slot.getColumn();
