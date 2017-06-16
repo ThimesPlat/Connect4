@@ -196,18 +196,28 @@ public class Game {
         }
         int column = slot.getColumn();
         boolean win = true;
-        int counter=1;
-        for(int i= row+1; i< row+4; i++){
-            Slot currentSlot = board.getSlot(i,column);
+        boolean keepGoingVertical = true;
+        int counter=0;
+        int currentRow = slot.getRow()+1;
+        //for(int i= row+1; i< row+4; i++){
+        while(keepGoingVertical){
+            if(!checkMatrixBoundaries(currentRow,column)) break;
+            Slot currentSlot = board.getSlot(currentRow,column);
             SlotState slotColor = currentSlot.getSlotState();
-            winningSequence.add(currentSlot);
             if (slotColor != playerColor) {
-                win = false;
+                break;
             }
+            counter++;
+            currentRow++;
+            winningSequence.add(currentSlot);
+
         }
-        if(win)
+        System.out.println(counter);
+        if(counter>=3) {
             gameStatus.getBoard().setWinningSequence(winningSequence);
-        return win;
+            return true;
+        }
+        return false;
     }
 
     private boolean checkDiagonal(Slot slot,Boolean upLeftAndDownRight){
