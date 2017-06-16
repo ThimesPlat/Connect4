@@ -16,12 +16,12 @@ public class MiniMax {
         maxDepth = 2;
     }
 
-    // decide which column we have to pick
-    public int calcValue(Player player) {
+// decide which column we have to pick, in case of it is RED
+   public int calcValue(Player player) {
         int count = 0;
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
-                if ((this.game.getBoard().getSlot(row, col).getSlotState().equals(SlotState.YELLOW)) || this.game.getBoard().getSlot(row, col).getSlotState().equals(SlotState.RED)) {
+                if ((this.game.getGameStatus().getBoard().getSlot(row, col).getSlotState().equals(SlotState.YELLOW)) || this.game.getGameStatus().getBoard().getSlot(row, col).getSlotState().equals(SlotState.RED)) {
                     count++;
                 }
             }
@@ -31,18 +31,16 @@ public class MiniMax {
             return 3;
         }
         //If it is not the first round, return negamax
-        return negamax(this.game.getBoard(), -100, 0, player);
+        return negamax(this.game.getGameStatus().getBoard(), -100, 0, player);
     }
-
-    // calls it self  and returns the best column that player will choose
-    //finding lowest
+// calls it self  and returns the best column that player will choose
     private int negamax(Board board, int alpha, int depth, Player player) {
         int bestPath = 0;
         int bestValue = alpha;
         Game game = new Game();
         game.setBoard(board.copyBoard(board));
         int playerNr;
-
+      //  game.getBoard().copyBoard(board);
         if (player.getColor() == SlotState.RED) {
             playerNr = 2;
         }
@@ -62,7 +60,7 @@ public class MiniMax {
 
             for (int column = 0; column < 7; column++) {
                 Game simulationGame = new Game();
-                simulationGame.getBoard().copyBoard(game.getBoard());
+                //simulationGame.getBoard().copyBoard(game.getBoard());
                 Slot slot = simulationGame.discDrop(column);
 
                 if (slot.getSlotState().equals(player.getColor()) ) {

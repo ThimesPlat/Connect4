@@ -7,6 +7,7 @@ import GameLogic.Slot;
 import GameLogic.SlotState;
 import PlayerLogic.Player;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
+import sun.plugin2.util.ColorUtil;
 
 import java.util.*;
 
@@ -33,6 +35,8 @@ public class Main extends Application implements Observer{
     private Game game;
     private boolean gameStartedOnce = false;
     private double startGameButtonWidth;
+    private Timer firstTimer;
+    private Timer secondTimer;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -51,28 +55,54 @@ public class Main extends Application implements Observer{
                 this.game = new Game();
                 game.getGameStatus().addObserver(this);
                 board.clearBoard();
-            }
-            else{
-
+                firstTimer.cancel();
+                secondTimer.cancel();
+                firstTimer = new Timer();
+                secondTimer = new Timer();
             }
             setupUserLabel();
             game.startGame();
             this.startGame.setVisible(false);
             gameStartedOnce=true;
         });
+        firstTimer = new Timer();
+        secondTimer = new Timer();
         game = new Game();
         game.getGameStatus().addObserver(this);
         board = new Board(layout,(int)windowWidth,(int)windowHeight);
         slots = board.getSlots();
         layout = board.getBoardLayout();
         layout.getChildren().add(startGame);
-
-
         Scene scene = new Scene(layout,windowWidth,windowHeight);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();
         primaryStage.show();
+    }
+
+    private void startWinningAnimation(){
+        firstTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    for(Slot currentSlot: game.getGameStatus().getBoard().getWinningSequence()){
+                        slots[currentSlot.getRow()][currentSlot.getColumn()].setColor(Color.rgb(102, 255, 102));
+                    }
+                });
+            }
+        }, 500, 500);
+
+        firstTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    Color color = (game.getGameStatus().getWinner().getColor()==SlotState.RED)?Color.RED:Color.YELLOW;
+                    for(Slot currentSlot: game.getGameStatus().getBoard().getWinningSequence()){
+                        slots[currentSlot.getRow()][currentSlot.getColumn()].setColor(color);
+                    }
+                });
+            }
+        }, 1000, 500);
     }
 
 
@@ -112,6 +142,7 @@ public class Main extends Application implements Observer{
         usersTurn.setLayoutX((startGame.getLayoutX()+startGameButtonWidth)*2);
         usersTurn.setLayoutY(startGame.getLayoutY()+10);
         startGame.setVisible(true);
+        startWinningAnimation();
     }
 
     public Button buttonSetup(Button button,String text,String color){
@@ -128,7 +159,6 @@ public class Main extends Application implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("ADFFDASFSDFSD");
         GameStatus newGameStatus = game.getGameStatus();
         Slot newlyChangedSlot = newGameStatus.getChangedSlot();
         Color color = (newlyChangedSlot.getSlotState() == SlotState.RED) ? Color.RED : Color.YELLOW;
