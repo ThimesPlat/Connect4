@@ -1,5 +1,6 @@
 package GameLogic ;
 
+import PlayerLogic.Player;
 import javafx.beans.InvalidationListener;
 
 import java.util.ArrayList;
@@ -12,13 +13,13 @@ import java.util.Observable;
 public class GameStatus extends Observable {
 
     Board board;
-    PlayerLogic.Player currentPlayer;
+    Player currentPlayer;
     Slot changedSlot;
     boolean gameOver;
-    PlayerLogic.Player winner;
+    Player winner;
     ArrayList<InvalidationListener> listOfObservers;
 
-    public GameStatus(Board board, PlayerLogic.Player currentPlayer) {
+    public GameStatus(Board board, Player currentPlayer) {
         this.board = board;
         this.currentPlayer = currentPlayer;
         gameOver = false ;
@@ -33,11 +34,11 @@ public class GameStatus extends Observable {
         this.board = board;
     }
 
-    public PlayerLogic.Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public void setCurrentPlayer(PlayerLogic.Player currentPlayer) {
+    public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
         setChanged();
         notifyObservers();
@@ -51,11 +52,11 @@ public class GameStatus extends Observable {
         this.gameOver = gameOver;
     }
 
-    public PlayerLogic.Player getWinner() {
+    public Player getWinner() {
         return winner;
     }
 
-    public void setWinner(PlayerLogic.Player winner) {
+    public void setWinner(Player winner) {
         this.winner = winner;
     }
 
