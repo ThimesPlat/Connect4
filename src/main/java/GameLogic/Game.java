@@ -36,7 +36,7 @@ public class Game {
     				newMove();
     			});
     		}
-    	}, 100, 100);
+    	}, 100, 500);
     }
     
     public void newMove() {
@@ -137,7 +137,51 @@ public class Game {
         return win;
     }
 
+    private boolean checkDiagonalUpLeftAndDownRight(Slot slot){
+
+        int counter = 0;
+        Boolean keepLookiingLeft = true;
+        Boolean keepLookiingRight = true;
+        int row=slot.getRow();
+        int col=slot.getColumn();
+        int tempRow = row;
+        int tempCol = col;
+
+        while(counter<4 && keepLookiingLeft){
+            tempCol--;
+            tempRow--;
+            if (board.getSlot(tempRow,tempCol).getSlotState()!=SlotState.RED){
+
+            }
+
+
+        }
+        while(counter<4 && keepLookiingRight){
+
+         //   if ()
+
+
+
+        }
+
+
+
+        return false;
+    }
+
+    private boolean checkDiagonalUpRightAndDownLeft(Slot slot){
+
+
+
+
+
+
+        return false;
+    }
+
     private boolean checkDiagonal (Slot slot) {
+        return checkDiagonalUpLeftAndDownRight(slot) || checkDiagonalUpRightAndDownLeft(slot);
+        /*
         int row = slot.getRow();
         int column = slot.getColumn();
         if (row >= 3) {
@@ -161,6 +205,7 @@ public class Game {
                 return checkDownLeft(slot);
             }
         }
+        */
     }
 
     private boolean checkLeft(Slot slot){
