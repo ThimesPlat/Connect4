@@ -29,7 +29,6 @@ public class Game {
     }
     
     public void startGame() {
-
         timer.scheduleAtFixedRate(new TimerTask() {
     		@Override
     		public void run() {
@@ -169,6 +168,7 @@ public class Game {
         int column = slot.getColumn();
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         boolean win = true;
+
         System.out.println("row: " + row);
         System.out.println("col: " + column);
         for(int i = column-1; i > column-4; i--) {
@@ -236,8 +236,10 @@ public class Game {
     	int column = slot.getColumn();
     	SlotState playerColor = gameStatus.currentPlayer.getColor();
 		boolean win = true;
+
     	
     	for(int i = row + 1; i < row + 4; i++ ) {
+
     		column++;
     		System.out.println("col: " + column);
     		System.out.println("row: " + i);
