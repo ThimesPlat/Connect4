@@ -5,6 +5,7 @@ package GameLogic;
 
 public class Board {
     private Slot[][] board;
+    private Slot[] winningSequence;
 
     public Board() {
         board = new Slot[6][7];
@@ -45,5 +46,12 @@ public class Board {
         board[row][column].setSlotState(slotState);
     }
 
+    public Slot[] getWinningSequence() {
+        return winningSequence;
+    }
+
+    public void setWinningSequence(Slot[] winningSequence) {
+        this.winningSequence = winningSequence;
+    }
 
 }

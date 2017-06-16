@@ -113,6 +113,8 @@ public class Game {
     }
 
     private boolean checkVertical(Slot slot) {
+        Slot[] winningSequence = new Slot[4];
+        winningSequence[0] = slot;
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         int row = slot.getRow();
         if (row > 2) {
@@ -120,18 +122,24 @@ public class Game {
         }
         int column = slot.getColumn();
         boolean win = true;
+        int counter=1;
         for(int i= row+1; i< row+4; i++){
-            SlotState slotColor = board.getSlot(i,column).getSlotState();
-
+            Slot currentSlot = board.getSlot(i,column);
+            SlotState slotColor = currentSlot.getSlotState();
+            winningSequence[counter++] = currentSlot;
             if (slotColor != playerColor) {
                 win = false;
             }
         }
+        if(win)
+            gameStatus.getBoard().setWinningSequence(winningSequence);
         return win;
     }
 
     private boolean checkDiagonal(Slot slot,Boolean upLeftAndDownRight){
+        Slot[] winningSequence = new Slot[4];
         int counter = 0;
+        winningSequence[counter] = slot;
         Boolean keepLookingLeft = true;
         Boolean keepLookingRight = true;
         int tempRow = slot.getRow();
@@ -142,7 +150,10 @@ public class Game {
             if (upLeftAndDownRight) tempRow--;
             else tempRow++;
             if(!checkMatrixBoundaries(tempRow,tempCol)) break;
-            if (board.getSlot(tempRow,tempCol).getSlotState()==currentPlayer.getColor()) counter++;
+            if (board.getSlot(tempRow,tempCol).getSlotState()==currentPlayer.getColor()){
+                counter++;
+                winningSequence[counter] = board.getSlot(tempRow,tempCol);
+            }
             else keepLookingLeft=false;
         }
 
@@ -153,11 +164,17 @@ public class Game {
             if (upLeftAndDownRight) tempRow++;
             else tempRow--;
             if(!checkMatrixBoundaries(tempRow,tempCol)) break;
-            if (board.getSlot(tempRow,tempCol).getSlotState()==currentPlayer.getColor()) counter++;
+            if (board.getSlot(tempRow,tempCol).getSlotState()==currentPlayer.getColor()){
+                counter++;
+                winningSequence[counter] = board.getSlot(tempRow,tempCol);
+            }
             else keepLookingRight=false;
         }
-        System.out.println(counter);
-        return (counter>=3);    // all colors in the same line - the slot you are in.
+        if(counter>=3) {
+            gameStatus.getBoard().setWinningSequence(winningSequence);
+            return true;    // all colors in the same line - the slot you are in.
+        }
+        return false;
     }
 
     private boolean checkMatrixBoundaries(int row, int column){
