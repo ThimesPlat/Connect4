@@ -65,14 +65,14 @@ public class Game {
 		}
         gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
-		setCurrentPlayer(currentPlayer);
+		setCurrentPlayer();
 
     }
 
     public GameStatus getGameStatus() {
         return gameStatus;
     }
-    private void setCurrentPlayer(Player currentPlayer) {
+    private void setCurrentPlayer() {
         gameStatus.setCurrentPlayer(updateCurrentPlayer());
     	this.currentPlayer = gameStatus.currentPlayer;
     }
@@ -145,46 +145,6 @@ public class Game {
     	    gameStatus.getBoard().setWinningSequence(winningSequence);
 		return (counter >= 3);
 	}
-  
-
-/*
-    private boolean checkLeft(Slot slot){
-        int row = slot.getRow();
-        int column = slot.getColumn();
-        SlotState playerColor = gameStatus.currentPlayer.getColor();
-        boolean win = true;
-
-        for(int i = column-1; i > column-4; i--) {
-            Slot nextSlot = board.getSlot(row,i);
-            if (nextSlot == null) {
-                return false;
-            }
-            SlotState slotColor = nextSlot.getSlotState();
-			if (slotColor != playerColor) {
-                win = false;
-                return false;
-            }
-        }
-        return win;
-    }
-
-    private boolean checkRight(Slot slot){
-        int row = slot.getRow();
-        int column = slot.getColumn();
-        SlotState playerColor = gameStatus.currentPlayer.getColor();
-        boolean win = true;
-        for(int i= column+1 ; i< column+4; i++) {
-            Slot nextSlot = board.getSlot(row, i);
-            if (nextSlot == null) {
-                return false;
-            }
-            SlotState slotColor = nextSlot.getSlotState();
-            if (slotColor != playerColor) {
-                win = false;
-            }
-        }
-        return win;
-    }*/
 
     private boolean checkVertical(Slot slot) {
         ArrayList<Slot> winningSequence = new ArrayList<>();
@@ -195,11 +155,9 @@ public class Game {
             return false;
         }
         int column = slot.getColumn();
-        boolean win = true;
         boolean keepGoingVertical = true;
         int counter=0;
         int currentRow = slot.getRow()+1;
-        //for(int i= row+1; i< row+4; i++){
         while(keepGoingVertical){
             if(!checkMatrixBoundaries(currentRow,column)) break;
             Slot currentSlot = board.getSlot(currentRow,column);
@@ -288,10 +246,6 @@ public class Game {
 
     private boolean validateColumn(int column){
         return (column >= 0 && column <= 6) ;
-    }
-
-    private boolean validateRow(int row){
-        return (row >= 0 && row < 5) ;
     }
     
     private boolean columnNotFull(int column) {

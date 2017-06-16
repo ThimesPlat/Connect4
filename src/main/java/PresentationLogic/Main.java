@@ -15,8 +15,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
-import sun.plugin2.util.ColorUtil;
-
 import java.util.*;
 
 
@@ -50,15 +48,7 @@ public class Main extends Application implements Observer{
         startGame.setOnAction((ActionEvent event) -> {
             startGameButtonWidth = startGame.getWidth();
             if (gameStartedOnce) {  // called second time game starts
-                layout.getChildren().remove(this.usersTurn);
-                game.getGameStatus().deleteObserver(this);
-                this.game = new Game();
-                game.getGameStatus().addObserver(this);
-                board.clearBoard();
-                firstTimer.cancel();
-                secondTimer.cancel();
-                firstTimer = new Timer();
-                secondTimer = new Timer();
+                resetApplicationVariables();
             }
             setupUserLabel();
             game.startGame();
@@ -71,6 +61,8 @@ public class Main extends Application implements Observer{
         game.getGameStatus().addObserver(this);
         board = new Board(layout,(int)windowWidth,(int)windowHeight);
         slots = board.getSlots();
+
+
         layout = board.getBoardLayout();
         layout.getChildren().add(startGame);
         Scene scene = new Scene(layout,windowWidth,windowHeight);
@@ -105,7 +97,6 @@ public class Main extends Application implements Observer{
         }, 1000, 500);
     }
 
-
     private void setupUserLabel(){
         this.usersTurn = new Label("Yellow users turn");
         this.usersTurn.setLayoutY(20);
@@ -138,6 +129,18 @@ public class Main extends Application implements Observer{
         }
     }
 
+    private void resetApplicationVariables(){
+        layout.getChildren().remove(this.usersTurn);
+     //   game.getGameStatus().deleteObserver(this);
+        this.game = new Game();
+        game.getGameStatus().addObserver(this);
+        board.clearBoard();
+        firstTimer.cancel();
+        secondTimer.cancel();
+        firstTimer = new Timer();
+        secondTimer = new Timer();
+    }
+
     public void gameIsOver(){
         usersTurn.setLayoutX((startGame.getLayoutX()+startGameButtonWidth)*2);
         usersTurn.setLayoutY(startGame.getLayoutY()+10);
@@ -151,7 +154,6 @@ public class Main extends Application implements Observer{
 
         return button;
     }
-
 
     public static void main(String[] args) {
         launch(args);
