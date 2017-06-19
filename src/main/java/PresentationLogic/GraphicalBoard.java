@@ -14,7 +14,7 @@ public class GraphicalBoard {
     Rectangle r;
     GraphicalSlot[][] slots = new GraphicalSlot[6][7];
 
-    public GraphicalBoard(Pane layout, int width, int height){
+    public GraphicalBoard(Pane layout, double width, double height){
 
         this.layout = layout;
         this.r = new Rectangle(width, height);

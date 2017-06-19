@@ -51,9 +51,9 @@ public class Game {
     }
     
     public void newMove() {
-        //Random random = new Random();
-        miniMax = new MiniMax(board);
-    	int column = miniMax.calcValue(currentPlayer);
+        Random random = new Random();
+     //   miniMax = new MiniMax(board);
+    	int column = random.nextInt(7);//miniMax.calcValue(currentPlayer);
     	System.out.println(column);
     	Slot slot;
         rounds++;
