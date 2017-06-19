@@ -1,10 +1,10 @@
 package GameLogic ;
 
-import PlayerLogic.Player;
-import javafx.beans.InvalidationListener;
-
 import java.util.ArrayList;
 import java.util.Observable;
+
+import PlayerLogic.Player;
+import javafx.beans.InvalidationListener;
 
 /**
  * Created by eps on 2017-06-13.
@@ -12,12 +12,12 @@ import java.util.Observable;
 
 public class GameStatus extends Observable {
 
-    Board board;
-    Player currentPlayer;
-    Slot changedSlot;
-    boolean gameOver;
-    Player winner;
-    ArrayList<InvalidationListener> listOfObservers;
+   private Board board;
+    private Player currentPlayer;
+    private Slot changedSlot;
+    private boolean gameOver;
+    private Player winner;
+    private ArrayList<InvalidationListener> listOfObservers;
 
     public GameStatus(Board board, Player currentPlayer) {
         this.board = board;
