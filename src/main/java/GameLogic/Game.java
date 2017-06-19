@@ -52,11 +52,14 @@ public class Game {
     
     public void newMove() {
         //Random random = new Random();
-        miniMax = new MiniMax(board);
-    	int column = miniMax.calcValue(currentPlayer);
-    	System.out.println(column);
-    	Slot slot;
-        rounds++;
+        int column = -1;
+        Slot slot;
+        if (!checkBoardFull()) {
+            miniMax = new MiniMax(board);
+            column = miniMax.calcValue(currentPlayer);
+            System.out.println(column);
+            rounds++;
+        }
 
         if(validateMove(column)) {
             slot = discDrop(column);
@@ -109,7 +112,7 @@ public class Game {
     private boolean checkBoardFull() {
     	Slot[][] slots = board.getBoard();
     	for(int i = 0; i < slots[0].length; i++) {
-			if(board.getSlot(0,i).getSlotState() == SlotState.EMPTY) {
+			if(board.getSlot(0,i).getSlotState().equals(SlotState.EMPTY)) {
 				return false;
 			}
     	}
@@ -182,7 +185,6 @@ public class Game {
             winningSequence.add(currentSlot);
 
         }
-        System.out.println(counter);
         if(counter>=3) {
             gameStatus.getBoard().setWinningSequence(winningSequence);
             return true;
@@ -245,6 +247,19 @@ public class Game {
             Slot temp = board.getSlot(i,column);
             if (temp.getSlotState() == SlotState.EMPTY){
             	nextSlot.setColumn(column);
+                nextSlot.setRow(i);
+                return nextSlot;
+            }
+        }
+        return null;
+    }
+
+    public Slot discDrop(int column, Player player) {
+        Slot nextSlot = new Slot(player.getColor());
+        for(int i=5; i >= 0 ; i--) {
+            Slot temp = board.getSlot(i,column);
+            if (temp.getSlotState() == SlotState.EMPTY){
+                nextSlot.setColumn(column);
                 nextSlot.setRow(i);
                 return nextSlot;
             }

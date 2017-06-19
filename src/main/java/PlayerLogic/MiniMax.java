@@ -13,11 +13,11 @@ public class MiniMax {
     public MiniMax(Board board) {
         this.game = new Game();
         this.game.getGameStatus().setBoard(board);
-        maxDepth = 3;
+        maxDepth = 2;
     }
 
-// decide which column we have to pick, in case of it is RED
-   public int calcValue(Player player) {
+    // decide which column we have to pick
+    public int calcValue(Player player) {
         int count = 0;
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
@@ -27,64 +27,35 @@ public class MiniMax {
             }
         }
         //Natural to put in 3rd column as middle as possible
-        if (count == 0) {
-            return 3;
+        if (count <= 1) {
+            if (this.game.getGameStatus().getBoard().getSlot(5, 2).getSlotState().equals(SlotState.RED)) {
+                return 4;
+            } else if (this.game.getGameStatus().getBoard().getSlot(5, 4).getSlotState().equals(SlotState.RED)) {
+                return 2;
+            } else {
+                return 3;
+            }
         }
         //If it is not the first round, return negamax
         return negamax(this.game.getGameStatus().getBoard(), -100, 0, player);
     }
-// calls it self  and returns the best column that player will choose
+
+    // calls it self  and returns the best column that player will choose
     private int negamax(Board board, int alpha, int depth, Player player) {
         int bestPath = 0;
         int bestValue = alpha;
         Game game = new Game();
         game.setBoard(board.copyBoard(board));
-        int playerNr;
-      //  game.getBoard().copyBoard(board);
-        if (player.getColor() == SlotState.RED) {
-            playerNr = 2;
-        }
-        else {
-            playerNr = 1;
-        }
-        //Determine pathValue using eval() if depth is reached
-        if (depth == maxDepth) {
-            int mid = eval(board, player);
-            if (mid != 0) {
-                bestValue = playerNr*(mid - depth);
-            } else {
-                bestValue = mid;
-            }
-        } else {
-            // Generates the best movement for each column and give the best score to coulmn
 
-            for (int column = 0; column < 7; column++) {
-                Game simulationGame = new Game();
-                simulationGame.getGameStatus().getBoard().copyBoard(game.getGameStatus().getBoard());
-                Slot slot = simulationGame.discDrop(column);
-
-                if (slot.getSlotState().equals(player.getColor())) {
-                    Board tempboard = new Board();
-                    if (depth < maxDepth) {
-                        tempboard.copyBoard(board);
-                        int v = -negamax(board, -100, depth + 1, player);
-                        if (v >= bestValue) {
-                            bestPath = column;
-                            bestValue = v;
-                        }
-                    }
-                }
-            }
-        }
+        System.out.print(bestValue);
         if (depth == 0) {
             return bestPath;
-
         } else {
             return bestValue;
         }
     }
 
-    private int eval(Board board, Player player) {
+    public int eval(Board board, Player player) {
         int v = 1;
         int d = 2;
         int h = 3;
@@ -263,7 +234,6 @@ public class MiniMax {
                         board.getSlot(row, column + 3).getSlotState().equals(SlotState.EMPTY)) {
                     value += threeInRow * h;
                 }
-
             }
         }
         //Check for vertical spaced 3-in-a-row.
