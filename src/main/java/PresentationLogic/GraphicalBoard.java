@@ -8,13 +8,13 @@ import javafx.scene.shape.Rectangle;
 /**
  * Created by cte on 2017-06-11.
  */
-public class Board {
+public class GraphicalBoard {
 
     Pane layout;
     Rectangle r;
     GraphicalSlot[][] slots = new GraphicalSlot[6][7];
 
-    public Board(Pane layout, int width, int height){
+    public GraphicalBoard(Pane layout, int width, int height){
 
         this.layout = layout;
         this.r = new Rectangle(width, height);

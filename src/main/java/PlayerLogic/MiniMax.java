@@ -7,7 +7,7 @@ import GameLogic.SlotState;
 import java.util.List;
 public class MiniMax {
    private Game game;
-    //private Board board;
+    //private GraphicalBoard board;
     private int maxDepth;
 
     public MiniMax(Board board, int depth) {
@@ -44,7 +44,7 @@ public class MiniMax {
         int bestValue = alpha;
         //int player;
 
-        //Board newBoard =new Board();
+        //GraphicalBoard newBoard =new GraphicalBoard();
         //newBoard.copyBoard(board);
 
         /*if (player.getColor().equals(SlotState.RED)) {

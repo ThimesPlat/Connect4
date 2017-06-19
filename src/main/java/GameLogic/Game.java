@@ -58,6 +58,7 @@ public class Game {
 			gameStatus.setWinner(currentPlayer);
 			timer.cancel();
 		}
+
         if (checkBoardFull()) {
 			gameStatus.setGameOver(true);
 			timer.cancel();

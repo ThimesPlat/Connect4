@@ -24,7 +24,7 @@ public class Main extends Application implements Observer{
     private double windowWidth = 600;
     private double windowHeight = 600;
 
-    private Board board;
+    private GraphicalBoard board;
     private Pane layout;
     private Button startGame;
     private Label usersTurn;
@@ -40,6 +40,8 @@ public class Main extends Application implements Observer{
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Connect-4");
 
+        firstTimer = new Timer();
+        secondTimer = new Timer();
         this.layout = new Pane();
         startGame = new Button();
         startGame.setLayoutX(10);
@@ -55,11 +57,10 @@ public class Main extends Application implements Observer{
             this.startGame.setVisible(false);
             gameStartedOnce=true;
         });
-        firstTimer = new Timer();
-        secondTimer = new Timer();
+
         game = new Game();
         game.getGameStatus().addObserver(this);
-        board = new Board(layout,(int)windowWidth,(int)windowHeight);
+        board = new GraphicalBoard(layout,(int)windowWidth,(int)windowHeight);
         slots = board.getSlots();
 
 
@@ -141,14 +142,14 @@ public class Main extends Application implements Observer{
         secondTimer = new Timer();
     }
 
-    public void gameIsOver(){
+    private void gameIsOver(){
         usersTurn.setLayoutX((startGame.getLayoutX()+startGameButtonWidth)*2);
         usersTurn.setLayoutY(startGame.getLayoutY()+10);
         startGame.setVisible(true);
         startWinningAnimation();
     }
 
-    public Button buttonSetup(Button button,String text,String color){
+    private Button buttonSetup(Button button,String text,String color){
         button.setText(text);
         button.setStyle("-fx-font: 22 arial; -fx-base: #"+color+";");
 
