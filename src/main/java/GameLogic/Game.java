@@ -246,6 +246,7 @@ public class Game {
     private boolean checkDiagonal (Slot slot) {
         return checkDiagonal(slot, true) || checkDiagonal(slot, false);
     }
+
     public Slot discDrop(int column) {
         Slot nextSlot = new Slot(currentPlayer.getColor());
         for(int i=5; i >= 0 ; i--) {

@@ -27,13 +27,22 @@ public abstract class TestDataProvider
     protected Game validateMoveGame = new Game();
 
 
-    protected  final Slot[][] testingBoard = {
-        {mockEmptySlot,mockRedSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-        {mockEmptySlot,mockRedSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-        {mockEmptySlot,mockYellowSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-        {mockEmptySlot,mockYellowSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-        {mockYellowSlot,mockYellowSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-        {mockRedSlot,mockYellowSlot,mockRedSlot,mockRedSlot, mockRedSlot, mockRedSlot, mockEmptySlot}
+    protected  final Slot[][] testingBoardHorizontalWin = {
+        {mockEmptySlot,realRedSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
+        {mockEmptySlot,realRedSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
+        {mockEmptySlot,realYellowSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
+        {mockEmptySlot,realYellowSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
+        {realYellowSlot,realYellowSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
+        {realRedSlot,realYellowSlot,realRedSlot,realRedSlot, realRedSlot, realRedSlot, mockEmptySlot}
+    } ;
+
+    protected  final Slot[][] testingBoardDiagonalWin = {
+            {mockEmptySlot,mockRedSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
+            {realYellowSlot,mockRedSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
+            {mockEmptySlot,realYellowSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, realRedSlot},
+            {mockEmptySlot,mockEmptySlot,realYellowSlot,mockEmptySlot, mockEmptySlot, realRedSlot, mockEmptySlot},
+            {realYellowSlot,mockEmptySlot,mockEmptySlot,realYellowSlot, realRedSlot, mockEmptySlot, mockEmptySlot},
+            {mockRedSlot,realYellowSlot,mockEmptySlot,realRedSlot, mockEmptySlot, mockEmptySlot, mockEmptySlot}
     } ;
 
 }

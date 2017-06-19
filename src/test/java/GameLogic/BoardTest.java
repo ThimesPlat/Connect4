@@ -24,7 +24,7 @@ public class BoardTest extends TestDataProvider
     {
         when(mockYellowSlot.getSlotState()).thenReturn(SlotState.YELLOW);
         when(mockRedSlot.getSlotState()).thenReturn(SlotState.RED);
-        when(mockBoard.getBoard()).thenReturn(testingBoard);
+        when(mockBoard.getBoard()).thenReturn(testingBoardHorizontalWin);
         when(mockBoard.getSlot(5, 0)).thenReturn(mockRedSlot);
         when(mockBoard.getSlot(5, 1)).thenReturn(mockYellowSlot);
         when(mockEmptySlot.getSlotState()).thenReturn(SlotState.EMPTY);
