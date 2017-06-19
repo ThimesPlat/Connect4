@@ -3,6 +3,7 @@ package GameLogic ;
 import PlayerLogic.Player;
 import javafx.application.Platform;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,10 +37,11 @@ public class Game {
     				newMove();
     			});
     		}
-    	}, 100, 500);
+    	}, 100, 5);
     }
     
     public void newMove() {
+  
         Random random = new Random();
     	int column = random.nextInt(7);
     	Slot slot;
@@ -65,7 +67,7 @@ public class Game {
         gameStatus.setBoard(board);
 		gameStatus.setChangedSlot(slot);
 		setCurrentPlayer(currentPlayer);
-		
+
     }
 
     public GameStatus getGameStatus() {
@@ -104,40 +106,47 @@ public class Game {
     }
 
     private boolean checkHorizontal(Slot slot) {
-    	int column = slot.getColumn();
+        ArrayList<Slot> winningSequence = new ArrayList<>();
+        winningSequence.add(slot);
+        int column = slot.getColumn();
     	int row = slot.getRow();
     	boolean checkLeft = true;
     	boolean checkRight = true;
     	
-		Slot currentSlot = board.getSlot(row, column);
+		Slot currentSlot;
     	SlotState playerColor = gameStatus.getCurrentPlayer().getColor();
   
     	int counter = 0;
-    	while(counter < 4 && checkRight) {
+    	while(checkRight) {
     		column++;
             if(!checkMatrixBoundaries(row,column)) break;
     		currentSlot = board.getSlot(row, column);
     	
 			if(playerColor != currentSlot.getSlotState()) {
-				break;
+			    checkRight=false;
 			} else {
 				counter++;
+                winningSequence.add(currentSlot);
+
 			}
 
     	} 
     	column = slot.getColumn();
-    	while(counter < 4 && checkLeft) {
+    	while(checkLeft) {
     		column--;
             if(!checkMatrixBoundaries(row,column)) break;
 
-    		currentSlot = board.getSlot(row, column);
-			if(playerColor != currentSlot.getSlotState()) {
-				break;
+            currentSlot = board.getSlot(row, column);
+            if(playerColor != currentSlot.getSlotState()) {
+                checkLeft=false;
 			} else {
 				counter++;
+                winningSequence.add(currentSlot);
 			}
     	}
-    	System.out.println(counter);
+
+    	if (counter >= 3)
+    	    gameStatus.getBoard().setWinningSequence(winningSequence);
 		return (counter >= 3);
 	}
   
@@ -182,6 +191,8 @@ public class Game {
     }*/
 
     private boolean checkVertical(Slot slot) {
+        ArrayList<Slot> winningSequence = new ArrayList<>();
+        winningSequence.add(slot);
         SlotState playerColor = gameStatus.currentPlayer.getColor();
         int row = slot.getRow();
         if (row > 2) {
@@ -189,44 +200,60 @@ public class Game {
         }
         int column = slot.getColumn();
         boolean win = true;
+        int counter=1;
         for(int i= row+1; i< row+4; i++){
-            SlotState slotColor = board.getSlot(i,column).getSlotState();
-
+            Slot currentSlot = board.getSlot(i,column);
+            SlotState slotColor = currentSlot.getSlotState();
+            winningSequence.add(currentSlot);
             if (slotColor != playerColor) {
                 win = false;
             }
         }
+        if(win)
+            gameStatus.getBoard().setWinningSequence(winningSequence);
         return win;
     }
 
     private boolean checkDiagonal(Slot slot,Boolean upLeftAndDownRight){
+     //   Slot[] winningSequence = new Slot[4];
+        ArrayList<Slot> winningSequence = new ArrayList<>();
         int counter = 0;
+        winningSequence.add(slot);
         Boolean keepLookingLeft = true;
         Boolean keepLookingRight = true;
         int tempRow = slot.getRow();
         int tempCol = slot.getColumn();
 
-        while(counter<4 && keepLookingLeft){
+        while(keepLookingLeft){
             tempCol--;
             if (upLeftAndDownRight) tempRow--;
             else tempRow++;
             if(!checkMatrixBoundaries(tempRow,tempCol)) break;
-            if (board.getSlot(tempRow,tempCol).getSlotState()==currentPlayer.getColor()) counter++;
+            if (board.getSlot(tempRow,tempCol).getSlotState()==currentPlayer.getColor()){
+                counter++;
+                winningSequence.add(board.getSlot(tempRow,tempCol));
+            }
             else keepLookingLeft=false;
         }
 
         tempRow=slot.getRow();
         tempCol=slot.getColumn();
-        while(counter<4 && keepLookingRight){
+        while(keepLookingRight){
             tempCol++;
             if (upLeftAndDownRight) tempRow++;
             else tempRow--;
             if(!checkMatrixBoundaries(tempRow,tempCol)) break;
-            if (board.getSlot(tempRow,tempCol).getSlotState()==currentPlayer.getColor()) counter++;
+            if (board.getSlot(tempRow,tempCol).getSlotState()==currentPlayer.getColor()){
+                counter++;
+                winningSequence.add(board.getSlot(tempRow,tempCol));
+            }
             else keepLookingRight=false;
         }
-        System.out.println(counter);
-        return (counter>=3);    // all colors in the same line - the slot you are in.
+        if(counter>=3) {
+            gameStatus.getBoard().setWinningSequence(winningSequence);
+            return true;    // all colors in the same line - the slot you are in.
+        }
+        return false;
     }
 
     private boolean checkMatrixBoundaries(int row, int column){
@@ -234,157 +261,8 @@ public class Game {
     }
 
     private boolean checkDiagonal (Slot slot) {
-        return checkDiagonal(slot,true) || checkDiagonal(slot,false);
-        /*
-        int row = slot.getRow();
-        int column = slot.getColumn();
-        if (row >= 3) {
-            if (column == 3) {
-                boolean win = checkUpLeft(slot);
-                if (win) return win;
-                else return checkUpRight(slot);
-            } else if(column < 3) {
-                return checkUpRight(slot);
-            } else {
-                return checkUpLeft(slot);
-            }
-        } else {
-            if (column == 3) {
-                boolean win = checkDownLeft(slot);
-                if (win) return win;
-                else return checkDownRight(slot);
-            } else if(column < 3) {
-                return checkDownRight(slot);
-            } else {
-                return checkDownLeft(slot);
-            }
-        }
-        */
+        return checkDiagonal(slot, true) || checkDiagonal(slot, false);
     }
-
-/*
-    private boolean checkLeft(Slot slot){
-        int row = slot.getRow();
-        int column = slot.getColumn();
-        SlotState playerColor = gameStatus.currentPlayer.getColor();
-        boolean win = true;
-        for(int i = column-1; i > column-4; i--) {
-            Slot nextSlot = board.getSlot(row,i);
-            if (nextSlot == null) {
-                return false;
-            }
-            SlotState slotColor = nextSlot.getSlotState();
-			if (slotColor != playerColor) {
-                win = false;
-            }
-        }
-        return win;
-    }
-
-    private boolean checkRight(Slot slot){
-        int row = slot.getRow();
-        int column = slot.getColumn();
-
-        System.out.println("row: " + row);
-        System.out.println("col: " + column);
-        SlotState playerColor = gameStatus.currentPlayer.getColor();
-        boolean win = true;
-        for(int i= column+1 ; i< column+4; i++) {
-            Slot nextSlot = board.getSlot(row, i);
-            if (nextSlot == null) {
-                System.out.println("check right returning: false");
-                return false;
-            }
-            SlotState slotColor = nextSlot.getSlotState();
-            if (slotColor != playerColor) {
-                win = false;
-            }
-        }
-        System.out.println("check right returning: false");
-        return win;
-    }
-
-    private boolean checkDownLeft(Slot slot) {
-        int row = slot.getRow();
-        int column = slot.getColumn();
-        SlotState playerColor = gameStatus.currentPlayer.getColor();
-        boolean win = true;
-        for(int i = row + 1; i < row+4; i++) {
-            column--;
-            Slot nextSlot = board.getSlot(i,column);
-            if (nextSlot == null) {
-                return false;
-            }
-            SlotState slotColor = nextSlot.getSlotState();
-            if (playerColor != slotColor) {
-                return false;
-            }
-        }
-        return win;
-    }
-
-    private boolean checkDownRight(Slot slot) {
-    	int row = slot.getRow();
-    	int column = slot.getColumn();
-    	SlotState playerColor = gameStatus.currentPlayer.getColor();
-		boolean win = true;
-
-    	
-    	for(int i = row + 1; i < row + 4; i++ ) {
-    		column++;
-    		Slot nextSlot = board.getSlot(i, column);
-            if (nextSlot == null) {
-                return false;
-            }
-            SlotState slotColor = nextSlot.getSlotState();
-            
-            if (playerColor != slotColor) {
-                return false;
-            }
-        }
-
-        return win;
-    		
-    	}
-
-    private boolean checkUpLeft(Slot slot) {
-        int row = slot.getRow();
-        int column = slot.getColumn();
-        SlotState playerColor = gameStatus.currentPlayer.getColor();
-        boolean win = true;
-        for(int i = row - 1; i > row-4; i--) {
-            column--;
-            Slot nextSlot = board.getSlot(i,column);
-            if (nextSlot == null) {
-                return false;
-            }
-            SlotState slotColor = nextSlot.getSlotState();
-            if (playerColor != slotColor) {
-                return false;
-            }
-        }
-        return win;
-    }
-
-    private boolean checkUpRight(Slot slot) {
-        int row = slot.getRow();
-        int column = slot.getColumn();
-        SlotState playerColor = gameStatus.currentPlayer.getColor();
-        boolean win = true;
-        for(int i = row - 1; i > row-4; i--) {
-            column++;
-            Slot nextSlot = board.getSlot(i,column);
-            if (nextSlot == null) {
-                return false;
-            }
-            SlotState slotColor = nextSlot.getSlotState();
-            if (playerColor != slotColor) {
-                return false;
-            }
-        }
-        return win;
-    }
-*/
     public Slot discDrop(int column) {
         Slot nextSlot = new Slot(currentPlayer.getColor());
         for(int i=5; i >= 0 ; i--) {
