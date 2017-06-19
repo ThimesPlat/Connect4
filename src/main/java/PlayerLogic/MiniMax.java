@@ -12,8 +12,8 @@ public class MiniMax {
 
     public MiniMax(Board board) {
         this.game = new Game();
-        this.game.setBoard(board);
-        maxDepth = 2;
+        this.game.getGameStatus().setBoard(board);
+        maxDepth = 3;
     }
 
 // decide which column we have to pick, in case of it is RED
@@ -60,10 +60,10 @@ public class MiniMax {
 
             for (int column = 0; column < 7; column++) {
                 Game simulationGame = new Game();
-                //simulationGame.getBoard().copyBoard(game.getBoard());
+                simulationGame.getGameStatus().getBoard().copyBoard(game.getGameStatus().getBoard());
                 Slot slot = simulationGame.discDrop(column);
 
-                if (slot.getSlotState().equals(player.getColor()) ) {
+                if (slot.getSlotState().equals(player.getColor())) {
                     Board tempboard = new Board();
                     if (depth < maxDepth) {
                         tempboard.copyBoard(board);
