@@ -6,6 +6,7 @@ import GameLogic.SlotState;
 
 import java.util.List;
 public class MiniMax {
+
     private Game game;
     //private Board board;
     private int maxDepth;

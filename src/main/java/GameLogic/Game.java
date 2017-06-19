@@ -1,8 +1,5 @@
 package GameLogic ;
 
-import PlayerLogic.Player;
-import javafx.application.Platform;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -51,6 +48,7 @@ public class Game {
     }
     
     public void newMove() {
+<<<<<<< HEAD
         //Random random = new Random();
         int column = -1;
         Slot slot;
@@ -60,6 +58,14 @@ public class Game {
             System.out.println(column);
             rounds++;
         }
+=======
+        Random random = new Random();
+     //   miniMax = new MiniMax(board);
+    	int column = random.nextInt(7);//miniMax.calcValue(currentPlayer);
+    	System.out.println(column);
+    	Slot slot;
+        rounds++;
+>>>>>>> b4cc87f7b7682f75b28185a587f8f46d4d8f66b7
 
         if(validateMove(column)) {
             slot = discDrop(column);
@@ -73,6 +79,7 @@ public class Game {
 			gameStatus.setWinner(currentPlayer);
 			timer.cancel();
 		}
+
         if (checkBoardFull()) {
 			gameStatus.setGameOver(true);
 			timer.cancel();
@@ -89,13 +96,13 @@ public class Game {
     }
     private void setCurrentPlayer() {
         gameStatus.setCurrentPlayer(updateCurrentPlayer());
-    	this.currentPlayer = gameStatus.currentPlayer;
+    	this.currentPlayer = gameStatus.getCurrentPlayer();
     }
     private Player updateCurrentPlayer(){
-        if (gameStatus.currentPlayer.getColor() == SlotState.RED) {
+        if (gameStatus.getCurrentPlayer().getColor() == SlotState.RED) {
             return p2;
         }
-        else if (gameStatus.currentPlayer.getColor() == SlotState.YELLOW) {
+        else if (gameStatus.getCurrentPlayer().getColor() == SlotState.YELLOW) {
                 return p1;
             } else {
                 System.err.println("updateNextPlayer error : gameStatus next player is something inappropriate");
@@ -164,7 +171,7 @@ public class Game {
     private boolean checkVertical(Slot slot) {
         ArrayList<Slot> winningSequence = new ArrayList<>();
         winningSequence.add(slot);
-        SlotState playerColor = gameStatus.currentPlayer.getColor();
+        SlotState playerColor = gameStatus.getCurrentPlayer().getColor();
         int row = slot.getRow();
         if (row > 2) {
             return false;
@@ -254,6 +261,7 @@ public class Game {
         return null;
     }
 
+<<<<<<< HEAD
     public Slot discDrop(int column, Player player) {
         Slot nextSlot = new Slot(player.getColor());
         for(int i=5; i >= 0 ; i--) {
@@ -268,6 +276,9 @@ public class Game {
     }
 
     private boolean validateMove(int column){
+=======
+    public boolean validateMove(int column){
+>>>>>>> b4cc87f7b7682f75b28185a587f8f46d4d8f66b7
         return (validateColumn(column) && columnNotFull(column));
     }
 

@@ -11,6 +11,13 @@ public class Slot {
         this.slotState = slotState;
     }
 
+    public Slot(SlotState slotState, int row, int column)
+    {
+        this.slotState = slotState;
+        this.row = row;
+        this.column = column;
+    }
+
     public SlotState getSlotState() {
         return slotState;
     }
@@ -34,4 +41,24 @@ public class Slot {
     public void setColumn(int column) {
         this.column = column;
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Slot slot = (Slot) o;
+
+        if (row != slot.row)
+            return false;
+        if (column != slot.column)
+            return false;
+        return slotState == slot.slotState;
+    }
+
+
+
 }
