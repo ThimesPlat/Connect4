@@ -48,7 +48,7 @@ public class Game {
     }
     
     public void newMove() {
-<<<<<<< HEAD
+                /*
         //Random random = new Random();
         int column = -1;
         Slot slot;
@@ -58,14 +58,12 @@ public class Game {
             System.out.println(column);
             rounds++;
         }
-=======
+        */
         Random random = new Random();
-     //   miniMax = new MiniMax(board);
     	int column = random.nextInt(7);//miniMax.calcValue(currentPlayer);
     	System.out.println(column);
     	Slot slot;
         rounds++;
->>>>>>> b4cc87f7b7682f75b28185a587f8f46d4d8f66b7
 
         if(validateMove(column)) {
             slot = discDrop(column);
@@ -261,7 +259,6 @@ public class Game {
         return null;
     }
 
-<<<<<<< HEAD
     public Slot discDrop(int column, Player player) {
         Slot nextSlot = new Slot(player.getColor());
         for(int i=5; i >= 0 ; i--) {
@@ -274,11 +271,8 @@ public class Game {
         }
         return null;
     }
-
-    private boolean validateMove(int column){
-=======
     public boolean validateMove(int column){
->>>>>>> b4cc87f7b7682f75b28185a587f8f46d4d8f66b7
+
         return (validateColumn(column) && columnNotFull(column));
     }
 
