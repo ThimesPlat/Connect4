@@ -44,7 +44,7 @@ public class Game {
     				newMove();
     			});
     		}
-    	}, 100, 5);
+    	}, 100, 3);
     }
     
     public void newMove() {
@@ -60,8 +60,9 @@ public class Game {
             rounds++;
         }
         */
-        Random random = new Random();
-    	int column = random.nextInt(7);//miniMax.calcValue(currentPlayer);
+        //Random random = new Random();
+    	miniMax = new MiniMax(board);
+    	int column = miniMax.calcValue(currentPlayer);
     	System.out.println(column);
     	Slot slot;
         rounds++;
@@ -115,7 +116,7 @@ public class Game {
 
     }
     
-    private boolean checkBoardFull() {
+    public boolean checkBoardFull() {
     	Slot[][] slots = board.getBoard();
     	for(int i = 0; i < slots[0].length; i++) {
 			if(board.getSlot(0,i).getSlotState().equals(SlotState.EMPTY)) {
