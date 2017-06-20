@@ -246,7 +246,7 @@ public class MiniMax {
 		// x 0 x x
 		// x x 0 x
 		// x x x 0
-		for (int row = 5; row > 3; row--) {
+		for (int row = 0; row < 3; row++) {
 			for (int column = 0; column < 4; column++) {
 				if (board.getSlot(row, column).getSlotState().equals(player.getColor())
 						&& board.getSlot(row, column).getSlotState()
