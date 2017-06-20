@@ -66,7 +66,7 @@ public class MiniMaxTest {
         when(mockEmptySlot.getSlotState()).thenReturn(SlotState.EMPTY);
 		game = new Game();
 		board = new Board();
-		miniMax = new MiniMax(board);
+		miniMax = new MiniMax(game);
 		player = new Player(SlotState.RED);
 		
 

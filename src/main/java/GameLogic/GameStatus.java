@@ -68,4 +68,6 @@ public class GameStatus extends Observable {
         this.changedSlot = changedSlot;
     }
 
+
+
 }
