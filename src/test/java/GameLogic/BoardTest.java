@@ -1,30 +1,23 @@
 package GameLogic;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by eps on 2017-06-15.
  */
 @RunWith (MockitoJUnitRunner.class)
-public class BoardTest extends BoardTestDataProvider
+public class BoardTest extends TestDataProvider
 {
 
-    @Mock
-    private Board mockBoard = mock(Board.class);
-    @Mock
-    private Slot mockRedSlot = mock(Slot.class);
-    @Mock
-    private Slot mockYellowSlot = mock(Slot.class);
+
 
     @Before
     public void setUp()
@@ -34,6 +27,7 @@ public class BoardTest extends BoardTestDataProvider
         when(mockBoard.getBoard()).thenReturn(testingBoard);
         when(mockBoard.getSlot(5, 0)).thenReturn(mockRedSlot);
         when(mockBoard.getSlot(5, 1)).thenReturn(mockYellowSlot);
+        when(mockEmptySlot.getSlotState()).thenReturn(SlotState.EMPTY);
     }
 
     @Test

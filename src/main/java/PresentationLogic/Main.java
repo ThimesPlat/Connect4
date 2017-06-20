@@ -25,7 +25,7 @@ public class Main extends Application implements Observer{
     private double windowWidth = 600;
     private double windowHeight = 600;
 
-    private Board board;
+    private GraphicalBoard board;
     private Pane layout;
     private Button startGame;
     private Label usersTurn;
@@ -41,26 +41,26 @@ public class Main extends Application implements Observer{
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Connect-4");
 
+        firstTimer = new Timer();
+        secondTimer = new Timer();
         this.layout = new Pane();
         startGame = new Button();
         startGame.setLayoutX(10);
         startGame.setLayoutY(20);
         startGame = buttonSetup(startGame,"Start Game","2dcddc");
-        startGame.setOnAction((ActionEvent event) -> {
+        startGame.setOnAction((ActionEvent event) -> {      // button event for the "Start Game" button
             startGameButtonWidth = startGame.getWidth();
-            if (gameStartedOnce) {  // called second time game starts
+            if (gameStartedOnce)  // called second time game starts
                 resetApplicationVariables();
-            }
             setupUserLabel();
-            game.startGame();
+            game.startGame();       // start the simulation
             this.startGame.setVisible(false);
             gameStartedOnce=true;
         });
-        firstTimer = new Timer();
-        secondTimer = new Timer();
+
         game = new Game();
         game.getGameStatus().addObserver(this);
-        board = new Board(layout,(int)windowWidth,(int)windowHeight);
+        board = new GraphicalBoard(layout,windowWidth,windowHeight);
         slots = board.getSlots();
 
 
@@ -73,7 +73,7 @@ public class Main extends Application implements Observer{
         primaryStage.show();
     }
 
-    private void startWinningAnimation(){
+    private void startWinningAnimation(){       // "show where the winning sequence is
         firstTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -103,22 +103,20 @@ public class Main extends Application implements Observer{
         this.usersTurn.setLayoutY(20);
         this.usersTurn.setScaleX(3);
         this.usersTurn.setScaleY(3);
-     //   if (!gameStartedOnce) {
-            this.layout.getChildren().add(this.usersTurn);
-   //     }
+        this.layout.getChildren().add(this.usersTurn);
         this.usersTurn.setLayoutX(windowWidth/2-40);
 
     }
 
     private void changeLabel(int player, Boolean isGameOver, Player winner){
-        if (isGameOver){
+        if (isGameOver){    // if the game is over, change the label accordingly
             String winnerText = (winner.getColor() == SlotState.RED) ? "RED":"YELLOW";
             Color winnerColor = (winner.getColor() == SlotState.RED) ? Color.RED:Color.YELLOW;
             this.usersTurn.setText(winnerText + " IS THE WINNER!");
             this.usersTurn.setTextFill(winnerColor);
             gameIsOver();
         }
-        else {
+        else {      // if game is NOT over, display next user
             if (player == 1) {
                 this.usersTurn.setText("Red users turn");
                 this.usersTurn.setTextFill(Color.RED);
@@ -132,7 +130,6 @@ public class Main extends Application implements Observer{
 
     private void resetApplicationVariables(){
         layout.getChildren().remove(this.usersTurn);
-     //   game.getGameStatus().deleteObserver(this);
         this.game = new Game();
         game.getGameStatus().addObserver(this);
         board.clearBoard();
@@ -142,17 +139,16 @@ public class Main extends Application implements Observer{
         secondTimer = new Timer();
     }
 
-    public void gameIsOver(){
+    private void gameIsOver(){
         usersTurn.setLayoutX((startGame.getLayoutX()+startGameButtonWidth)*2);
         usersTurn.setLayoutY(startGame.getLayoutY()+10);
         startGame.setVisible(true);
         startWinningAnimation();
     }
 
-    public Button buttonSetup(Button button,String text,String color){
+    private Button buttonSetup(Button button,String text,String color){
         button.setText(text);
         button.setStyle("-fx-font: 22 arial; -fx-base: #"+color+";");
-
         return button;
     }
 

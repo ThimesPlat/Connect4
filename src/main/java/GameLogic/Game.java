@@ -1,8 +1,5 @@
 package GameLogic ;
 
-import PlayerLogic.Player;
-import javafx.application.Platform;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -52,9 +49,9 @@ public class Game {
     
     public void newMove() {
 
-        //Random random = new Random();
-        miniMax = new MiniMax(board);
-    	int column = miniMax.calcValue(currentPlayer);
+        Random random = new Random();
+     //   miniMax = new MiniMax(board);
+    	int column = random.nextInt(7);//miniMax.calcValue(currentPlayer);
     	System.out.println(column);
     	Slot slot;
         rounds++;
@@ -71,6 +68,7 @@ public class Game {
 			gameStatus.setWinner(currentPlayer);
 			timer.cancel();
 		}
+
         if (checkBoardFull()) {
 			gameStatus.setGameOver(true);
 			timer.cancel();
@@ -87,13 +85,13 @@ public class Game {
     }
     private void setCurrentPlayer() {
         gameStatus.setCurrentPlayer(updateCurrentPlayer());
-    	this.currentPlayer = gameStatus.currentPlayer;
+    	this.currentPlayer = gameStatus.getCurrentPlayer();
     }
     private Player updateCurrentPlayer(){
-        if (gameStatus.currentPlayer.getColor() == SlotState.RED) {
+        if (gameStatus.getCurrentPlayer().getColor() == SlotState.RED) {
             return p2;
         }
-        else if (gameStatus.currentPlayer.getColor() == SlotState.YELLOW) {
+        else if (gameStatus.getCurrentPlayer().getColor() == SlotState.YELLOW) {
                 return p1;
             } else {
                 System.err.println("updateNextPlayer error : gameStatus next player is something inappropriate");
@@ -165,7 +163,7 @@ public class Game {
     private boolean checkVertical(Slot slot) {
         ArrayList<Slot> winningSequence = new ArrayList<>();
         winningSequence.add(slot);
-        SlotState playerColor = gameStatus.currentPlayer.getColor();
+        SlotState playerColor = gameStatus.getCurrentPlayer().getColor();
         int row = slot.getRow();
         if (row > 2) {
             return false;
@@ -256,7 +254,7 @@ public class Game {
         return null;
     }
 
-    private boolean validateMove(int column){
+    public boolean validateMove(int column){
         return (validateColumn(column) && columnNotFull(column));
     }
 
