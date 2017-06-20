@@ -43,7 +43,7 @@ public class MiniMax {
 			}
 		}
 		// If it is not the first round, return negamax
-		return 0;//negamax(this.game.getGameStatus().getBoard(), -100, 0, player);
+		return negamax(this.game.getGameStatus().getBoard(), -100, 0, player);
 	}
 
 	// calls it self and returns the best column that player will choose
@@ -59,8 +59,8 @@ public class MiniMax {
 		} else {
 			playerFactor = -1;
 		}
-
-		if (game.checkWin(currentSlot)) {
+		
+		if (game.checkWin(game.getGameStatus().getChangedSlot())) {
 			bestValue = playerFactor * 10000000;
 		} else if (game.checkBoardFull() && !game.checkWin(currentSlot)) {
 			bestValue = 0;
