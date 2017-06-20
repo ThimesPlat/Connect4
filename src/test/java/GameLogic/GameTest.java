@@ -2,11 +2,11 @@ package GameLogic;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -25,32 +25,41 @@ public class GameTest extends TestDataProvider
         realTestBoard.setSlot(realYellowSlot,5,1);
         realTestBoard.setSlot(realYellowSlot,4,1);
         realTestGame.board = realTestBoard;
-        testBoardForValidateWithMockSlots.setBoard(testingBoard);
-        validateMoveGame.currentPlayer = new Player(SlotState.RED);
+        testBoardForValidateWithMockSlots.setBoard(testingBoardHorizontalWin);
+        validateMoveGame.gameStatus = new GameStatus(testBoardForValidateWithMockSlots, new Player(SlotState.RED));
         validateMoveGame.board= testBoardForValidateWithMockSlots;
         when(mockYellowSlot.getSlotState()).thenReturn(SlotState.YELLOW);
         when(mockRedSlot.getSlotState()).thenReturn(SlotState.RED);
         when(mockEmptySlot.getSlotState()).thenReturn(SlotState.EMPTY);
-        when(mockBoard.getBoard()).thenReturn(testingBoard);
+        when(mockBoard.getBoard()).thenReturn(testingBoardHorizontalWin);
         when(mockBoard.getSlot(5, 0)).thenReturn(mockRedSlot);
         when(mockBoard.getSlot(5, 1)).thenReturn(mockYellowSlot);
         when(mockBoard.getSlot(5, 6)).thenReturn(mockEmptySlot);
 
     }
 
-
-    @Test
-    public void newMove()
-    {
-    }
-
     @Test
     public void checkWin()
     {
+        //check horizontal win
         assertTrue(validateMoveGame.checkWin(new Slot(SlotState.RED,5,2)));
         assertTrue(validateMoveGame.checkWin(new Slot(SlotState.RED,5,3)));
         assertTrue(validateMoveGame.checkWin(new Slot(SlotState.RED,5,4)));
         assertTrue(validateMoveGame.checkWin(new Slot(SlotState.RED,5,5)));
+        //check vertical win
+        validateMoveGame.gameStatus.setCurrentPlayer(new Player(SlotState.YELLOW));
+        assertTrue(validateMoveGame.checkWin(new Slot(SlotState.YELLOW,2,1)));
+    }
+
+    @Test
+    public void checkDiagonalWin(){
+        testBoardForValidateWithMockSlots.setBoard(testingBoardDiagonalWin);
+        validateMoveGame.board = testBoardForValidateWithMockSlots;
+        validateMoveGame.gameStatus.setCurrentPlayer(new Player(SlotState.YELLOW));
+        assertTrue(validateMoveGame.checkWin(new Slot(SlotState.YELLOW,1,0)));
+        assertTrue(validateMoveGame.checkWin(new Slot(SlotState.YELLOW,2,1)));
+        assertTrue(validateMoveGame.checkWin(new Slot(SlotState.YELLOW,3,2)));
+        assertTrue(validateMoveGame.checkWin(new Slot(SlotState.YELLOW,4,3)));
     }
 
     @Test
@@ -65,7 +74,7 @@ public class GameTest extends TestDataProvider
         assertTrue(testSlot.equals(realTestGame.discDrop(1)));
         testSlot.setColumn(2);
         testSlot.setRow(5);
-        assertTrue(testSlot.equals(realTestGame.discDrop(2)));;
+        assertTrue(testSlot.equals(realTestGame.discDrop(2)));
     }
 
     @Test
@@ -78,19 +87,10 @@ public class GameTest extends TestDataProvider
 
 
     @Test
-    public void startGame()
-    {
-    }
-
-    @Test
     public void getGameStatusTest()
     {
-
+        assertNotNull(realTestGame.getGameStatus());
     }
 
 
-    @AfterEach
-    public void tearDown()
-    {
-    }
 }

@@ -54,6 +54,7 @@ public class Main extends Application implements Observer{
                 resetApplicationVariables();
             setupUserLabel();
             game.startGame();       // start the simulation
+            //Slot slot = new Slot(S)
             this.startGame.setVisible(false);
             gameStartedOnce=true;
         });

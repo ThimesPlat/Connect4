@@ -14,11 +14,11 @@ public class MiniMax {
     public MiniMax(Board board) {
         this.game = new Game();
         this.game.getGameStatus().setBoard(board);
-        maxDepth = 3;
+        maxDepth = 2;
     }
 
-// decide which column we have to pick, in case of it is RED
-   public int calcValue(Player player) {
+    // decide which column we have to pick
+    public int calcValue(Player player) {
         int count = 0;
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
@@ -28,64 +28,35 @@ public class MiniMax {
             }
         }
         //Natural to put in 3rd column as middle as possible
-        if (count == 0) {
-            return 3;
+        if (count <= 1) {
+            if (this.game.getGameStatus().getBoard().getSlot(5, 2).getSlotState().equals(SlotState.RED)) {
+                return 4;
+            } else if (this.game.getGameStatus().getBoard().getSlot(5, 4).getSlotState().equals(SlotState.RED)) {
+                return 2;
+            } else {
+                return 3;
+            }
         }
         //If it is not the first round, return negamax
         return negamax(this.game.getGameStatus().getBoard(), -100, 0, player);
     }
-// calls it self  and returns the best column that player will choose
+
+    // calls it self  and returns the best column that player will choose
     private int negamax(Board board, int alpha, int depth, Player player) {
         int bestPath = 0;
         int bestValue = alpha;
         Game game = new Game();
         game.setBoard(board.copyBoard(board));
-        int playerNr;
-      //  game.getBoard().copyBoard(board);
-        if (player.getColor() == SlotState.RED) {
-            playerNr = 2;
-        }
-        else {
-            playerNr = 1;
-        }
-        //Determine pathValue using eval() if depth is reached
-        if (depth == maxDepth) {
-            int mid = eval(board, player);
-            if (mid != 0) {
-                bestValue = playerNr*(mid - depth);
-            } else {
-                bestValue = mid;
-            }
-        } else {
-            // Generates the best movement for each column and give the best score to coulmn
 
-            for (int column = 0; column < 7; column++) {
-                Game simulationGame = new Game();
-                simulationGame.getGameStatus().getBoard().copyBoard(game.getGameStatus().getBoard());
-                Slot slot = simulationGame.discDrop(column);
-
-                if (slot.getSlotState().equals(player.getColor())) {
-                    Board tempboard = new Board();
-                    if (depth < maxDepth) {
-                        tempboard.copyBoard(board);
-                        int v = -negamax(board, -100, depth + 1, player);
-                        if (v >= bestValue) {
-                            bestPath = column;
-                            bestValue = v;
-                        }
-                    }
-                }
-            }
-        }
+        System.out.print(bestValue);
         if (depth == 0) {
             return bestPath;
-
         } else {
             return bestValue;
         }
     }
 
-    private int eval(Board board, Player player) {
+    public int eval(Board board, Player player) {
         int v = 1;
         int d = 2;
         int h = 3;
@@ -102,6 +73,7 @@ public class MiniMax {
                         board.getSlot(row, column + 2).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column + 3).getSlotState().equals(SlotState.EMPTY)
                         ) {
+                    System.out.println("FSDESFSDFSD");
                     value += twoInRow * h;
                 }
                 //(x0x0)
@@ -109,6 +81,7 @@ public class MiniMax {
                         board.getSlot(row, column + 2).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column + 1).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column + 3).getSlotState().equals(SlotState.EMPTY)) {
+                    System.out.println("adffdssdf");
                     value += twoInRow * h;
 
                 }
@@ -117,6 +90,7 @@ public class MiniMax {
                         board.getSlot(row, column + 3).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column + 1).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column + 2).getSlotState().equals(SlotState.EMPTY)) {
+                    System.out.println("87ti8776786432§§§§§");
                     value += twoInRow * h;
                 }
                 //(0xx0)
@@ -124,6 +98,7 @@ public class MiniMax {
                         board.getSlot(row, column + 1).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column + 2).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column + 3).getSlotState().equals(SlotState.EMPTY)) {
+                    System.out.println("tjena");
                     value += 2 * twoInRow * h;
                 }
                 //(0x0x)
@@ -131,6 +106,8 @@ public class MiniMax {
                         board.getSlot(row, column + 1).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column + 2).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column + 3).getSlotState().equals(player.getColor())) {
+                    System.out.println("9998876544");
+
                     value += twoInRow * h;
                 }
                 //(00xx)
@@ -138,16 +115,21 @@ public class MiniMax {
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row, column + 1).getSlotState()) &&
                         board.getSlot(row, column + 2).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column + 3).getSlotState().equals(player.getColor())) {
+                    System.out.println("00000000");
+
                     value += twoInRow * h;
                 }
             }
         }
+
         // check for vertical spaced 2-in-a-row
-        for (int row = 5; row > 1; row--) {
+        for (int row = 5; row > 1; row--) {     // does not work :D
             for (int column = 0; column < 7; column++) {
                 if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
-                        board.getSlot(row, column).getSlotState().equals(board.getSlot(row, column - 1).getSlotState()) &&
+                        board.getSlot(row, column).getSlotState().equals(board.getSlot(row-1, column).getSlotState()) &&
                         board.getSlot(row - 2, column).getSlotState().equals(SlotState.EMPTY)) {
+                    System.out.println("+++++++");
+
                     value += twoInRow * v;
                 }
             }
@@ -163,31 +145,43 @@ public class MiniMax {
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 1, column + 1).getSlotState()) &&
                         board.getSlot(row - 2, column + 2).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row - 3, column + 3).getSlotState().equals(SlotState.EMPTY)) {
+                    System.out.println("´´´´´´");
+
                     value += twoInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row - 1, column + 1).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row - 2, column + 2).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 3, column + 3).getSlotState())) {
+                    System.out.println("]{");
+
                     value += twoInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row - 1, column + 1).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row - 2, column + 2).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row - 3, column + 3).getSlotState().equals(player.getColor())) {
+                    System.out.println("£$");
+
                     value += twoInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY) &&
-                        board.getSlot(row - 1, column + 1).getSlotState().equals(SlotState.EMPTY) &&
+                        board.getSlot(row - 1, column + 1).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 2, column + 2).getSlotState()) &&
                         board.getSlot(row - 1, column + 1).getSlotState().equals(board.getSlot(row - 3, column + 3).getSlotState())) {
+                    System.out.println("€£$€£$€£$€£$€£$€");
+
                     value += twoInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row - 1, column + 1).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 2, column + 2).getSlotState()) &&
                         board.getSlot(row - 1, column + 1).getSlotState().equals(board.getSlot(row - 3, column + 3).getSlotState())) {
+                    System.out.println("43576876854382368697538967536897538795326879527689543");
+
                     value += twoInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row - 1, column + 1).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row - 1, column + 1).getSlotState().equals(board.getSlot(row - 2, column + 2).getSlotState()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 3, column + 3).getSlotState())) {
+                    System.out.println("1234567890");
+
                     value += 2 * twoInRow * d;
                 }
             }
@@ -203,31 +197,43 @@ public class MiniMax {
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(column + 1, row + 1).getSlotState()) &&
                         board.getSlot(row + 2, column + 2).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row + 3, column + 3).getSlotState().equals(SlotState.EMPTY)) {
+                    System.out.println("FSDESFSDFSD");
+
                     value += twoInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row + 1, column + 1).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row + 2, column + 2).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row + 3, column + 3).getSlotState())) {
+                    System.out.println("+00+909+09+09+09+9");
+
                     value += twoInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row + 1, column + 1).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row + 2, column + 2).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row + 3, column + 3).getSlotState().equals(player.getColor())) {
+                    System.out.println("öööööööö");
+
                     value += twoInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row + 1, column + 1).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row + 2, column + 2).getSlotState()) &&
                         board.getSlot(row + 1, column + 1).getSlotState().equals(board.getSlot(row + 3, column + 3).getSlotState())) {
+                    System.out.println("FSDESFSDFSD");
+
                     value += twoInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row + 1, column + 1).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row + 2, column + 2).getSlotState()) &&
                         board.getSlot(row + 1, column + 1).getSlotState().equals(board.getSlot(row + 3, column + 3).getSlotState())) {
+                    System.out.println("ååååååååå");
+
                     value += twoInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row + 1, column + 1).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row + 1, column + 1).getSlotState().equals(board.getSlot(row + 2, column + 2).getSlotState()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row + 3, column + 3).getSlotState())) {
+                    System.out.println("ääääääääää");
+
                     value += twoInRow * 2 * d;
                 }
             }
@@ -241,6 +247,8 @@ public class MiniMax {
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(column + 1, row).getSlotState()) &&
                         board.getSlot(row, column + 2).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(column + 3, row).getSlotState())) {
+                    System.out.println("äöåäööäöäöäåöäåöåääöåöå");
+
                     value += threeInRow * h;
                 }
                 //(x0xx)
@@ -248,6 +256,8 @@ public class MiniMax {
                         board.getSlot(row, column + 1).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row, column + 2).getSlotState()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row, column + 3).getSlotState())) {
+                    System.out.println("1ä1ää1ä1ä1ä1ä1ä1ä1ää");
+
                     value += threeInRow * h;
                 }
                 //(0xxx)
@@ -255,6 +265,8 @@ public class MiniMax {
                         board.getSlot(row, column + 1).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column + 1).getSlotState().equals(board.getSlot(row, column + 2).getSlotState()) &&
                         board.getSlot(row, column + 1).getSlotState().equals(board.getSlot(row, column + 3).getSlotState())) {
+                    System.out.println("<444<4<4<<4<44<4<4<4<444<<4");
+
                     value += threeInRow * d;
                 }
                 //(xxx0)
@@ -262,9 +274,10 @@ public class MiniMax {
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row, column + 1).getSlotState()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row, column + 2).getSlotState()) &&
                         board.getSlot(row, column + 3).getSlotState().equals(SlotState.EMPTY)) {
+                    System.out.println("6<6<6666<<66<6<6<");
+
                     value += threeInRow * h;
                 }
-
             }
         }
         //Check for vertical spaced 3-in-a-row.
@@ -278,6 +291,8 @@ public class MiniMax {
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 1, column).getSlotState()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 2, column).getSlotState()) &&
                         board.getSlot(row - 3, column).getSlotState().equals(SlotState.EMPTY)) {
+                    System.out.println("5<5<5<555<55");
+
                     value += threeInRow * v;
                 }
 
@@ -294,21 +309,29 @@ public class MiniMax {
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 1, column + 1).getSlotState()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 2, column + 2).getSlotState()) &&
                         board.getSlot(row - 3, column + 3).getSlotState().equals(SlotState.EMPTY)) {
+                    System.out.println("<<<<5");
+
                     value += threeInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column + 1).getSlotState().equals(board.getSlot(row - 1, column + 1).getSlotState()) &&
                         board.getSlot(row - 2, column + 2).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 3, column + 3).getSlotState())) {
+                    System.out.println("ryhsths5hsb");
+
                     value += threeInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row - 1, column + 1).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 2, column + 2).getSlotState()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 3, column + 3).getSlotState())) {
+                    System.out.println("ytjxfthdfhdr6u");
+
                     value += threeInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row - 1, column + 1).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row - 1, column + 1).getSlotState().equals(board.getSlot(row - 2, column + 2).getSlotState()) &&
                         board.getSlot(row - 1, column + 1).getSlotState().equals(board.getSlot(row - 3, column + 3).getSlotState())) {
+                    System.out.println("tyj567w5ys");
+
                     value += threeInRow * d;
                 }
             }
@@ -324,21 +347,29 @@ public class MiniMax {
                         board.getSlot(row + 1, column + 1).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row + 1, column + 1).getSlotState().equals(board.getSlot(row + 3, column + 3).getSlotState())
                         ) {
+                    System.out.println("dy457r6uyx");
+
                     value += threeInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row + 1, column + 1).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row + 2, column + 2).getSlotState()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row + 3, column + 3).getSlotState())) {
+                    System.out.println("5757u56eue6u");
+
                     value += threeInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row + 1, column + 1).getSlotState()) &&
                         board.getSlot(row + 2, column + 2).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row + 3, column + 3).getSlotState())) {
+                    System.out.println("rs66s6sr");
+
                     value += threeInRow * d;
                 } else if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row + 1, column + 1).getSlotState()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row + 2, column + 2).getSlotState()) &&
                         board.getSlot(row + 3, column + 3).getSlotState().equals(SlotState.EMPTY)) {
+                    System.out.println("6y6y66eye6");
+
                     value += threeInRow * d;
                 }
             }
@@ -352,6 +383,8 @@ public class MiniMax {
                         board.getSlot(row + 1, column + 2).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row + 1, column + 3).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column).equals(board.getSlot(row, column+4))) {
+                    System.out.println("uiki67");
+
                     value += 2 * threeInRow * h;
                 }
             }
@@ -364,6 +397,8 @@ public class MiniMax {
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row + 2, column + 2).getSlotState()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row + 3, column + 3).getSlotState()) &&
                         board.getSlot(row + 4, column + 4).getSlotState().equals(SlotState.EMPTY)) {
+                    System.out.println("asdfasdfdf");
+
                     value += 2 * threeInRow * d;
                 }
             }
@@ -376,6 +411,8 @@ public class MiniMax {
                         board.getSlot(row - 2, column + 2).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row - 3, column + 3).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row - 4, column + 4).getSlotState().equals(SlotState.EMPTY)) {
+                    System.out.println("ghjfghj");
+
                     value += 2 * threeInRow * d;
                 }
             }
