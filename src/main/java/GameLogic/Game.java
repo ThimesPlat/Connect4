@@ -67,7 +67,8 @@ public class Game {
         //Random random = new Random();
     	miniMax = new MiniMax(this);
     	int column = miniMax.calcValue(currentPlayer);
-    	System.out.println(column);
+        System.out.println("Done calculating");
+        System.out.println(column);
     	Slot slot;
         rounds++;
 
