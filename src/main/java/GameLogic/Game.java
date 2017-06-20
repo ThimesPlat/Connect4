@@ -1,7 +1,6 @@
 package GameLogic ;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,6 +26,11 @@ public class Game {
         this.board = board;
     }
 
+    public void setGameStatus(GameStatus gameStatus)
+    {
+        this.gameStatus = gameStatus;
+    }
+
     public Game(){
         p1 = new Player(SlotState.RED);
         p2 = new Player(SlotState.YELLOW);
@@ -44,7 +48,7 @@ public class Game {
     				newMove();
     			});
     		}
-    	}, 100, 3);
+    	}, 100, 750);
     }
     
     public void newMove() {
@@ -61,7 +65,7 @@ public class Game {
         }
         */
         //Random random = new Random();
-    	miniMax = new MiniMax(board);
+    	miniMax = new MiniMax(this);
     	int column = miniMax.calcValue(currentPlayer);
     	System.out.println(column);
     	Slot slot;
@@ -86,7 +90,6 @@ public class Game {
 
 		}
         gameStatus.setBoard(board);
-		gameStatus.setChangedSlot(slot);
 		setCurrentPlayer();
 
     }
@@ -259,6 +262,7 @@ public class Game {
             if (temp.getSlotState() == SlotState.EMPTY){
             	nextSlot.setColumn(column);
                 nextSlot.setRow(i);
+                gameStatus.setChangedSlot(nextSlot);
                 return nextSlot;
             }
         }
