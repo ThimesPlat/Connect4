@@ -69,7 +69,7 @@ public class MiniMax {
             for (int column = 0; column < 4; column++) {
                 //(xx00)
                 if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
-                        board.getSlot(row, column).getSlotState().equals(board.getSlot(row, column + 1)) &&
+                        board.getSlot(row, column).getSlotState().equals(board.getSlot(row, column + 1).getSlotState()) &&
                         board.getSlot(row, column + 2).getSlotState().equals(SlotState.EMPTY) &&
                         board.getSlot(row, column + 3).getSlotState().equals(SlotState.EMPTY)
                         ) {
@@ -244,9 +244,9 @@ public class MiniMax {
             for (int column = 0; column < 4; column++) {
                 //(xx0x)
                 if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
-                        board.getSlot(row, column).getSlotState().equals(board.getSlot(column + 1, row).getSlotState()) &&
+                        board.getSlot(row, column).getSlotState().equals(board.getSlot(row, column + 1).getSlotState()) &&
                         board.getSlot(row, column + 2).getSlotState().equals(SlotState.EMPTY) &&
-                        board.getSlot(row, column).getSlotState().equals(board.getSlot(column + 3, row).getSlotState())) {
+                        board.getSlot(row, column).getSlotState().equals(board.getSlot(row, column + 3).getSlotState())) {
                     System.out.println("äöåäööäöäöäåöäåöåääöåöå");
 
                     value += threeInRow * h;
@@ -303,7 +303,7 @@ public class MiniMax {
         //   x     0      x     x
         //  x     x      0     x
         // x     x      x     0
-        for (int row = 0; row > 2; row--) {
+        for (int row = 5; row > 2; row--) {
             for (int column = 0; column < 4; column++) {
                 if (board.getSlot(row, column).getSlotState().equals(player.getColor()) &&
                         board.getSlot(row, column).getSlotState().equals(board.getSlot(row - 1, column + 1).getSlotState()) &&

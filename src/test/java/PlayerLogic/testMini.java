@@ -10,9 +10,11 @@ public class testMini {
         Game game = new Game();
         Slot slot = new Slot(SlotState.RED);
         Slot slot2 = new Slot(SlotState.RED);
+        Slot slot3 = new Slot(SlotState.RED);
 
-        game.getGameStatus().getBoard().setSlot(slot, 5, 3);
-        game.getGameStatus().getBoard().setSlot(slot2, 4, 4);
+        game.getGameStatus().getBoard().setSlot(slot, 5, 0);
+        game.getGameStatus().getBoard().setSlot(slot2, 5, 1);
+        //game.getGameStatus().getBoard().setSlot(slot3, 5, 4);
         MiniMax test = new MiniMax(game.getGameStatus().getBoard());
         int r = test.eval(game.getGameStatus().getBoard(), new Player(SlotState.RED));
         System.out.print(r);
