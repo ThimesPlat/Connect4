@@ -59,15 +59,15 @@ public class MiniMax {
 		}
         currentSlot = copiedGame.getGameStatus().getChangedSlot();
 		if (copiedGame.checkWin(currentSlot)) {
-			bestValue = playerFactor * 10000000;
+			bestValue = playerFactor * (10000000-depth);
 		} else if (copiedGame.checkBoardFull() && !copiedGame.checkWin(currentSlot)) {
 			bestValue = 0;
 		} else if (depth == maxDepth) {
-			int score = (eval(board, player));
+			int score = (eval(copiedGame.getGameStatus().getBoard(), player));
 			if (score != 0) {
-				bestValue = playerFactor * score;
+				bestValue = playerFactor * (score-depth);
 			} else {
-				bestValue = score;
+				bestValue = score-depth;
 			}
 		} else {
 			for (int c = 0; c < 7; c++) {
@@ -248,7 +248,7 @@ public class MiniMax {
 		// x 0 x x
 		// x x 0 x
 		// x x x 0
-		for (int row = 0; row > 3; row--) {
+		for (int row = 5; row > 3; row--) {
 			for (int column = 0; column < 4; column++) {
 				if (board.getSlot(row, column).getSlotState().equals(player.getColor())
 						&& board.getSlot(row, column).getSlotState()
