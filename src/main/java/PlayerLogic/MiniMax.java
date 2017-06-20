@@ -248,7 +248,7 @@ public class MiniMax {
 		// x 0 x x
 		// x x 0 x
 		// x x x 0
-		for (int row = 5; row > 3; row--) {
+		for (int row = 0; row < 3; row++) {
 			for (int column = 0; column < 4; column++) {
 				if (board.getSlot(row, column).getSlotState().equals(player.getColor())
 						&& board.getSlot(row, column).getSlotState()
@@ -267,6 +267,7 @@ public class MiniMax {
 
 					value += twoInRow * d;
 				} else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)
+
 						&& board.getSlot(row + 1, column + 1).getSlotState().equals(SlotState.EMPTY)
 						&& board.getSlot(row + 2, column + 2).getSlotState().equals(player.getColor())
 						&& board.getSlot(row + 3, column + 3).getSlotState().equals(player.getColor())) {

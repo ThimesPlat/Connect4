@@ -44,6 +44,7 @@ public class Board {
     }
 
     public Slot getSlot(int row, int column) {
+
         return board[row][column];
     }
 

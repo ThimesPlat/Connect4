@@ -48,7 +48,7 @@ public class Game {
     				newMove();
     			});
     		}
-    	}, 100, 750);
+    	}, 100, 3);
     }
     
     public void newMove() {
