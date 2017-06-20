@@ -18,7 +18,7 @@ public class Game {
     PlayerLogic.Player p1;
     PlayerLogic.Player p2;
     PlayerLogic.Player currentPlayer;
-    Timer timer = new Timer();
+    Timer timer;
     int rounds = 0;
     MiniMax miniMax;
 
@@ -41,6 +41,7 @@ public class Game {
     }
     
     public void startGame() {
+        timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
     		@Override
     		public void run() {

@@ -10,6 +10,7 @@ public class MiniMax {
 	private Game game;
 	// private Board board;
 	private int maxDepth;
+	private int roflcopter = 0;
 	private Slot currentSlot ;
 
 	public MiniMax(Game game) {
@@ -82,6 +83,7 @@ public class MiniMax {
 							otherPlayer = new Player(SlotState.RED);
 						}
 						currentSlot = simGame.discDrop(c, otherPlayer);
+					//	System.out.println("depth: " + depth);
 						int value = -negamax(simGame.getGameStatus().getBoard(), -100000, depth + 1, otherPlayer);
 						if (value >= bestValue) {
 							bestPath = c;
@@ -93,7 +95,7 @@ public class MiniMax {
 			}
 		}
 
-		System.out.println(bestValue);
+	//	System.out.println(bestValue);
 		if (depth == 0) {
 			return bestPath;
 		} else {
