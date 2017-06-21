@@ -11,7 +11,7 @@ public class MiniMax {
 	// private Board board;
 	private int maxDepth;
 	private int roflcopter = 0;
-	private Slot currentSlot ;
+	private Slot currentSlot;
 
 	public MiniMax(Game game) {
 		this.game = game;
@@ -56,10 +56,10 @@ public class MiniMax {
 		} else {
 			playerFactor = -1;
 		}
-        currentSlot = copiedGame.getGameStatus().getChangedSlot();
+        currentSlot = copiedGame.getGameStatus().getChangedSlot();		// currentSlot equals null here :O
 		if (copiedGame.checkWin(currentSlot)) {
 			bestValue = playerFactor * (10000000-depth);
-		} else if (copiedGame.checkBoardFull() && !copiedGame.checkWin(currentSlot)) {
+		} else if (copiedGame.checkBoardFull() && !copiedGame.checkWin(currentSlot)) {		// is't "checkBoardFull
 			bestValue = 0;
 		} else if (depth == maxDepth) {
 			int score = (eval(copiedGame.getGameStatus().getBoard(), player));
