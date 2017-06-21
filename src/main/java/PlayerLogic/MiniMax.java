@@ -58,10 +58,10 @@ public class MiniMax {
 		} else {
 			playerFactor = -1;
 		}
-        currentSlot = copiedGame.getGameStatus().getChangedSlot();		// currentSlot equals null here :O
+        currentSlot = copiedGame.getGameStatus().getChangedSlot();
 		if (copiedGame.checkWin(currentSlot)) {
 			bestValue = playerFactor * (10000000-depth);
-		} else if (copiedGame.checkBoardFull() && !copiedGame.checkWin(currentSlot)) {		// is't "checkBoardFull
+		} else if (copiedGame.checkBoardFull() && !copiedGame.checkWin(currentSlot)) {
 			bestValue = 0;
 		} else if (depth == maxDepth) {
 			int score = (eval(copiedGame.getGameStatus().getBoard(), player));
@@ -75,17 +75,9 @@ public class MiniMax {
 				Game simGame = new Game();
 				simGame.setBoard(board.copyBoard(board));
 				if (depth < maxDepth) {
-					if (!simGame.validateMove(c)) {
-						continue;
-					} else {
-						Player otherPlayer;
-						if (player.getColor() == SlotState.RED) {
-							otherPlayer = new Player(SlotState.YELLOW);
-						} else {
-							otherPlayer = new Player(SlotState.RED);
-						}
+					if (simGame.validateMove(c)) {
+						Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 						currentSlot = simGame.discDrop(c, otherPlayer);
-					//	System.out.println("depth: " + depth);
 						int value = -negamax(simGame.getGameStatus().getBoard(), -100000, depth + 1, otherPlayer);
 						if (value >= bestValue) {
 							bestPath = c;
