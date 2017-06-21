@@ -46,9 +46,11 @@ public class Game {
     		public void run() {
     			Platform.runLater(() -> {
     				newMove();
+
+
     			});
     		}
-    	}, 100, 3);
+    	}, 100, 1000);
     }
     
     public void newMove() {
