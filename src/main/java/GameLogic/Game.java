@@ -1,6 +1,7 @@
 package GameLogic ;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,6 +15,7 @@ import javafx.application.Platform;
 
 public class Game {
     GameStatus gameStatus;
+
     Board board;
     PlayerLogic.Player p1;
     PlayerLogic.Player p2;
@@ -24,6 +26,7 @@ public class Game {
 
     public void setBoard(Board board) {
         this.board = board;
+        this.gameStatus.setBoard(board);
     }
 
     public void setGameStatus(GameStatus gameStatus)
@@ -69,18 +72,27 @@ public class Game {
         */
         //Random random = new Random();
 
+      //  miniMax = null;
     	miniMax = new MiniMax(this);
+
     	int column = miniMax.calcValue(currentPlayer);
-        System.out.println("Done calculating");
-        System.out.println(column);
+        System.out.println("COLUMN: " + column);
     	Slot slot;
         rounds++;
+        System.out.println("rounds: "+rounds);
+
 
         if(validateMove(column)) {
             slot = discDrop(column);
-    		board.setSlot(slot,slot.getRow(),slot.getColumn());
+            System.out.println("New slots row: " + slot.getRow());
+            System.out.println("New slots column: " + slot.getColumn());
+            board.setSlot(slot,slot.getRow(),slot.getColumn());
+            printMatrix();
+            System.out.println();
+            System.out.println();
         } else {
-        	return;
+            printMatrix();
+            return;
         }
 
     	if (checkWin(slot)) {
@@ -287,7 +299,6 @@ public class Game {
         return null;
     }
     public boolean validateMove(int column){
-
         return (validateColumn(column) && columnNotFull(column));
     }
 
@@ -299,5 +310,13 @@ public class Game {
         return (board.getSlot(0,column).getSlotState() == SlotState.EMPTY);
     }
 
+    private void printMatrix(){
+        for (int i = 0;i<board.getBoard().length;i++){
+            for (int p = 0;p<board.getBoard()[0].length;p++){
+                System.out.print(board.getBoard()[i][p].getSlotState() + " ");
+            }
+            System.out.println();
+        }
+    }
 
 }
