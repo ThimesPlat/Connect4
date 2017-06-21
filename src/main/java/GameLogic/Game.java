@@ -18,7 +18,7 @@ public class Game {
     PlayerLogic.Player p1;
     PlayerLogic.Player p2;
     PlayerLogic.Player currentPlayer;
-    Timer timer = new Timer();
+    Timer timer;
     int rounds = 0;
     MiniMax miniMax;
 
@@ -41,6 +41,7 @@ public class Game {
     }
     
     public void startGame() {
+        timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
     		@Override
     		public void run() {
@@ -69,7 +70,8 @@ public class Game {
         //Random random = new Random();
     	miniMax = new MiniMax(this);
     	int column = miniMax.calcValue(currentPlayer);
-    	System.out.println(column);
+        System.out.println("Done calculating");
+        System.out.println(column);
     	Slot slot;
         rounds++;
 
