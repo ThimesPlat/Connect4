@@ -76,7 +76,7 @@ public class MiniMax {
 				simGame.setBoard(board.copyBoard(board));
 				if (depth < maxDepth) {
 					if (!simGame.validateMove(c)) {
-						continue;
+
 					} else {
 						Player otherPlayer;
 						if (player.getColor() == SlotState.RED) {
