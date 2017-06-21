@@ -11,7 +11,6 @@ public class MiniMax {
 	// private Board board;
 	private int maxDepth;
 	private int roflcopter = 0;
-	private Slot currentSlot;
 
 	public MiniMax(Game game) {
 		this.game = game;
@@ -48,21 +47,17 @@ public class MiniMax {
 	}
 
 	// calls it self and returns the best column that player will choose
-	private int negamax(Game game, int alpha, int depth, Player player) {
+	private int negamax(Game newlySimulatedGame, int alpha, int depth, Player player) {
+		Slot currentSlot;
 		roflcopter++;
-		System.out.println(roflcopter);
-		System.out.println(game.getGameStatus().getChangedSlot().getSlotState());
 		int bestPath = 0;
 		int bestValue = alpha;
+
 		Game copiedGame = new Game();
-		copiedGame.setGameStatus(game.getGameStatus());
-		System.out.println(game.getGameStatus().getChangedSlot().getSlotState());
-		int playerFactor;
-		if (player.getColor() == copiedGame.getGameStatus().getCurrentPlayer().getColor()) {
-			playerFactor = 1;
-		} else {
-			playerFactor = -1;
-		}
+		copiedGame.setGameStatus(newlySimulatedGame.getGameStatus());
+
+		int playerFactor = (player.getColor() == copiedGame.getGameStatus().getCurrentPlayer().getColor())?1:-1;
+
 		currentSlot = copiedGame.getGameStatus().getChangedSlot();
 		if (copiedGame.checkWin(currentSlot)) {
 			bestValue = playerFactor * (10000000-depth);
@@ -78,13 +73,15 @@ public class MiniMax {
 		} else {
 			for (int c = 0; c < 7; c++) {
 				Game simGame = new Game();
-				simGame.setBoard(game.getGameStatus().getBoard());
+				simGame.setBoard(copiedGame.getGameStatus().getBoard());
+				simGame.getGameStatus().setChangedSlot(copiedGame.getGameStatus().getChangedSlot());
+				simGame.getGameStatus().setCurrentPlayer(copiedGame.getGameStatus().getCurrentPlayer());
+
 				if (depth < maxDepth) {
 					if (simGame.validateMove(c)) {
 						Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
-						currentSlot = simGame.discDrop(c, otherPlayer);
-						simGame.getGameStatus().getBoard().setSlot(currentSlot,currentSlot.getRow(),currentSlot.getColumn());
-						simGame.setBoard(simGame.getGameStatus().getBoard());
+						simGame.discDrop(c, otherPlayer);
+
 						int value = -negamax(simGame, -100000, depth + 1, otherPlayer);
 						if (value >= bestValue) {
 							bestPath = c;

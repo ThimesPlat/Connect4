@@ -38,8 +38,8 @@ public class Game {
         p2 = new Player(SlotState.YELLOW);
         currentPlayer = p1;
         board = new Board();
-
         gameStatus = new GameStatus(board, p1);
+        gameStatus.setBoard(board);
     }
     
     public void startGame() {
@@ -71,7 +71,7 @@ public class Game {
         */
         //Random random = new Random();
       //  miniMax = null;
-    	miniMax = new MiniMax(this);
+        miniMax = new MiniMax(this);
 
     	int column = miniMax.calcValue(currentPlayer);
         System.out.println("COLUMN: " + column);
@@ -82,14 +82,14 @@ public class Game {
 
         if(validateMove(column)) {
             slot = discDrop(column);
-            System.out.println("New slots row: " + slot.getRow());
-            System.out.println("New slots column: " + slot.getColumn());
-            board.setSlot(slot,slot.getRow(),slot.getColumn());
-            printMatrix();
+         //   board.setSlot(slot,slot.getRow(),slot.getColumn());
             System.out.println();
             System.out.println();
+            printMatrix(board);
+
         } else {
-            printMatrix();
+            printMatrix(board);
+
             return;
         }
 
@@ -278,6 +278,7 @@ public class Game {
             	nextSlot.setColumn(column);
                 nextSlot.setRow(i);
                 gameStatus.setChangedSlot(nextSlot);
+                this.board.setSlot(nextSlot,nextSlot.getRow(),nextSlot.getColumn());
                 return nextSlot;
             }
         }
@@ -308,7 +309,7 @@ public class Game {
         return (board.getSlot(0,column).getSlotState() == SlotState.EMPTY);
     }
 
-    private void printMatrix(){
+    private void printMatrix(Board board){
         for (int i = 0;i<board.getBoard().length;i++){
             for (int p = 0;p<board.getBoard()[0].length;p++){
                 System.out.print(board.getBoard()[i][p].getSlotState() + " ");
