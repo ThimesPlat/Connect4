@@ -11,7 +11,6 @@ public class MiniMax {
 	// private Board board;
 	private int maxDepth;
 	private int roflcopter = 0;
-	private Slot currentSlot;
 
 	public MiniMax(Game game) {
 
@@ -43,67 +42,68 @@ public class MiniMax {
 		}
 		// If it is not the first round, return negamax
 
-		//System.out.println(this.game.getGameStatus().getChangedSlot().getSlotState());
 		return negamax(this.game, -100000, 0, player);
 
 	}
 
 	// calls it self and returns the best column that player will choose
-	private int negamax(Game game, int alpha, int depth, Player player) {
 
-		int bestPath = 0;
-		int bestValue = alpha;
-		Game copiedGame = new Game();
+		private int negamax (Game newlySimulatedGame,int alpha, int depth, Player player){
+			Slot currentSlot;
+			roflcopter++;
+			int bestPath = 0;
+			int bestValue = alpha;
+			Game copiedGame = new Game();
 
-		copiedGame.setGameStatus(game.getGameStatus());
-//		System.out.println(game.getGameStatus().getChangedSlot().getSlotState());
-		int playerFactor;
-		if (player.getColor() == copiedGame.getGameStatus().getCurrentPlayer().getColor()) {
-			playerFactor = 1;
-		} else {
-			playerFactor = -1;
-		}
-		currentSlot = copiedGame.getGameStatus().getChangedSlot();
-		if (this.game.checkWin(currentSlot)) {
-			bestValue = playerFactor * (10000000-depth);
-		} else if (copiedGame.checkBoardFull() && !copiedGame.checkWin(currentSlot)) {
-			bestValue = 0;
-		} else if (depth == maxDepth) {
-			int score = (eval(copiedGame.getGameStatus().getBoard(), player));
-			if (score != 0) {
-				bestValue = playerFactor * (score-depth);
+
+			copiedGame.setGameStatus(newlySimulatedGame.getGameStatus());
+
+			int playerFactor = (player.getColor() == copiedGame.getGameStatus().getCurrentPlayer().getColor()) ? 1 : -1;
+
+			currentSlot = copiedGame.getGameStatus().getChangedSlot();
+			if (this.game.checkWin(currentSlot)) {
+				bestValue = playerFactor * (10000000 - depth);
+			} else if (copiedGame.checkBoardFull() && !copiedGame.checkWin(currentSlot)) {
+				bestValue = 0;
+			} else if (depth == maxDepth) {
+				int score = (eval(copiedGame.getGameStatus().getBoard(), player));
+				if (score != 0) {
+					bestValue = playerFactor * (score - depth);
+				} else {
+					bestValue = score - depth;
+				}
 			} else {
-				bestValue = score-depth;
-			}
-		} else {
-			for (int c = 0; c < 7; c++) {
-				Game simGame = new Game();
-				simGame.setBoard(copiedGame.getGameStatus().getBoard());
-				if (depth < maxDepth) {
-					if (simGame.validateMove(c)) {
-						Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
+				for (int c = 0; c < 7; c++) {
+					Game simGame = new Game();
+					simGame.setBoard(copiedGame.getGameStatus().getBoard());
 
-						currentSlot = simGame.discDrop(c, otherPlayer);
-						simGame.getGameStatus().getBoard().setSlot(currentSlot,currentSlot.getRow(),currentSlot.getColumn());
-						simGame.setBoard(simGame.getGameStatus().getBoard());
-						int value = -negamax(simGame, -100000, depth + 1, otherPlayer);
-						if (value >= bestValue) {
-							bestPath = c;
-							bestValue = value;
+					simGame.getGameStatus().setChangedSlot(copiedGame.getGameStatus().getChangedSlot());
+					simGame.getGameStatus().setCurrentPlayer(copiedGame.getGameStatus().getCurrentPlayer());
+
+					if (depth < maxDepth) {
+						if (simGame.validateMove(c)) {
+							Player otherPlayer = (player.getColor() == SlotState.RED) ? new Player(SlotState.YELLOW) : new Player(SlotState.RED);
+							simGame.discDrop(c, otherPlayer);
+
+							int value = -negamax(simGame, -100000, depth + 1, otherPlayer);
+							if (value >= bestValue) {
+								bestPath = c;
+								bestValue = value;
+							}
 						}
 					}
-				}
 
+				}
+			}
+
+			//	System.out.println(bestValue);
+			if (depth == 0) {
+				return bestPath;
+			} else {
+				return bestValue;
 			}
 		}
 
-	//	System.out.println(bestValue);
-		if (depth == 0) {
-			return bestPath;
-		} else {
-			return bestValue;
-		}
-	}
 
 	public int eval(Board board, Player player) {
 		int v = 1;
