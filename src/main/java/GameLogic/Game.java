@@ -58,7 +58,9 @@ public class Game {
     }
     
     public void newMove() {
-
+        System.out.println();
+        System.out.println();
+        System.out.println();
                 /*
         //Random random = new Random();
         int column = -1;
@@ -75,11 +77,9 @@ public class Game {
       //  miniMax = null;
         miniMax = new MiniMax(this);
 
-    	int column = miniMax.calcValue(currentPlayer);
-        System.out.println("COLUMN: " + column);
+        int column = miniMax.calcValue(currentPlayer);
     	Slot slot;
         rounds++;
-        System.out.println("rounds: "+rounds);
 
 
         if(validateMove(column)) {
@@ -87,10 +87,10 @@ public class Game {
          //   board.setSlot(slot,slot.getRow(),slot.getColumn());
             System.out.println();
             System.out.println();
-            printMatrix(board);
+        //    printMatrix(board);
 
         } else {
-            printMatrix(board);
+         //   printMatrix(board);
 
             return;
         }
@@ -294,6 +294,7 @@ public class Game {
             if (temp.getSlotState() == SlotState.EMPTY){
                 nextSlot.setColumn(column);
                 nextSlot.setRow(i);
+                board.setSlot(nextSlot,nextSlot.getRow(),nextSlot.getColumn());
                 return nextSlot;
             }
         }

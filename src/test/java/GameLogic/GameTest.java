@@ -37,7 +37,7 @@ public class GameTest extends TestDataProvider
         when(mockBoard.getSlot(5, 6)).thenReturn(mockEmptySlot);
 
     }
-
+/*
     @Test
     public void checkWin()
     {
@@ -92,5 +92,5 @@ public class GameTest extends TestDataProvider
         assertNotNull(realTestGame.getGameStatus());
     }
 
-
+*/
 }
