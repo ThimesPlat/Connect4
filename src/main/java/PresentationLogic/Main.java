@@ -9,12 +9,14 @@ import PlayerLogic.Player;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
+import javafx.stage.WindowEvent;
 
 import java.util.*;
 
@@ -72,6 +74,13 @@ public class Main extends Application implements Observer{
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();
         primaryStage.show();
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
     }
 
     private void startWinningAnimation(){       // "show where the winning sequence is
