@@ -10,8 +10,6 @@ public class MiniMax {
 	private Game game;
 	// private Board board;
 	private int maxDepth;
-	int hejsan  = 0;
-	private int roflcopter = 0;
 
 	public MiniMax(Game game) {
 
@@ -54,7 +52,7 @@ public class MiniMax {
 	private int negamax(Game newlySimulatedGame, int alpha, int depth, Player player) {
 	//	printMatrix(newlySimulatedGame.getGameStatus().getBoard());
 		Slot currentSlot;
-		roflcopter++;
+
 		int bestPath = 0;
 		int bestValue = alpha;
 
@@ -125,7 +123,6 @@ public class MiniMax {
 		int v = 1;
 		int d = 2;
 		int h = 3;
-		hejsan++;
 	//	System.out.println("eval: " + hejsan);
 		int twoInRow = 10;
 		int threeInRow = 1000;

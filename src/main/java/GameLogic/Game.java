@@ -22,7 +22,8 @@ public class Game {
     PlayerLogic.Player currentPlayer;
     Timer timer;
     int rounds = 0;
-    MiniMax miniMax;
+    MiniMax miniMax = new MiniMax(this);
+
 
     public void setBoard(Board board) {
         this.board = board;
@@ -75,7 +76,6 @@ public class Game {
         //Random random = new Random();
 
       //  miniMax = null;
-        miniMax = new MiniMax(this);
 
         int column = miniMax.calcValue(currentPlayer);
     	Slot slot;
