@@ -503,6 +503,7 @@ public class MiniMax {
 	}
 
 	public void setDepth(int depth) {
+		System.out.println("HELLO THERE!");
 		this.maxDepth = depth;
 	}
 }
