@@ -26,8 +26,8 @@ public class GraphicalBoard {
         this.layout.getChildren().add(r);
         double ringSize = 42;
         double spacingX = (width-(ringSize*8))/6;
-        double spacingY = (height-(ringSize*8))/6;
-        double yStartingPoint = height-(ringSize*6*2)-10;
+        double spacingY = (height-(ringSize*8))/8;
+        double yStartingPoint = height-(ringSize*6*2)-20;
         for (int i = 0;i<6;i++){
             for (int q = 0;q<7;q++){
                 GraphicalSlot s = new GraphicalSlot(ringSize,Color.grayRgb(240));

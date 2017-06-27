@@ -1,9 +1,6 @@
 package GameLogic ;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import PlayerLogic.MiniMax;
 import PlayerLogic.Player;
@@ -13,7 +10,7 @@ import javafx.application.Platform;
  * Created by eps on 2017-06-13.
  */
 
-public class Game {
+public class Game extends Observable implements Observer {
     GameStatus gameStatus;
     Board board;
     PlayerLogic.Player p1;
@@ -22,14 +19,14 @@ public class Game {
     Timer timer;
     int rounds = 0;
     MiniMax miniMax;
+    int miniMaxDepth = 3;
 
     public void setBoard(Board board) {
         this.board = board;
         this.gameStatus.setBoard(board);
     }
 
-    public void setGameStatus(GameStatus gameStatus)
-    {
+    public void setGameStatus(GameStatus gameStatus){
         this.gameStatus = gameStatus;
     }
 
@@ -43,69 +40,68 @@ public class Game {
     }
     
     public void startGame() {
-        timer = new Timer();
+       /* timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
     		@Override
     		public void run() {
-    			Platform.runLater(() -> {
-    				newMove();
-
-
-    			});
+    			Platform.runLater(() -> newMove());
     		}
-    	}, 100, 1000);
-    }
-    
-    public void newMove() {
-        System.out.println();
-        System.out.println();
-        System.out.println();
-                /*
-        //Random random = new Random();
-        int column = -1;
-        Slot slot;
-        if (!checkBoardFull()) {
-            miniMax = new MiniMax(board);
-            column = miniMax.calcValue(currentPlayer);
-            System.out.println(column);
-            rounds++;
-        }
+    	}, 10, 100);
         */
-        //Random random = new Random();
-      //  miniMax = null;
+       // addObserver(this);
+
+        newMove();
+    }
+
+    public void setMiniMaxDepth(int miniMaxDepth){
+        this.miniMaxDepth = miniMaxDepth;
+    }
+
+    public void newMove() {
+/*
+        Random random = new Random();
+        int column = random.nextInt(7);
+*/
+
         miniMax = new MiniMax(this);
-
+        miniMax.setDepth(miniMaxDepth);
         int column = miniMax.calcValue(currentPlayer);
+
     	Slot slot;
-        rounds++;
-
-
         if(validateMove(column)) {
             slot = discDrop(column);
-         //   board.setSlot(slot,slot.getRow(),slot.getColumn());
             System.out.println();
             System.out.println();
-        //    printMatrix(board);
 
-        } else {
-         //   printMatrix(board);
+        } else return;
 
-            return;
-        }
 
     	if (checkWin(slot)) {
             gameStatus.setGameOver(true);
 			gameStatus.setWinner(currentPlayer);
-			timer.cancel();
+            gameIsOver();
+            return;
 		}
 
         if (checkBoardFull()) {
 			gameStatus.setGameOver(true);
-			timer.cancel();
+            gameIsOver();
+            return;
 
-		}
+        }
         gameStatus.setBoard(board);
 		setCurrentPlayer();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        /*
+        setChanged();
+        notifyObservers();
+        */
+        System.out.println("NEW MOVE");
+        newMove();
 
     }
 
@@ -319,4 +315,13 @@ public class Game {
         }
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        newMove();
+    }
+
+    private void gameIsOver(){
+        gameStatus.setBoard(board);
+        setCurrentPlayer();
+    }
 }
