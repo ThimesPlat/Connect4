@@ -100,6 +100,7 @@ public class Main extends Application implements Observer{
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
+                System.out.println("Closing Application...");
                 Platform.exit();
                 System.exit(0);
             }
