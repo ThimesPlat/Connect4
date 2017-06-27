@@ -9,13 +9,19 @@ import PlayerLogic.Player;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
+import sun.plugin2.util.ColorUtil;
+import javafx.stage.WindowEvent;
 
+import javax.xml.soap.Text;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -23,12 +29,14 @@ import java.util.*;
 public class Main extends Application implements Observer{
 
     private double windowWidth = 600;
-    private double windowHeight = 600;
+    private double windowHeight = 700;
 
     private GraphicalBoard board;
     private Pane layout;
     private Button startGame;
     private Label usersTurn;
+    private TextField textField;
+    private Label difficultyLevelLabel;
     private GraphicalSlot[][] slots;
     private int turn = 1;
     private Game game;
@@ -36,6 +44,7 @@ public class Main extends Application implements Observer{
     private double startGameButtonWidth;
     private Timer firstTimer;
     private Timer secondTimer;
+    private Thread thread;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -53,8 +62,23 @@ public class Main extends Application implements Observer{
             if (gameStartedOnce)  // called second time game starts
                 resetApplicationVariables();
             setupUserLabel();
-            game.startGame();       // start the simulation
+       //     if (isInteger(textField.getText()))
+            game.setMiniMaxDepth(Integer.valueOf(textField.getText()));
+
+            thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("Starting Game!");
+                    game.startGame();
+                }
+            });
+            thread.start();
+          //  thread.run();
+       //     game.startGame();       // start the simulation
             //Slot slot = new Slot(S)
+            System.out.println("AASASDASDASDASDASDASDLOOOL");
+            this.textField.setVisible(false);
+            this.difficultyLevelLabel.setVisible(false);
             this.startGame.setVisible(false);
             gameStartedOnce=true;
         });
@@ -65,6 +89,7 @@ public class Main extends Application implements Observer{
         slots = board.getSlots();
 
 
+        setupGame();
         layout = board.getBoardLayout();
         layout.getChildren().add(startGame);
         Scene scene = new Scene(layout,windowWidth,windowHeight);
@@ -72,8 +97,21 @@ public class Main extends Application implements Observer{
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();
         primaryStage.show();
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
     }
-
+/*
+    private boolean isInteger(String text) {
+        for(int i = 0; i<text.length();i++){
+            if (text.charAt(i))
+        }
+    }
+*/
     private void startWinningAnimation(){       // "show where the winning sequence is
         firstTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -115,6 +153,8 @@ public class Main extends Application implements Observer{
             Color winnerColor = (winner.getColor() == SlotState.RED) ? Color.RED:Color.YELLOW;
             this.usersTurn.setText(winnerText + " IS THE WINNER!");
             this.usersTurn.setTextFill(winnerColor);
+            this.usersTurn.setScaleX(4);
+            this.usersTurn.setScaleY(4);
             gameIsOver();
         }
         else {      // if game is NOT over, display next user
@@ -141,10 +181,33 @@ public class Main extends Application implements Observer{
     }
 
     private void gameIsOver(){
-        usersTurn.setLayoutX((startGame.getLayoutX()+startGameButtonWidth)*2);
-        usersTurn.setLayoutY(startGame.getLayoutY()+10);
-        startGame.setVisible(true);
+        this.usersTurn.setLayoutX((startGame.getLayoutX()+startGameButtonWidth)+100);
+        this.usersTurn.setLayoutY(startGame.getLayoutY()+100);
+        this.startGame.setVisible(true);
+        this.difficultyLevelLabel.setVisible(true);
+        this.textField.setText("");
+        this.textField.setVisible(true);
         startWinningAnimation();
+    }
+
+    private void setupGame(){
+        difficultyLevelLabel = new Label("Enter difficulty level: ");
+        difficultyLevelLabel.setLayoutY(30);
+        difficultyLevelLabel.setScaleX(2);
+        difficultyLevelLabel.setScaleY(2);
+        difficultyLevelLabel.setTextFill(Color.rgb(102,255,102));
+        this.layout.getChildren().add(difficultyLevelLabel);
+        difficultyLevelLabel.setLayoutX(windowWidth/2-80);
+
+        this.textField = new TextField();
+        this.textField.setLayoutY(30);
+        this.textField.setScaleX(2);
+        this.textField.setScaleY(2);
+        this.textField.setPrefWidth(50);
+        this.layout.getChildren().add(textField);
+        this.textField.setLayoutX(windowWidth-180);
+
+
     }
 
     private Button buttonSetup(Button button,String text,String color){
@@ -159,12 +222,21 @@ public class Main extends Application implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        GameStatus newGameStatus = game.getGameStatus();
-        Slot newlyChangedSlot = newGameStatus.getChangedSlot();
-        Color color = (newlyChangedSlot.getSlotState() == SlotState.RED) ? Color.RED : Color.YELLOW;
-        board.changeCircleColor(newlyChangedSlot.getRow(),newlyChangedSlot.getColumn(),color);
-        turn = (game.getGameStatus().getCurrentPlayer().getColor() == SlotState.RED)?2:1;
-        changeLabel(turn,newGameStatus.isGameOver(),newGameStatus.getWinner());
+        Platform.runLater(() -> {
+            System.out.println("updated...");
+            GameStatus newGameStatus = game.getGameStatus();
+            Slot newlyChangedSlot = newGameStatus.getChangedSlot();
+            Color color = (newlyChangedSlot.getSlotState() == SlotState.RED) ? Color.RED : Color.YELLOW;
+            board.changeCircleColor(newlyChangedSlot.getRow(), newlyChangedSlot.getColumn(), color);
+            turn = (game.getGameStatus().getCurrentPlayer().getColor() == SlotState.RED) ? 2 : 1;
+            Main.this.changeLabel(turn, newGameStatus.isGameOver(), newGameStatus.getWinner());
+            System.out.println("button is clicked");
+        });
+
+
+
+
+
     }
 }
 

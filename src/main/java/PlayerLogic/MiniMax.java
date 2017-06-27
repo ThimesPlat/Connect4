@@ -15,11 +15,12 @@ public class MiniMax {
 
 		this.game = game;
 
-		maxDepth = 3;
+		maxDepth = 0;
 	}
 
 	// decide which column we have to pick
 	public int calcValue(Player player) {
+		System.out.println("MAX DEPTH: " + maxDepth);
 		int count = 0;
 		for (int row = 0; row < 6; row++) {
 			for (int col = 0; col < 7; col++) {
@@ -61,7 +62,7 @@ public class MiniMax {
 		copiedGame.getGameStatus().setChangedSlot(newlySimulatedGame.getGameStatus().getChangedSlot());
 		copiedGame.getGameStatus().setCurrentPlayer(newlySimulatedGame.getGameStatus().getCurrentPlayer());
 
-		int playerFactor = (player.getColor() == copiedGame.getGameStatus().getCurrentPlayer().getColor())?-1:1;
+		int playerFactor = (player.getColor() == copiedGame.getGameStatus().getCurrentPlayer().getColor())?1:-1;
 
 		currentSlot = copiedGame.getGameStatus().getChangedSlot();
 		if (copiedGame.checkWin(currentSlot)) {
@@ -70,11 +71,8 @@ public class MiniMax {
 			bestValue = 0;
 		} else if (depth == maxDepth) {
 			int score = (eval(copiedGame.getGameStatus().getBoard(), player));
-			System.out.println(score);
-			printMatrix(newlySimulatedGame.getGameStatus().getBoard());
 			if (score != 0) {
 				bestValue = playerFactor * (score-depth);
-			//	System.out.println("bestValue: " + bestValue);
 			} else {
 				bestValue = score-depth;
 			}
@@ -92,18 +90,10 @@ public class MiniMax {
 						simGame.getGameStatus().getBoard().setSlot(slot,slot.getRow(),slot.getColumn());
 						simGame.getGameStatus().setChangedSlot(slot);
 						int value = -negamax(simGame, -100000, depth + 1, otherPlayer);
-						/*System.out.println("The current column " + c + " with an value of " + value);
-						System.out.println("Here is the matrix for it: ");
-						printMatrix(simGame.getGameStatus().getBoard());*/
+
 						if (value >= bestValue) {
-							System.out.println("NEW BEST VALUE FOUND: " + value);
-							System.out.println("COLUMN: " + c);
 							bestPath = c;
 							bestValue = value;
-					//		System.out.println("The best current choice is column " + bestPath + " with an value of " + bestValue);
-					//		System.out.println("Here is the matrix for it: ");
-					//
-							//		printMatrix(simGame.getGameStatus().getBoard());
 						}
 						simGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY),slot.getRow(),slot.getColumn());
 					}
@@ -131,7 +121,7 @@ public class MiniMax {
 		int v = 1;
 		int d = 2;
 		int h = 3;
-	//	System.out.println("eval: " + hejsan);
+
 		int twoInRow = 10;
 		int threeInRow = 1000;
 
@@ -498,8 +488,6 @@ public class MiniMax {
 				}
 			}
 		}
-//		System.out.println(value);
-	//	printMatrix(board);
 		return value;
 	}
 
@@ -512,5 +500,9 @@ public class MiniMax {
 		}
 		System.out.println();
 		System.out.println();
+	}
+
+	public void setDepth(int depth) {
+		this.maxDepth = depth;
 	}
 }
