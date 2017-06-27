@@ -14,7 +14,8 @@ public class MiniMax {
 	public MiniMax(Game game) {
 
 		this.game = game;
-		maxDepth = 4;
+
+		maxDepth = 3;
 	}
 
 	// decide which column we have to pick
@@ -50,7 +51,6 @@ public class MiniMax {
 	// calls it self and returns the best column that player will choose
 
 	private int negamax(Game newlySimulatedGame, int alpha, int depth, Player player) {
-	//	printMatrix(newlySimulatedGame.getGameStatus().getBoard());
 		Slot currentSlot;
 
 		int bestPath = 0;
@@ -70,9 +70,11 @@ public class MiniMax {
 			bestValue = 0;
 		} else if (depth == maxDepth) {
 			int score = (eval(copiedGame.getGameStatus().getBoard(), player));
+			System.out.println(score);
+			printMatrix(newlySimulatedGame.getGameStatus().getBoard());
 			if (score != 0) {
 				bestValue = playerFactor * (score-depth);
-				System.out.println("bestValue: " + bestValue);
+			//	System.out.println("bestValue: " + bestValue);
 			} else {
 				bestValue = score-depth;
 			}
@@ -90,12 +92,18 @@ public class MiniMax {
 						simGame.getGameStatus().getBoard().setSlot(slot,slot.getRow(),slot.getColumn());
 						simGame.getGameStatus().setChangedSlot(slot);
 						int value = -negamax(simGame, -100000, depth + 1, otherPlayer);
+						/*System.out.println("The current column " + c + " with an value of " + value);
+						System.out.println("Here is the matrix for it: ");
+						printMatrix(simGame.getGameStatus().getBoard());*/
 						if (value >= bestValue) {
+							System.out.println("NEW BEST VALUE FOUND: " + value);
+							System.out.println("COLUMN: " + c);
 							bestPath = c;
 							bestValue = value;
-							System.out.println("The best current choice is column " + bestPath + " with an value of " + bestValue);
-							System.out.println("Here is the matrix for it: ");
-							printMatrix(simGame.getGameStatus().getBoard());
+					//		System.out.println("The best current choice is column " + bestPath + " with an value of " + bestValue);
+					//		System.out.println("Here is the matrix for it: ");
+					//
+							//		printMatrix(simGame.getGameStatus().getBoard());
 						}
 						simGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY),slot.getRow(),slot.getColumn());
 					}
@@ -490,8 +498,8 @@ public class MiniMax {
 				}
 			}
 		}
-		System.out.println(value);
-		printMatrix(board);
+//		System.out.println(value);
+	//	printMatrix(board);
 		return value;
 	}
 
