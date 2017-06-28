@@ -1,10 +1,12 @@
 package GameLogic ;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Timer;
 
 import PlayerLogic.MiniMax;
 import PlayerLogic.Player;
-import javafx.application.Platform;
 
 /**
  * Created by eps on 2017-06-13.
@@ -51,8 +53,11 @@ public class Game extends Observable implements Observer {
     	}, 10, 100);
         */
        // addObserver(this);
-
         newMove();
+        while(!gameStatus.isGameOver()) {
+            newMove();
+            setCurrentPlayer();
+        }
     }
 
 
@@ -70,33 +75,29 @@ public class Game extends Observable implements Observer {
         miniMax = new MiniMax(this);
         miniMax.setDepth(miniMaxDepth);
         int column = miniMax.calcValue(currentPlayer);
-
     	Slot slot;
         if(validateMove(column))
             slot = discDrop(column);
         else return;
-
     	if (checkWin(slot)) {
             gameStatus.setGameOver(true);
 			gameStatus.setWinner(currentPlayer);
             gameIsOver();
             return;
 		}
-
         if (checkBoardFull()) {
 			gameStatus.setGameOver(true);
             gameIsOver();
             return;
-
         }
         gameStatus.setBoard(board);
-		setCurrentPlayer();
+		//setCurrentPlayer();
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        newMove();
+        //newMove();
 
     }
 
