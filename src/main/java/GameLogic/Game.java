@@ -12,12 +12,14 @@ import javafx.application.Platform;
 
 public class Game extends Observable implements Observer {
     GameStatus gameStatus;
+
     Board board;
     PlayerLogic.Player p1;
     PlayerLogic.Player p2;
     PlayerLogic.Player currentPlayer;
     Timer timer;
     int rounds = 0;
+
     MiniMax miniMax;
     int miniMaxDepth = 3;
 
@@ -53,11 +55,13 @@ public class Game extends Observable implements Observer {
         newMove();
     }
 
+
     public void setMiniMaxDepth(int miniMaxDepth){
         this.miniMaxDepth = miniMaxDepth;
     }
 
     public void newMove() {
+
 /*
         Random random = new Random();
         int column = random.nextInt(7);

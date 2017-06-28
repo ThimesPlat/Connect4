@@ -11,7 +11,9 @@ public class MiniMax {
 	private int maxDepth;
 
 	public MiniMax(Game game) {
+
 		this.game = game;
+
 		maxDepth = 0;
 	}
 
@@ -39,6 +41,7 @@ public class MiniMax {
 		}
 		// If it is not the first round, return negamax
 
+
 		player = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 
 		return negamax(this.game, -100000, 0, player);
@@ -46,8 +49,10 @@ public class MiniMax {
 	}
 
 	// calls it self and returns the best column that player will choose
+
 	private int negamax(Game newlySimulatedGame, int alpha, int depth, Player player) {
 		Slot currentSlot;
+
 		int bestPath = 0;
 		int bestValue = alpha;
 
@@ -84,16 +89,25 @@ public class MiniMax {
 						simGame.getGameStatus().getBoard().setSlot(slot,slot.getRow(),slot.getColumn());
 						simGame.getGameStatus().setChangedSlot(slot);
 						int value = -negamax(simGame, -100000, depth + 1, otherPlayer);
+
 						if (value >= bestValue) {
 							bestPath = c;
 							bestValue = value;
 						}
 						simGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY),slot.getRow(),slot.getColumn());
 					}
-				}
 
+				}
+			}
+
+			//	System.out.println(bestValue);
+			if (depth == 0) {
+				return bestPath;
+			} else {
+				return bestValue;
 			}
 		}
+
 
 		if (depth == 0) {
 			return bestPath;
@@ -106,6 +120,7 @@ public class MiniMax {
 		int v = 1;
 		int d = 2;
 		int h = 3;
+
 		int twoInRow = 10;
 		int threeInRow = 1000;
 
@@ -492,6 +507,7 @@ public class MiniMax {
 	}
 
 	public void setDepth(int depth) {
+		System.out.println("HELLO THERE!");
 		this.maxDepth = depth;
 	}
 }
