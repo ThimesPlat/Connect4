@@ -125,6 +125,7 @@ public class MiniMax {
 		int value = 0;
 
 		value+= checkHorizontal2inRow(board, player, value);
+		value+= checkHorizontal3inRow(board, player, value);
 		System.out.println("VALUE: "+value);
 		return value;
 	}
@@ -197,6 +198,45 @@ public class MiniMax {
 	private int checkHorizontal3inRow(SlotState[][] board, SlotState player, int value) {
 		int h = 3;
 		int threeInRow = 1000;
+		for (int row = 0; row < board.length; row++) {
+			for (int column = 0; column < 4; column++) {
+				//(xx0x)
+				if (board[row][column] == player &&
+					board[row][column + 1] == player &&
+					board[row][column + 2] == isEmpty &&
+					board[row][column + 3] == player
+					) {
+					value += threeInRow * h;
+					System.out.println("(xx0x)");
+
+				} //(x0xx)
+				else if(board[row][column] == player &&
+						board[row][column + 1] == isEmpty &&
+						board[row][column + 2] == player &&
+						board[row][column + 3] == player
+						) {
+					value += threeInRow * h;
+					System.out.println("(x0xx)");
+				} //(0xxx)
+				else if(board[row][column] == isEmpty &&
+						board[row][column + 1] == player &&
+						board[row][column + 2] == player &&
+						board[row][column + 3] == player
+						) {
+					value += threeInRow * h;
+					System.out.println("(0xxx)");
+				} //(xxx0)
+				else if(board[row][column] == player &&
+						board[row][column + 1] == player &&
+						board[row][column + 2] == player &&
+						board[row][column + 3] == isEmpty
+						) {
+					value += threeInRow * h;
+					System.out.println("(xxx0)");
+				}
+			}
+		}
+
 		return value;
 	}
 	private int checkHorizontal3inRowOpenEnded(SlotState[][] board, SlotState player, int value) {
@@ -255,7 +295,7 @@ public class MiniMax {
 	private int checkDiagonal3inRowOpenEndedRight(SlotState[][] board, SlotState player, int value) {
 		int d = 2;
 		int threeInRow = 1000;
-		
+
 		return value;
 	}
 

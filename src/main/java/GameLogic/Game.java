@@ -53,7 +53,7 @@ public class Game extends Observable implements Observer {
     	}, 10, 100);
         */
        // addObserver(this);
-        newMove();
+       // newMove();
         while(!gameStatus.isGameOver()) {
             newMove();
             setCurrentPlayer();
