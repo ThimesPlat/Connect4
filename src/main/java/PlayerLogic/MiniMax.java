@@ -9,6 +9,8 @@ public class MiniMax {
 
 	private Game game;
 	private int maxDepth;
+	int roflcoptr = 0;
+	SlotState isEmpty = SlotState.EMPTY;
 
 	public MiniMax(Game game) {
 
@@ -69,7 +71,8 @@ public class MiniMax {
 		} else if (copiedGame.checkBoardFull() && !copiedGame.checkWin(currentSlot)) {
 			bestValue = 0;
 		} else if (depth == maxDepth) {
-			int score = (eval(copiedGame.getGameStatus().getBoard(), player));
+			SlotState[][] slotStateMatrix = generateSlotStateMatrix(copiedGame.getGameStatus().getBoard());
+			int score = (eval(slotStateMatrix, player.getColor()));
 			if (score != 0) {
 				bestValue = playerFactor * (score-depth);
 			} else {
@@ -116,384 +119,162 @@ public class MiniMax {
 		}
 	}
 
-	public int eval(Board board, Player player) {
-		int v = 1;
-		int d = 2;
-		int h = 3;
+	public int eval(SlotState[][] board, SlotState player) {
 
-		int twoInRow = 10;
-		int threeInRow = 1000;
 
 		int value = 0;
-		for (int row = 0; row < 6; row++) {
-			for (int column = 0; column < 4; column++) {
-				// (xx00)
-				if (board.getSlot(row, column).getSlotState().equals(player.getColor())		// works
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row, column + 1).getSlotState())
-						&& board.getSlot(row, column + 2).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column + 3).getSlotState().equals(SlotState.EMPTY)) {
-					value += twoInRow * h;
-				}
-				// (x0x0)
-				else if (board.getSlot(row, column).getSlotState().equals(player.getColor())		// works
-						&& board.getSlot(row, column + 2).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column + 1).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column + 3).getSlotState().equals(SlotState.EMPTY)) {
-					value += twoInRow * h;
 
-				}
-				// (x00x)
-				else if (board.getSlot(row, column).getSlotState().equals(player.getColor())		// works
-						&& board.getSlot(row, column + 3).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column + 1).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column + 2).getSlotState().equals(SlotState.EMPTY)) {
-					value += twoInRow * h;
-				}
-				// (0xx0)
-				else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)		// works
-						&& board.getSlot(row, column + 1).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column + 2).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column + 3).getSlotState().equals(SlotState.EMPTY)) {
-					value += 2 * twoInRow * h;
-				}
-				// (0x0x)
-				else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)		// works
-						&& board.getSlot(row, column + 1).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column + 2).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column + 3).getSlotState().equals(player.getColor())) {
-
-					value += twoInRow * h;
-				}
-				// (00xx)
-				else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)		// works
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row, column + 1).getSlotState())
-						&& board.getSlot(row, column + 2).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column + 3).getSlotState().equals(player.getColor())) {
-
-					value += twoInRow * h;
-				}
-			}
-		}
-
-		// check for vertical spaced 2-in-a-row
-		for (int row = 5; row > 1; row--) { 		// works
-			for (int column = 0; column < 7; column++) {
-				if (board.getSlot(row, column).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 1, column).getSlotState())
-						&& board.getSlot(row - 2, column).getSlotState().equals(SlotState.EMPTY)) {
-
-					value += twoInRow * v;
-				}
-			}
-		}
-		// Check for diagonal spaced 2-in-a-row (/).
-		// 0 x x x 0 0
-		// 0 0 x 0 x x
-		// x 0 0 x 0 x
-		// x x 0 0 x 0
-		for (int row = 5; row > 2; row--) {		// works
-			for (int column = 0; column < 4; column++) {
-				if (board.getSlot(row, column).getSlotState().equals(player.getColor())		// works
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 1, column + 1).getSlotState())
-						&& board.getSlot(row - 2, column + 2).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row - 3, column + 3).getSlotState().equals(SlotState.EMPTY)) {
-
-					value += twoInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(player.getColor())		// works
-						&& board.getSlot(row - 1, column + 1).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row - 2, column + 2).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 3, column + 3).getSlotState())) {
-
-					value += twoInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)		// works
-						&& board.getSlot(row - 1, column + 1).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row - 2, column + 2).getSlotState().equals(player.getColor())
-						&& board.getSlot(row - 3, column + 3).getSlotState().equals(player.getColor())) {
-
-					value += twoInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)		// works
-						&& board.getSlot(row - 1, column + 1).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 2, column + 2).getSlotState())
-						&& board.getSlot(row - 1, column + 1).getSlotState()
-								.equals(board.getSlot(row - 3, column + 3).getSlotState())) {
-
-					value += twoInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(player.getColor())		// works
-						&& board.getSlot(row - 1, column + 1).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 2, column + 2).getSlotState())
-						&& board.getSlot(row - 1, column + 1).getSlotState()
-								.equals(board.getSlot(row - 3, column + 3).getSlotState())) {
-
-					value += twoInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)		// works
-						&& board.getSlot(row - 1, column + 1).getSlotState().equals(player.getColor())
-						&& board.getSlot(row - 1, column + 1).getSlotState()
-								.equals(board.getSlot(row - 2, column + 2).getSlotState())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 3, column + 3).getSlotState())) {
-
-					value += 2 * twoInRow * d;
-				}
-			}
-		}
-		// Check for diagonal spaced 3-in-a-row (\).
-		// 0 x x x
-		// x 0 x x
-		// x x 0 x
-		// x x x 0
-		for (int row = 0; row < 3; row++) {		// works
-			for (int column = 0; column < 4; column++) {
-				if (board.getSlot(row, column).getSlotState().equals(player.getColor())		// works
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 1, column + 1).getSlotState())
-						&& board.getSlot(row + 2, column + 2).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row + 3, column + 3).getSlotState().equals(SlotState.EMPTY)) {
-
-					value += twoInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(player.getColor())		// works
-						&& board.getSlot(row + 1, column + 1).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row + 2, column + 2).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 3, column + 3).getSlotState())) {
-
-					value += twoInRow * d;
-
-				} else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)		// works
-						&& board.getSlot(row + 1, column + 1).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row + 2, column + 2).getSlotState().equals(player.getColor())
-						&& board.getSlot(row + 3, column + 3).getSlotState().equals(player.getColor())) {
-
-					value += twoInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)		// works
-						&& board.getSlot(row + 1, column + 1).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 2, column + 2).getSlotState())
-						&& board.getSlot(row + 1, column + 1).getSlotState()
-								.equals(board.getSlot(row + 3, column + 3).getSlotState())) {
-
-					value += twoInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(player.getColor())		// works
-						&& board.getSlot(row + 1, column + 1).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 2, column + 2).getSlotState())
-						&& board.getSlot(row + 1, column + 1).getSlotState()
-								.equals(board.getSlot(row + 3, column + 3).getSlotState())) {
-
-					value += twoInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row + 1, column + 1).getSlotState().equals(player.getColor())
-						&& board.getSlot(row + 1, column + 1).getSlotState()
-								.equals(board.getSlot(row + 2, column + 2).getSlotState())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 3, column + 3).getSlotState())) {
-
-					value += twoInRow * 2 * d;
-				}
-			}
-		}
-		// Check for horizontal 3-in-a-row.
-
-		for (int row = 0; row < 6; row++) {
-			for (int column = 0; column < 4; column++) {
-				// (xx0x)
-				if (board.getSlot(row, column).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row, column + 1).getSlotState())
-						&& board.getSlot(row, column + 2).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row, column + 3).getSlotState())) {
-
-					value += threeInRow * h;
-				}
-				// (x0xx)
-				else if (board.getSlot(row, column).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column + 1).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row, column + 2).getSlotState())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row, column + 3).getSlotState())) {
-
-					value += threeInRow * h;
-				}
-				// (0xxx)
-				else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column + 1).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column + 1).getSlotState()
-								.equals(board.getSlot(row, column + 2).getSlotState())
-						&& board.getSlot(row, column + 1).getSlotState()
-								.equals(board.getSlot(row, column + 3).getSlotState())) {
-
-					value += threeInRow * d;
-				}
-				// (xxx0)
-				else if (board.getSlot(row, column).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row, column + 1).getSlotState())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row, column + 2).getSlotState())
-						&& board.getSlot(row, column + 3).getSlotState().equals(SlotState.EMPTY)) {
-
-					value += threeInRow * h;
-				}
-			}
-		}
-		// Check for vertical spaced 3-in-a-row.
-		// 0
-		// x
-		// x
-		// x
-		for (int row = 5; row > 2; row--) {
-			for (int column = 0; column < 7; column++) {
-				if (board.getSlot(row, column).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 1, column).getSlotState())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 2, column).getSlotState())
-						&& board.getSlot(row - 3, column).getSlotState().equals(SlotState.EMPTY)) {
-
-					value += threeInRow * v;
-				}
-
-			}
-		}
-		// Check for diagonal spaced 3-in-a-row (/).
-		// 0 x x x
-		// x 0 x x
-		// x x 0 x
-		// x x x 0
-		for (int row = 5; row > 2; row--) {
-			for (int column = 0; column < 4; column++) {
-				if (board.getSlot(row, column).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 1, column + 1).getSlotState())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 2, column + 2).getSlotState())
-						&& board.getSlot(row - 3, column + 3).getSlotState().equals(SlotState.EMPTY)) {
-
-					value += threeInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column + 1).getSlotState()
-								.equals(board.getSlot(row - 1, column + 1).getSlotState())
-						&& board.getSlot(row - 2, column + 2).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 3, column + 3).getSlotState())) {
-
-					value += threeInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(player.getColor())
-						&& board.getSlot(row - 1, column + 1).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 2, column + 2).getSlotState())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row - 3, column + 3).getSlotState())) {
-
-					value += threeInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row - 1, column + 1).getSlotState().equals(player.getColor())
-						&& board.getSlot(row - 1, column + 1).getSlotState()
-								.equals(board.getSlot(row - 2, column + 2).getSlotState())
-						&& board.getSlot(row - 1, column + 1).getSlotState()
-								.equals(board.getSlot(row - 3, column + 3).getSlotState())) {
-
-					value += threeInRow * d;
-				}
-			}
-		}
-		// Check for diagonal spaced 3-in-a-row (\).
-		// 0 x x x
-		// x 0 x x
-		// x x 0 x
-		// x x x 0
-		for (int row = 0; row < 3; row++) {
-			for (int column = 0; column < 4; column++) {
-				if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row + 1, column + 1).getSlotState().equals(player.getColor())
-						&& board.getSlot(row + 1, column + 1).getSlotState()
-								.equals(board.getSlot(row + 3, column + 3).getSlotState())) {
-
-					value += threeInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(player.getColor())
-						&& board.getSlot(row + 1, column + 1).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 2, column + 2).getSlotState())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 3, column + 3).getSlotState())) {
-
-					value += threeInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 1, column + 1).getSlotState())
-						&& board.getSlot(row + 2, column + 2).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 3, column + 3).getSlotState())) {
-
-					value += threeInRow * d;
-				} else if (board.getSlot(row, column).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 1, column + 1).getSlotState())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 2, column + 2).getSlotState())
-						&& board.getSlot(row + 3, column + 3).getSlotState().equals(SlotState.EMPTY)) {
-
-					value += threeInRow * d;
-				}
-			}
-		}
-		// check for open-ended-in-a-row.(0xxx0)
-		for (int row = 0; row < 5; row++) {
-			for (int column = 0; column < 3; column++) {
-				// horizontal
-				if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row, column + 1).getSlotState().equals(player.getColor())
-						&& board.getSlot(row + 1, column + 2).getSlotState().equals(player.getColor())
-						&& board.getSlot(row + 1, column + 3).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column).equals(board.getSlot(row, column + 4))) {
-
-					value += 2 * threeInRow * h;
-				}
-			}
-		}
-		for (int row = 0; row < 2; row++) {
-			for (int column = 0; column < 3; column++) {
-				// diag(\)
-				if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row + 1, column + 1).getSlotState().equals(player.getColor())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 2, column + 2).getSlotState())
-						&& board.getSlot(row, column).getSlotState()
-								.equals(board.getSlot(row + 3, column + 3).getSlotState())
-						&& board.getSlot(row + 4, column + 4).getSlotState().equals(SlotState.EMPTY)) {
-
-					value += 2 * threeInRow * d;
-				}
-			}
-		}
-		// diag(/)
-		for (int row = 5; row > 3; row--) {
-			for (int column = 0; column < 3; column++) {
-				if (board.getSlot(row, column).getSlotState().equals(SlotState.EMPTY)
-						&& board.getSlot(row - 1, column + 1).getSlotState().equals(player.getColor())
-						&& board.getSlot(row - 2, column + 2).getSlotState().equals(player.getColor())
-						&& board.getSlot(row - 3, column + 3).getSlotState().equals(player.getColor())
-						&& board.getSlot(row - 4, column + 4).getSlotState().equals(SlotState.EMPTY)) {
-
-					value += 2 * threeInRow * d;
-				}
-			}
-		}
-		System.out.println();
-		System.out.println();
-		System.out.println("Player: " + player.getColor());
-		System.out.println("Value: " + value);
-		printMatrix(board);
+		value+= checkHorizontal2inRow(board, player, value);
+		System.out.println("VALUE: "+value);
 		return value;
 	}
+
+	/*
+	 * Horizontal
+	 */
+
+	private int checkHorizontal2inRow(SlotState[][] board, SlotState player, int value) {
+		int h = 3;
+		int twoInRow = 10;
+		for (int row = 0; row < board.length; row++) {
+			for (int column = 0; column < 4; column++) {
+				//(xx00)
+				if (board[row][column] == player &&
+						board[row][column + 1] == player &&
+						board[row][column + 2] == isEmpty &&
+						board[row][column + 3] == isEmpty
+						) {
+					value += twoInRow * h;
+					System.out.println("(xx00)");
+
+				} //(x0x0)
+				else if (board[row][column] == player &&
+						board[row][column + 1] == isEmpty &&
+						board[row][column + 2] == player &&
+						board[row][column + 3] == isEmpty
+						) {
+					value += twoInRow * h;
+					System.out.println("(x0x0)");
+				} //(x00x)
+				else if (board[row][column] == player &&
+						board[row][column + 1] == isEmpty &&
+						board[row][column + 2] == isEmpty &&
+						board[row][column + 3] == player
+						) {
+					value += twoInRow * h;
+					System.out.println("(x00x)");
+				} //(0xx0)
+				else if (board[row][column] == isEmpty &&
+						board[row][column + 1] == player &&
+						board[row][column + 2] == player &&
+						board[row][column + 3] == isEmpty
+						) {
+					value += 2 * twoInRow * h;
+					System.out.println("(0xx0)");
+				} //(0x0x)
+				else if (board[row][column] == isEmpty &&
+						board[row][column + 1] == player &&
+						board[row][column + 2] == isEmpty &&
+						board[row][column + 3] == player
+						) {
+					value += twoInRow * h;
+					System.out.println("(0x0x)");
+				} //(00xx)
+				else if (board[row][column] == isEmpty &&
+						board[row][column + 1] == isEmpty &&
+						board[row][column + 2] == player &&
+						board[row][column + 3] == player
+						) {
+					value += twoInRow * h;
+					System.out.println("(00xx)");
+				}
+			}
+		}
+		return value;
+	}
+
+
+	private int checkHorizontal3inRow(SlotState[][] board, SlotState player, int value) {
+		int h = 3;
+		int threeInRow = 1000;
+		return value;
+	}
+	private int checkHorizontal3inRowOpenEnded(SlotState[][] board, SlotState player, int value) {
+		int h = 3;
+		int threeInRow = 1000;
+		return value;
+	}
+
+	/*
+	 * Vertical
+	 */
+	private int checkVertical2inRow(SlotState[][] board, SlotState player, int value) {
+		int v = 1;
+		int twoInRow = 10;
+		return value;
+	}
+	private int checkVertical3inRow(SlotState[][] board, SlotState player, int value) {
+		int v = 1;
+		int threeInRow = 1000;
+		return value;
+	}
+
+	/*
+ 	* Diagonal
+ 	*/
+	private int checkDiagonal2inRowRight(SlotState[][] board, SlotState player, int value) {
+		int d = 2;
+		int twoInRow = 10;
+
+		return value;
+	}
+	private int checkDiagonal3inRowLeft(SlotState[][] board, SlotState player, int value) {
+		int d = 2;
+		int threeInRow = 1000;
+
+		return value;
+	}
+	private int checkDiagonal3inRowRight(SlotState[][] board, SlotState player, int value) {
+		int d = 2;
+		int threeInRow = 1000;
+
+		return value;
+	}
+	private int checkDiagonal2inRowLeft(SlotState[][] board, SlotState player, int value) {
+		int d = 2;
+		int twoInRow = 10;
+
+		return value;
+	}
+	private int checkDiagonal3inRowOpenEndedLeft(SlotState[][] board, SlotState player, int value) {
+		int d = 2;
+		int threeInRow = 1000;
+
+		return value;
+	}
+	private int checkDiagonal3inRowOpenEndedRight(SlotState[][] board, SlotState player, int value) {
+		int d = 2;
+		int threeInRow = 1000;
+		
+		return value;
+	}
+
+	private SlotState [][] generateSlotStateMatrix(Board board){
+		System.out.println(board.getBoard().length);
+		System.out.println(board.getBoard()[0].length);
+		SlotState[][] slotStateMatrix = new SlotState[board.getBoard().length][board.getBoard()[0].length];
+		for (int i = 0;i<board.getBoard().length;i++){
+			for (int p = 0;p<board.getBoard()[0].length;p++){
+				slotStateMatrix[i][p] = board.getSlot(i,p).getSlotState();
+				System.out.print(slotStateMatrix[i][p] + " ");
+			}
+			System.out.println();
+		}
+		return slotStateMatrix;
+	}
+
+
+
 
 	private void printMatrix(Board board){
 		for (int i = 0;i<board.getBoard().length;i++){
@@ -507,7 +288,6 @@ public class MiniMax {
 	}
 
 	public void setDepth(int depth) {
-		System.out.println("HELLO THERE!");
 		this.maxDepth = depth;
 	}
 }

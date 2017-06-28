@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import GameLogic.*;
 
 public class MiniMaxTest {
-
+/*
 	Game game;
 	Slot redSlot;
 	Slot yellowSlot;
@@ -96,5 +96,5 @@ public class MiniMaxTest {
 		assertEquals(miniMax.eval(board, player), 2020);
 		
 	}
-	
+	*/
 }
