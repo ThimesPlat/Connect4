@@ -179,7 +179,7 @@ public class Main extends Application implements Observer{
         this.usersTurn.setLayoutY(startGame.getLayoutY()+100);
         this.startGame.setVisible(true);
         this.difficultyLevelLabel.setVisible(true);
-        this.textField.setText("");
+        this.textField.setText("2");
         this.textField.setVisible(true);
         startWinningAnimation();
     }
@@ -193,7 +193,7 @@ public class Main extends Application implements Observer{
         this.layout.getChildren().add(difficultyLevelLabel);
         difficultyLevelLabel.setLayoutX(windowWidth/2-80);
 
-        this.textField = new TextField();
+        this.textField = new TextField("2");
         this.textField.setLayoutY(30);
         this.textField.setScaleX(2);
         this.textField.setScaleY(2);
@@ -217,6 +217,7 @@ public class Main extends Application implements Observer{
     @Override
     public void update(Observable o, Object arg) {
         Platform.runLater(() -> {
+            System.out.println("UPDATED");
             GameStatus newGameStatus = game.getGameStatus();
             Slot newlyChangedSlot = newGameStatus.getChangedSlot();
             Color color = (newlyChangedSlot.getSlotState() == SlotState.RED) ? Color.RED : Color.YELLOW;

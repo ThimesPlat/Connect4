@@ -57,6 +57,16 @@ public class Game extends Observable implements Observer {
         while(!gameStatus.isGameOver()) {
             newMove();
             setCurrentPlayer();
+            delay(10);
+
+        }
+    }
+
+    private void delay(int delay){
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -92,12 +102,7 @@ public class Game extends Observable implements Observer {
         }
         gameStatus.setBoard(board);
 		//setCurrentPlayer();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        //newMove();
+      //  newMove();
 
     }
 
