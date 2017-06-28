@@ -8,10 +8,7 @@ import GameLogic.SlotState;
 public class MiniMax {
 
 	private Game game;
-	// private Board board;
 	private int maxDepth;
-	int hejsan  = 0;
-	private int roflcopter = 0;
 
 	public MiniMax(Game game) {
 		this.game = game;
@@ -20,7 +17,6 @@ public class MiniMax {
 
 	// decide which column we have to pick
 	public int calcValue(Player player) {
-		System.out.println("MAX DEPTH: " + maxDepth);
 		int count = 0;
 		for (int row = 0; row < 6; row++) {
 			for (int col = 0; col < 7; col++) {
@@ -44,6 +40,7 @@ public class MiniMax {
 		// If it is not the first round, return negamax
 
 		player = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
+
 		return negamax(this.game, -100000, 0, player);
 
 	}
@@ -51,7 +48,6 @@ public class MiniMax {
 	// calls it self and returns the best column that player will choose
 	private int negamax(Game newlySimulatedGame, int alpha, int depth, Player player) {
 		Slot currentSlot;
-		roflcopter++;
 		int bestPath = 0;
 		int bestValue = alpha;
 
@@ -476,6 +472,11 @@ public class MiniMax {
 				}
 			}
 		}
+		System.out.println();
+		System.out.println();
+		System.out.println("Player: " + player.getColor());
+		System.out.println("Value: " + value);
+		printMatrix(board);
 		return value;
 	}
 

@@ -68,13 +68,9 @@ public class Game extends Observable implements Observer {
         int column = miniMax.calcValue(currentPlayer);
 
     	Slot slot;
-        if(validateMove(column)) {
+        if(validateMove(column))
             slot = discDrop(column);
-            System.out.println();
-            System.out.println();
-
-        } else return;
-
+        else return;
 
     	if (checkWin(slot)) {
             gameStatus.setGameOver(true);
@@ -96,11 +92,6 @@ public class Game extends Observable implements Observer {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        /*
-        setChanged();
-        notifyObservers();
-        */
-        System.out.println("NEW MOVE");
         newMove();
 
     }

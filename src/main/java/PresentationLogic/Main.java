@@ -73,10 +73,6 @@ public class Main extends Application implements Observer{
                 }
             });
             thread.start();
-          //  thread.run();
-       //     game.startGame();       // start the simulation
-            //Slot slot = new Slot(S)
-            System.out.println("AASASDASDASDASDASDASDLOOOL");
             this.textField.setVisible(false);
             this.difficultyLevelLabel.setVisible(false);
             this.startGame.setVisible(false);
@@ -97,13 +93,10 @@ public class Main extends Application implements Observer{
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();
         primaryStage.show();
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                System.out.println("Closing Application...");
-                Platform.exit();
-                System.exit(0);
-            }
+        primaryStage.setOnCloseRequest(event -> {
+            System.out.println("Closing Application...");
+            Platform.exit();
+            System.exit(0);
         });
     }
 /*
@@ -224,14 +217,12 @@ public class Main extends Application implements Observer{
     @Override
     public void update(Observable o, Object arg) {
         Platform.runLater(() -> {
-            System.out.println("updated...");
             GameStatus newGameStatus = game.getGameStatus();
             Slot newlyChangedSlot = newGameStatus.getChangedSlot();
             Color color = (newlyChangedSlot.getSlotState() == SlotState.RED) ? Color.RED : Color.YELLOW;
             board.changeCircleColor(newlyChangedSlot.getRow(), newlyChangedSlot.getColumn(), color);
             turn = (game.getGameStatus().getCurrentPlayer().getColor() == SlotState.RED) ? 2 : 1;
             Main.this.changeLabel(turn, newGameStatus.isGameOver(), newGameStatus.getWinner());
-            System.out.println("button is clicked");
         });
 
 
