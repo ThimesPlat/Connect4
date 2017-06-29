@@ -58,17 +58,20 @@ public class MiniMaxTest extends TestDataProvider {
 
 	// Diagonal test Open ended Right & Left
     @Test
-	public void testDiagonalThreeOpenended () {
+	public void testDiagonalThreeOpenEnded () {
 		board = testingBoardDiagonalThree;
 		player = SlotState.RED;
-
 		assertEquals(miniMax.checkDiagonal3inRowOpenEndedRight(board, player), 4000);
 		assertEquals(miniMax.checkDiagonal3inRowOpenEndedLeft(board, player), 4000);
-
-
-
 	}
 
+	// Diagonal test Two in a row Right & Left
+    @Test
+    public void testDiagonalTwoRow() {
+	    board = testingBoardDiagonalThree;
+	    player = SlotState.RED;
+	    assertEquals(miniMax.checkDiagonal2inRowLeft(board,player), 20);
+    }
 
 
 

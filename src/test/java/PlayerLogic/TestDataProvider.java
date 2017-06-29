@@ -17,6 +17,7 @@ public class TestDataProvider {
     SlotState player;
     SlotState[][] board;
 
+    // Horizontal
     protected final SlotState[][] testingBoardHorizontalThree = {
             {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
             {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
@@ -44,6 +45,7 @@ public class TestDataProvider {
             {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, redSlot}
     };
 
+    // Vertical
     protected final SlotState[][] testingBoardVerticalTwo = {
             {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
             {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
@@ -62,12 +64,13 @@ public class TestDataProvider {
             {redSlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot}
     };
 
+    // Diagonal
     protected final SlotState[][] testingBoardDiagonalThree = {
             {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
             {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
-            {emptySlot, emptySlot, emptySlot, redSlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, redSlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
             {emptySlot, emptySlot, emptySlot, emptySlot, redSlot, emptySlot, emptySlot},
-            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, redSlot, emptySlot},
             {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot}
     };
 }
