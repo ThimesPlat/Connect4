@@ -1,59 +1,50 @@
 package PlayerLogic;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import GameLogic.*;
 
 public class MiniMaxTest {
-/*
+
 	Game game;
-	Slot redSlot;
-	Slot yellowSlot;
-	Slot emptySlot;
 	MiniMax miniMax;
 
-    @Mock
-    protected Slot mockYellowSlot = mock(Slot.class);
-    @Mock
-    protected Slot mockRedSlot = mock(Slot.class);
-    @Mock
-    protected static Slot mockEmptySlot = mock(Slot.class);
+    protected SlotState yellowSlot = SlotState.YELLOW;
+    protected SlotState redSlot = SlotState.RED;
+    protected  SlotState emptySlot = SlotState.EMPTY;
 
-    Player player;
-    Board board;
+    SlotState player;
+    SlotState[][] board;
     
-    protected  final Slot[][] testingBoardHorizontalThree = {
-            {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockRedSlot,mockRedSlot,mockRedSlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot}
+    protected  final SlotState[][] testingBoardHorizontalThree = {
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {redSlot, redSlot, redSlot, emptySlot, emptySlot, emptySlot, emptySlot}
         } ;
-    protected  final Slot[][] testingBoardVerticalThree = {
-            {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockRedSlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockRedSlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockRedSlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot}
+    protected  final SlotState[][] testingBoardVerticalTwo = {
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {redSlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {redSlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot}
         } ;
     
-    protected  final Slot[][] testingBoardDiagonalThree = {
-            {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockEmptySlot,mockEmptySlot,mockRedSlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockEmptySlot,mockRedSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-            {mockRedSlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot}
+    protected  final SlotState[][] testingBoardDiagonalThree = {
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, redSlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, redSlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {redSlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot}
         } ;
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
@@ -61,13 +52,9 @@ public class MiniMaxTest {
 
 	@Before
 	public void setUp() throws Exception {
-        when(mockYellowSlot.getSlotState()).thenReturn(SlotState.YELLOW);
-        when(mockRedSlot.getSlotState()).thenReturn(SlotState.RED);
-        when(mockEmptySlot.getSlotState()).thenReturn(SlotState.EMPTY);
 		game = new Game();
-		board = new Board();
+		board = new SlotState[6][7];
 		miniMax = new MiniMax(game);
-		player = new Player(SlotState.RED);
 		
 
 	}
@@ -77,24 +64,28 @@ public class MiniMaxTest {
 	}
 
 	@Test
-	public void testVertical() {
-		board.setBoard(testingBoardVerticalThree);
-		assertEquals(miniMax.eval(board, player), 1010);
+	public void testVerticalTwo() {
+	    board = testingBoardVerticalTwo;
+	    player = SlotState.RED;
+		assertEquals(miniMax.checkVertical2inRow(board, player), 10);
+
 		
 	}
 	@Test
-	public void testHorizontal() {
-		board.setBoard(testingBoardHorizontalThree);
-		assertEquals(miniMax.eval(board, player), 3030);
+	public void testHorizontalThree() {
+		board = testingBoardHorizontalThree;
+        player = SlotState.RED;
+
+		assertEquals(miniMax.checkHorizontal3inRow(board, player), 3000);
 		
 	}
 	
-	
+	/*
 	@Test
 	public void testDiagonal() {
-		board.setBoard(testingBoardDiagonalThree);
+		board = testingBoardDiagonalThree;
 		assertEquals(miniMax.eval(board, player), 2020);
 		
-	}
-	*/
+	}*/
+
 }

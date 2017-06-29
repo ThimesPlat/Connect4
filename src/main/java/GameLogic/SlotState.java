@@ -4,5 +4,7 @@ package GameLogic ;
  */
 
 public enum SlotState {
-    RED, YELLOW, EMPTY
+    RED, YELLOW, EMPTY;
+
+
 }

@@ -132,8 +132,10 @@ public class MiniMax {
 
 		int value = 0;
         System.out.println("Player: " + player);
-        value+= checkHorizontal2inRow(board, player);
-		value+= checkHorizontal3inRow(board, player);
+       // value+= checkHorizontal2inRow(board, player);
+	//	value+= checkHorizontal3inRow(board, player);
+
+		value+= checkVertical2inRow(board, player);
 		System.out.println("VALUE: "+value);
         System.out.println();
         System.out.println();
@@ -208,7 +210,7 @@ public class MiniMax {
 	}
 
 
-	private int checkHorizontal3inRow(SlotState[][] board, SlotState player) {
+	public int checkHorizontal3inRow(SlotState[][] board, SlotState player) {
 		int value = 0;
 		int h = 3;
 		int threeInRow = 1000;
@@ -262,9 +264,29 @@ public class MiniMax {
 	/*
 	 * Vertical
 	 */
-	private int checkVertical2inRow(SlotState[][] board, SlotState player, int value) {
+	public int checkVertical2inRow(SlotState[][] board, SlotState player) {
+		System.out.println(player);
 		int v = 1;
 		int twoInRow = 10;
+		int value = 0;
+
+		for (int row = 5; row > 2; row--) {
+			for (int column = 0; column < 7; column++) {
+				// 0
+				// 0
+				// x
+				// x
+				if (board[row][column] == player &&
+					board[row-1][column] == player &&
+					board[row-2][column] == isEmpty &&
+					board[row-3][column] == isEmpty
+						) {
+					value += twoInRow * v;
+					System.out.format("0%n0%nx%nx");
+
+				}
+			}
+		}
 		return value;
 	}
 	private int checkVertical3inRow(SlotState[][] board, SlotState player, int value) {
