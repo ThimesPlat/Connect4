@@ -27,12 +27,12 @@ public class TestDataProvider {
     };
 
     protected final SlotState[][] testingBoardHorizontalTwo = {
-            {redSlot, redSlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
-            {redSlot, emptySlot, redSlot, emptySlot, emptySlot, emptySlot, emptySlot},
-            {redSlot, emptySlot, emptySlot, redSlot, emptySlot, emptySlot, emptySlot},
-            {emptySlot, redSlot, redSlot, emptySlot, emptySlot, emptySlot, emptySlot},
-            {emptySlot, redSlot, emptySlot, redSlot, emptySlot, emptySlot, emptySlot},
-            {emptySlot, emptySlot, redSlot, redSlot, emptySlot, emptySlot, emptySlot}
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, redSlot, emptySlot, redSlot}
     };
 
     protected final SlotState[][] testingBoardVerticalTwo = {
