@@ -72,6 +72,7 @@ public class MiniMax {
 			bestValue = 0;
 		} else if (depth == maxDepth) {
 			SlotState[][] slotStateMatrix = generateSlotStateMatrix(copiedGame.getGameStatus().getBoard());
+
 			int score = (eval(slotStateMatrix, player.getColor()));
 			if (score != 0) {
 				bestValue = playerFactor * (score-depth);
@@ -132,10 +133,11 @@ public class MiniMax {
 
 		int value = 0;
         System.out.println("Player: " + player);
-       // value+= checkHorizontal2inRow(board, player);
-	//	value+= checkHorizontal3inRow(board, player);
-
+        value+= checkHorizontal2inRow(board, player);
+	    value+= checkHorizontal3inRow(board, player);
 		value+= checkVertical2inRow(board, player);
+        value+= checkDiagonal3inRowOpenEndedLeft(board, player);
+        value+= checkDiagonal3inRowOpenEndedRight(board, player);
 		System.out.println("VALUE: "+value);
         seperateStuff();
         return value;

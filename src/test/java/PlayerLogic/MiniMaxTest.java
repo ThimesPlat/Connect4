@@ -52,7 +52,7 @@ public class MiniMaxTest extends TestDataProvider {
 		
 	}
 
-	// Diagonal
+	// Diagonal test Open ended Right & Left
     @Test
 	public void testDiagonalThreeOpenended () {
 		board = testingBoardDiagonalThree;
@@ -60,6 +60,7 @@ public class MiniMaxTest extends TestDataProvider {
 
 		assertEquals(miniMax.checkDiagonal3inRowOpenEndedRight(board, player), 4000);
 		assertEquals(miniMax.checkDiagonal3inRowOpenEndedLeft(board, player), 4000);
+
 
 
 	}
