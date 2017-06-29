@@ -150,7 +150,6 @@ public class MiniMax {
 	/*
 	 * Horizontal
 	 */
-
 	private int checkHorizontal2inRow(SlotState[][] board, SlotState player) {
 	    int value = 0;
 		int h = 3;
@@ -211,7 +210,6 @@ public class MiniMax {
 		}
 		return value;
 	}
-
 
 	private int checkHorizontal3inRow(SlotState[][] board, SlotState player) {
 		int value = 0;
@@ -557,17 +555,41 @@ public class MiniMax {
 	}
 
 	private int checkDiagonal3inRowOpenEndedLeft(SlotState[][] board, SlotState player) {
+		//diag (\)(X000X)
         int value = 0;
 		int d = 2;
 		int threeInRow = 1000;
+        for (int row=0; row< board.length-4;row++) {
+            for (int column = 0; column < board[0].length-4; column++) {
+                if (board[row][column] == isEmpty &&
+                        board[row + 1][column + 1] == player &&
+                        board[row + 2][column + 2] == player &&
+                        board[row + 3][column + 3] == player &&
+                        board[row + 4][column + 4] == isEmpty) {
+                    value += 2 * threeInRow * d;
+                }
+            }
+        }
+
 
 		return value;
 	}
 	private int checkDiagonal3inRowOpenEndedRight(SlotState[][] board, SlotState player) {
+		//diag (/)(X000X)
 	    int value = 0;
 		int d = 2;
 		int threeInRow = 1000;
-
+		for (int row=0; row< board.length-4;row++) {
+            for (int column = 4; column < board[0].length; column++) {
+                if (board[row][column] == isEmpty &&
+                        board[row + 1][column - 1] == player &&
+                        board[row + 2][column - 2] == player &&
+                        board[row + 3][column - 3] == player &&
+                        board[row + 4][column - 4] == isEmpty) {
+                    value += 2 * threeInRow * d;
+                }
+            }
+        }
 		return value;
 	}
 
