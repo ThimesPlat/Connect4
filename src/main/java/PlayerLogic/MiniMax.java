@@ -9,11 +9,12 @@ public class MiniMax {
 
 	private Game game;
 	private int maxDepth;
+	Player currentPlayer;
 	int roflcoptr = 0;
 	SlotState isEmpty = SlotState.EMPTY;
 
 	public MiniMax(Game game) {
-
+		currentPlayer = game.getGameStatus().getCurrentPlayer();
 		this.game = game;
 
 		maxDepth = 0;
@@ -33,37 +34,37 @@ public class MiniMax {
 		}
 		// Natural to put in 3rd column as middle as possible
 		if (count <= 1) {
-			if (this.game.getGameStatus().getBoard().getSlot(5, 2).getSlotState().equals(SlotState.RED)) {
-				return 4;
-			} else if (this.game.getGameStatus().getBoard().getSlot(5, 4).getSlotState().equals(SlotState.RED)) {
-				return 2;
-			} else {
-				return 3;
-			}
+			return 3;
 		}
+
 		// If it is not the first round, return negamax
-
-
-		player = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
-
 		return minimax(this.game, 0, player);
 
 	}
+
 
 	private int minimax(Game newlySimulatedGame, int depth, Player player) {
 		Slot currentSlot;
 		int bestPath = 0;
 		int bestValue = 0;
+		Player otherPlayer = (currentPlayer.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 
-		Game copiedGame = new Game();
-		copiedGame.setBoard(newlySimulatedGame.getGameStatus().getBoard());
-		copiedGame.getGameStatus().setChangedSlot(newlySimulatedGame.getGameStatus().getChangedSlot());
-		copiedGame.getGameStatus().setCurrentPlayer(newlySimulatedGame.getGameStatus().getCurrentPlayer());
+		if(depth == maxDepth) {
+			eval(generateSlotStateMatrix(newlySimulatedGame.getGameStatus().getBoard()), player.getColor());
+		}
+		else if(newlySimulatedGame.getGameStatus().getCurrentPlayer().getColor() == currentPlayer.getColor()) {
+			int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
+		}
+		else {
+			int value = -minimax(newlySimulatedGame, depth + 1, otherPlayer);
 
-		if(player.getColor() == SlotState.RED) {
-			
 		}
 		return 1;
+	}
+
+	private int result() {
+
+		return result;
 	}
 
 	// calls it self and returns the best column that player will choose
