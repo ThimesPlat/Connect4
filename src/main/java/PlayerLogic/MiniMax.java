@@ -153,7 +153,7 @@ public class MiniMax {
 	 * Horizontal
 	 */
 
-	private int checkHorizontal2inRow(SlotState[][] board, SlotState player) {
+	public int checkHorizontal2inRow(SlotState[][] board, SlotState player) {
 	    int value = 0;
 		int h = 3;
 		int twoInRow = 10;
@@ -309,17 +309,36 @@ public class MiniMax {
 		}
 		return value;
 	}
-	private int checkVertical3inRow(SlotState[][] board, SlotState player) {
+	public int checkVertical3inRow(SlotState[][] board, SlotState player) {
         int value = 0;
 		int v = 1;
 		int threeInRow = 1000;
+
+
+		for (int row = 5; row > 2; row--) {
+			for (int column = 0; column < 7; column++) {
+				// 0
+				// x
+				// x
+				// x
+				if (board[row][column] == player &&
+					board[row-1][column] == player &&
+					board[row-2][column] == player &&
+					board[row-3][column] == isEmpty
+						) {
+					value += threeInRow * v;
+					System.out.format("0%n0%nx%nx");
+
+				}
+			}
+		}
 		return value;
 	}
 
 	/*
  	* Diagonal
  	*/
-	private int checkDiagonal2inRowRight(SlotState[][] board, SlotState player) {
+	public int checkDiagonal2inRowRight(SlotState[][] board, SlotState player) {
         int value = 0;
 		int d = 2;
 		int twoInRow = 10;
@@ -393,7 +412,7 @@ public class MiniMax {
         return value;
 	}
 
-    private int checkDiagonal2inRowLeft(SlotState[][] board, SlotState player) {
+	public int checkDiagonal2inRowLeft(SlotState[][] board, SlotState player) {
         int value = 0;
         int d = 2;
         int twoInRow = 10;
@@ -472,7 +491,7 @@ public class MiniMax {
  *   x     x     0     x
  *    x     x     x     0
  */
-	private int checkDiagonal3inRowLeft(SlotState[][] board, SlotState player) {
+	public int checkDiagonal3inRowLeft(SlotState[][] board, SlotState player) {
         int value = 0;
         int d = 2;
         int twoInRow = 10;
@@ -524,7 +543,7 @@ public class MiniMax {
         }
         return value;
 	}
-	private int checkDiagonal3inRowRight(SlotState[][] board, SlotState player) {
+	public int checkDiagonal3inRowRight(SlotState[][] board, SlotState player) {
         int value = 0;
         int d = 2;
         int twoInRow = 10;
@@ -577,14 +596,14 @@ public class MiniMax {
         return value;
 	}
 
-	private int checkDiagonal3inRowOpenEndedLeft(SlotState[][] board, SlotState player) {
+	public int checkDiagonal3inRowOpenEndedLeft(SlotState[][] board, SlotState player) {
         int value = 0;
 		int d = 2;
 		int threeInRow = 1000;
 
 		return value;
 	}
-	private int checkDiagonal3inRowOpenEndedRight(SlotState[][] board, SlotState player) {
+	public int checkDiagonal3inRowOpenEndedRight(SlotState[][] board, SlotState player) {
 	    int value = 0;
 		int d = 2;
 		int threeInRow = 1000;
