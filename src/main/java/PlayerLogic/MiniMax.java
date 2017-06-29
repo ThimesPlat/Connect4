@@ -298,6 +298,14 @@ public class MiniMax {
 	/*
  	* Diagonal
  	*/
+
+    /**
+     * Check for diagonal spaced 2-in-a-row (/).
+     *    0     x      x     x      0      0
+     *   0     0      x     0      x      x
+     *  x     0      0     x      0      x
+     * x     x      0     0      x      0
+     */
 	private int checkDiagonal2inRowRight(SlotState[][] board, SlotState player) {
         int value = 0;
 		int d = 2;
