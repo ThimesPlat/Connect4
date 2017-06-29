@@ -44,8 +44,6 @@ public class MiniMax {
 
 
 	private int minimax(Game newlySimulatedGame, int depth, Player player) {
-		Slot currentSlot;
-		int bestPath = 0;
 		int bestValue = 0;
 		Player otherPlayer = (currentPlayer.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 
@@ -53,19 +51,34 @@ public class MiniMax {
 			eval(generateSlotStateMatrix(newlySimulatedGame.getGameStatus().getBoard()), player.getColor());
 		}
 		else if(newlySimulatedGame.getGameStatus().getCurrentPlayer().getColor() == currentPlayer.getColor()) {
-			int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
+			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard().length; column++) {
+				if(newlySimulatedGame.validateMove(column)) {
+					Slot slot = newlySimulatedGame.discDrop(column, otherPlayer);
+					int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
+					newlySimulatedGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY), slot.getRow(), slot.getColumn());
+
+					if (value >= bestValue) {
+						bestValue = value;
+					}
+				}
+			}
 		}
 		else {
-			int value = -minimax(newlySimulatedGame, depth + 1, otherPlayer);
+			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard().length; column++) {
+				if(newlySimulatedGame.validateMove(column)) {
+					Slot slot = newlySimulatedGame.discDrop(column, otherPlayer);
+					int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
+					newlySimulatedGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY), slot.getRow(), slot.getColumn());
 
+					if (value <= bestValue) {
+						bestValue = value;
+					}
+				}
+			}
 		}
-		return 1;
+		return bestValue;
 	}
 
-	private int result() {
-
-		return result;
-	}
 
 	// calls it self and returns the best column that player will choose
 
