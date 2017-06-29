@@ -22,6 +22,8 @@ public abstract class TestDataProvider
     protected Game realTestGame = new Game();
     protected Board realTestBoard = new Board();
     protected Slot realRedSlot = new Slot(SlotState.RED);
+    protected Slot realEmptySlot = new Slot(SlotState.EMPTY);
+
     protected Slot realYellowSlot = new Slot(SlotState.YELLOW);
     protected Board testBoardForValidateWithMockSlots = new Board();
     protected Game validateMoveGame = new Game();
@@ -43,6 +45,17 @@ public abstract class TestDataProvider
             {mockEmptySlot,mockEmptySlot,realYellowSlot,mockEmptySlot, mockEmptySlot, realRedSlot, mockEmptySlot},
             {realYellowSlot,mockEmptySlot,mockEmptySlot,realYellowSlot, realRedSlot, mockEmptySlot, mockEmptySlot},
             {mockRedSlot,realYellowSlot,mockEmptySlot,realRedSlot, mockEmptySlot, mockEmptySlot, mockEmptySlot}
-    } ;
+    };
+
+    protected final Slot[][] testingBoardHorizontalTwo = {
+            {realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot},
+            {realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot},
+            {realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot},
+            {realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot, realRedSlot, realEmptySlot, realEmptySlot},
+            {realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot, realRedSlot, realEmptySlot, realEmptySlot},
+            {realEmptySlot, realEmptySlot, realEmptySlot, realEmptySlot, realRedSlot, realEmptySlot, realEmptySlot}
+    };
+
+
 
 }

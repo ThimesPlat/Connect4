@@ -22,6 +22,7 @@ public class MiniMax {
 
 	// decide which column we have to pick
 	public int calcValue(Player player) {
+
 		int count = 0;
 		for (int row = 0; row < 6; row++) {
 			for (int col = 0; col < 7; col++) {
@@ -38,6 +39,7 @@ public class MiniMax {
 		}
 
 		// If it is not the first round, return negamax
+
 		return minimax(this.game, 0, player);
 
 	}

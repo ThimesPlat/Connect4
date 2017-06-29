@@ -53,6 +53,18 @@ public class BoardTest extends TestDataProvider
     {
 
     }
+    @Test
+    public void verticalWin(){
+        Game game = new Game();
+        Board board = new Board();
+        board.setBoard(testingBoardHorizontalTwo);
+        game.setBoard(board);
+        Slot newSlot = new Slot(SlotState.YELLOW);
+        newSlot.setRow(2);
+        newSlot.setColumn(4);
+        assertEquals(game.checkVertical(newSlot),false);
+
+    }
 
     @Test
     public void getSlot()
