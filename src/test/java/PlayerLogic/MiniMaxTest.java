@@ -56,6 +56,20 @@ public class MiniMaxTest extends TestDataProvider {
 	    assertEquals(miniMax.checkHorizontal3inRowOpenEnded(board,player), 6000);
     }
 
+	// Diagonal test Open ended Right & Left
+    @Test
+	public void testDiagonalThreeOpenended () {
+		board = testingBoardDiagonalThree;
+		player = SlotState.RED;
+
+		assertEquals(miniMax.checkDiagonal3inRowOpenEndedRight(board, player), 4000);
+		assertEquals(miniMax.checkDiagonal3inRowOpenEndedLeft(board, player), 4000);
+
+
+
+	}
+
+
 
 
 }
