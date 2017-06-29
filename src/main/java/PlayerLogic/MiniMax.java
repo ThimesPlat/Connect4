@@ -214,7 +214,6 @@ public class MiniMax {
 		return value;
 	}
 
-
 	public int checkHorizontal3inRow(SlotState[][] board, SlotState player) {
 		int value = 0;
 		int h = 3;
@@ -260,7 +259,7 @@ public class MiniMax {
 
 		return value;
 	}
-	private int checkHorizontal3inRowOpenEnded(SlotState[][] board, SlotState player) {
+	public int checkHorizontal3inRowOpenEnded(SlotState[][] board, SlotState player) {
         int value = 0;
 		int h = 3;
 		int threeInRow = 1000;
@@ -338,6 +337,14 @@ public class MiniMax {
 	/*
  	* Diagonal
  	*/
+
+    /**
+     * Check for diagonal spaced 2-in-a-row (/).
+     *    0     x      x     x      0      0
+     *   0     0      x     0      x      x
+     *  x     0      0     x      0      x
+     * x     x      0     0      x      0
+     */
 	public int checkDiagonal2inRowRight(SlotState[][] board, SlotState player) {
         int value = 0;
 		int d = 2;
@@ -543,17 +550,25 @@ public class MiniMax {
         }
         return value;
 	}
+
+    /**
+     * Check for diagonal spaced 3-in-a-row (/).
+     *    0     x      x     x
+     *   x     0      x     x
+     *  x     x      0     x
+     * x     x      x     0
+     */
 	public int checkDiagonal3inRowRight(SlotState[][] board, SlotState player) {
         int value = 0;
         int d = 2;
         int twoInRow = 10;
 
         for (int row = 0; row < board.length-3; row++) {
-            for (int column = 0; column < board[0].length-3; column++) {
+            for (int column = 3; column < board[0].length; column++) {
                 if (board[row][column] == isEmpty &&
-                        board[row+1][column+1] == player &&
-                        board[row+2][column+2] == player &&
-                        board[row+3][column+3] == player){
+                        board[row+1][column-1] == player &&
+                        board[row+2][column-2] == player &&
+                        board[row+3][column-3] == player){
                     System.out.println("   (0)");
                     System.out.println("  (x)");
                     System.out.println(" (x)");
@@ -561,33 +576,33 @@ public class MiniMax {
                     value+=twoInRow*d;
                 }
                 else if (board[row][column] == player &&
-                        board[row+1][column+1] == isEmpty &&
-                        board[row+2][column+2] == player &&
-                        board[row+3][column+3] == player){
-                    System.out.println("(x)");
-                    System.out.println(" (0)");
-                    System.out.println("  (x)");
+                        board[row+1][column-1] == isEmpty &&
+                        board[row+2][column-2] == player &&
+                        board[row+3][column-3] == player){
                     System.out.println("   (x)");
-                    value+=twoInRow*d;
-                }
-                else if (board[row][column] == player &&
-                        board[row+1][column+1] == player &&
-                        board[row+2][column+2] == isEmpty &&
-                        board[row+3][column+3] == player){
-                    System.out.println("(x)");
-                    System.out.println(" (x)");
                     System.out.println("  (0)");
-                    System.out.println("   (x)");
+                    System.out.println(" (x)");
+                    System.out.println("(x)");
                     value+=twoInRow*d;
                 }
                 else if (board[row][column] == player &&
-                        board[row+1][column+1] == player &&
-                        board[row+2][column+2] == player &&
-                        board[row+3][column+3] == isEmpty){
-                    System.out.println("(x)");
-                    System.out.println(" (x)");
+                        board[row+1][column-1] == player &&
+                        board[row+2][column-2] == isEmpty &&
+                        board[row+3][column-3] == player){
+                    System.out.println("   (x)");
                     System.out.println("  (x)");
-                    System.out.println("   (0)");
+                    System.out.println(" (0)");
+                    System.out.println("(x)");
+                    value+=twoInRow*d;
+                }
+                else if (board[row][column] == player &&
+                        board[row+1][column-1] == player &&
+                        board[row+2][column-2] == player &&
+                        board[row+3][column-3] == isEmpty){
+                    System.out.println("   (x)");
+                    System.out.println("  (x)");
+                    System.out.println(" (x)");
+                    System.out.println("(0)");
                     value+=twoInRow*d;
                 }
 
@@ -596,18 +611,44 @@ public class MiniMax {
         return value;
 	}
 
+
 	public int checkDiagonal3inRowOpenEndedLeft(SlotState[][] board, SlotState player) {
+		//diag (\)(X000X)
         int value = 0;
 		int d = 2;
 		int threeInRow = 1000;
+        for (int row=0; row< board.length-4;row++) {
+            for (int column = 0; column < board[0].length-4; column++) {
+                if (board[row][column] == isEmpty &&
+                        board[row + 1][column + 1] == player &&
+                        board[row + 2][column + 2] == player &&
+                        board[row + 3][column + 3] == player &&
+                        board[row + 4][column + 4] == isEmpty) {
+                    value += 2 * threeInRow * d;
+                }
+            }
+        }
+
 
 		return value;
 	}
+
 	public int checkDiagonal3inRowOpenEndedRight(SlotState[][] board, SlotState player) {
+		//diag (/)(X000X)
 	    int value = 0;
 		int d = 2;
 		int threeInRow = 1000;
-
+		for (int row=0; row< board.length-4;row++) {
+            for (int column = 4; column < board[0].length; column++) {
+                if (board[row][column] == isEmpty &&
+                        board[row + 1][column - 1] == player &&
+                        board[row + 2][column - 2] == player &&
+                        board[row + 3][column - 3] == player &&
+                        board[row + 4][column - 4] == isEmpty) {
+                    value += 2 * threeInRow * d;
+                }
+            }
+        }
 		return value;
 	}
 
