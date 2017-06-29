@@ -46,8 +46,24 @@ public class MiniMax {
 
 		player = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 
-		return negamax(this.game, -100000, 0, player);
+		return minimax(this.game, 0, player);
 
+	}
+
+	private int minimax(Game newlySimulatedGame, int depth, Player player) {
+		Slot currentSlot;
+		int bestPath = 0;
+		int bestValue = 0;
+
+		Game copiedGame = new Game();
+		copiedGame.setBoard(newlySimulatedGame.getGameStatus().getBoard());
+		copiedGame.getGameStatus().setChangedSlot(newlySimulatedGame.getGameStatus().getChangedSlot());
+		copiedGame.getGameStatus().setCurrentPlayer(newlySimulatedGame.getGameStatus().getCurrentPlayer());
+
+		if(player.getColor() == SlotState.RED) {
+			
+		}
+		return 1;
 	}
 
 	// calls it self and returns the best column that player will choose
