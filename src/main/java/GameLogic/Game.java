@@ -19,15 +19,15 @@ public class Game extends Observable implements Observer {
     PlayerLogic.Player p1;
     PlayerLogic.Player p2;
     PlayerLogic.Player currentPlayer;
-    Timer timer;
     int rounds = 0;
 
     MiniMax miniMax;
     int miniMaxDepth = 3;
 
     public void setBoard(Board board) {
+        //this.board.createNewSlots(board);
         this.board = board;
-        this.gameStatus.setBoard(board);
+        this.gameStatus.setBoard(this.board);
     }
 
     public void setGameStatus(GameStatus gameStatus){
@@ -57,7 +57,7 @@ public class Game extends Observable implements Observer {
         while(!gameStatus.isGameOver()) {
             newMove();
             setCurrentPlayer();
-            delay(5);
+            delay(1000);
 
         }
     }
