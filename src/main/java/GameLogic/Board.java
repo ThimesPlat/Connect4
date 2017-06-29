@@ -64,4 +64,14 @@ public class Board {
         this.winningSequence = winningSequence;
     }
 
+    public void createNewSlots(Board board) {
+        for (int row = 0; row < board.getBoard().length; row++) {
+            for (int column = 0; column < board.getBoard()[0].length; column++) {
+                Slot oldSlot = board.getSlot(row,column);
+                Slot newSlot = new Slot(oldSlot.getSlotState(),oldSlot.getRow(),oldSlot.getColumn());
+                this.board[row][column] = null;
+                this.board[row][column] = newSlot;
+            }
+        }
+    }
 }

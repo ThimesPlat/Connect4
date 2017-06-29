@@ -133,11 +133,17 @@ public class MiniMax {
 
 		int value = 0;
         System.out.println("Player: " + player);
-        value+= checkHorizontal2inRow(board, player);
-	    value+= checkHorizontal3inRow(board, player);
-		value+= checkVertical2inRow(board, player);
-        value+= checkDiagonal3inRowOpenEndedLeft(board, player);
-        value+= checkDiagonal3inRowOpenEndedRight(board, player);
+
+        value += checkHorizontal2inRow(board, player);
+	    value += checkHorizontal3inRow(board, player);
+		value += checkVertical2inRow(board, player);
+        value += checkDiagonal3inRowOpenEndedLeft(board, player);
+        value += checkDiagonal3inRowOpenEndedRight(board, player);
+        value += checkDiagonal2inRowRight(board,player);
+        value += checkDiagonal2inRowLeft(board,player);
+        value += checkDiagonal3inRowLeft(board,player);
+        value += checkDiagonal3inRowRight(board,player);
+
 		System.out.println("VALUE: "+value);
         seperateStuff();
         return value;
@@ -303,7 +309,7 @@ public class MiniMax {
 					board[row-3][column] == isEmpty
 						) {
 					value += twoInRow * v;
-					System.out.format("0%n0%nx%nx");
+					System.out.format("(0)%n(0)%n(x)%n(x)%n");
 
 				}
 			}
@@ -352,7 +358,7 @@ public class MiniMax {
 		int d = 2;
 		int twoInRow = 10;
 
-        for (int row = 0; row<board.length; row++) {
+        for (int row = 0; row<board.length-3; row++) {
             for (int column = 3; column < board[0].length; column++) {
                 if (board[row][column] == isEmpty &&
                     board[row+1][column-1] == isEmpty &&
