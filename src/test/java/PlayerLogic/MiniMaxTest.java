@@ -40,14 +40,12 @@ public class MiniMaxTest extends TestDataProvider {
 	public void testHorizontalTwo() {
 		board = testingBoardHorizontalTwo;
 		player = SlotState.RED;
-
 		assertEquals(miniMax.checkHorizontal2inRow(board, player), 30);
 	}
 	@Test
 	public void testHorizontalThree() {
 		board = testingBoardHorizontalThree;
         player = SlotState.RED;
-
 		assertEquals(miniMax.checkHorizontal3inRow(board, player), 15000);
 		
 	}
@@ -55,7 +53,6 @@ public class MiniMaxTest extends TestDataProvider {
     public void testHorizontalOpenEnded() {
 	    board = testingHorizontalThreeOpenEnded;
 	    player = SlotState.RED;
-
 	    assertEquals(miniMax.checkHorizontal3inRowOpenEnded(board,player), 6000);
     }
 
