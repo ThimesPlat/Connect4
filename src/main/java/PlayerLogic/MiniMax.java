@@ -45,43 +45,55 @@ public class MiniMax {
 
 	private int minimax(Game newlySimulatedGame, int depth, Player player) {
 		int bestValue = 0;
+		int bestPath = 0;
 		Player otherPlayer = (currentPlayer.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 
 		if(depth == maxDepth) {
-			eval(generateSlotStateMatrix(newlySimulatedGame.getGameStatus().getBoard()), player.getColor());
+			return eval(generateSlotStateMatrix(newlySimulatedGame.getGameStatus().getBoard()), player.getColor());
 		}
 		else if(newlySimulatedGame.getGameStatus().getCurrentPlayer().getColor() == currentPlayer.getColor()) {
-			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard().length; column++) {
+			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
 				if(newlySimulatedGame.validateMove(column)) {
 					Slot slot = newlySimulatedGame.discDrop(column, otherPlayer);
+					if(newlySimulatedGame.checkWin(slot)) {
+						bestValue = 1000000;
+					}
 					int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
 					newlySimulatedGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY), slot.getRow(), slot.getColumn());
 
 					if (value >= bestValue) {
 						bestValue = value;
+						bestPath = column;
 					}
 				}
 			}
 		}
 		else {
-			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard().length; column++) {
+			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
 				if(newlySimulatedGame.validateMove(column)) {
 					Slot slot = newlySimulatedGame.discDrop(column, otherPlayer);
+					if(newlySimulatedGame.checkWin(slot)) {
+						bestValue = -1000000;
+					}
 					int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
 					newlySimulatedGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY), slot.getRow(), slot.getColumn());
 
 					if (value <= bestValue) {
 						bestValue = value;
+						bestPath = column;
 					}
 				}
 			}
+		}
+		if(depth == 0) {
+			return bestPath;
 		}
 		return bestValue;
 	}
 
 
 	// calls it self and returns the best column that player will choose
-
+/*
 	private int negamax(Game newlySimulatedGame, int alpha, int depth, Player player) {
 		Slot currentSlot;
 
@@ -149,7 +161,7 @@ public class MiniMax {
 			return bestValue;
 		}
 	}
-
+*/
 	public int eval(SlotState[][] board, SlotState player) {
 
         for (int i = 0;i<board.length;i++){
