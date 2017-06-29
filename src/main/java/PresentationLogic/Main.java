@@ -217,7 +217,6 @@ public class Main extends Application implements Observer{
     @Override
     public void update(Observable o, Object arg) {
         Platform.runLater(() -> {
-            System.out.println("UPDATED");
             GameStatus newGameStatus = game.getGameStatus();
             Slot newlyChangedSlot = newGameStatus.getChangedSlot();
             Color color = (newlyChangedSlot.getSlotState() == SlotState.RED) ? Color.RED : Color.YELLOW;

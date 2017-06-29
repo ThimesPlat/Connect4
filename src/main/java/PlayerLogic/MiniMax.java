@@ -121,20 +121,33 @@ public class MiniMax {
 
 	public int eval(SlotState[][] board, SlotState player) {
 
+        for (int i = 0;i<board.length;i++){
+            for (int p = 0;p<board[0].length;p++){
+                System.out.print(board[i][p] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+        System.out.println();
 
 		int value = 0;
-
-		value+= checkHorizontal2inRow(board, player, value);
-		value+= checkHorizontal3inRow(board, player, value);
+        System.out.println("Player: " + player);
+        value+= checkHorizontal2inRow(board, player);
+		value+= checkHorizontal3inRow(board, player);
 		System.out.println("VALUE: "+value);
-		return value;
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("___________________________________________________________________________________");
+        return value;
 	}
 
 	/*
 	 * Horizontal
 	 */
 
-	private int checkHorizontal2inRow(SlotState[][] board, SlotState player, int value) {
+	private int checkHorizontal2inRow(SlotState[][] board, SlotState player) {
+	    int value = 0;
 		int h = 3;
 		int twoInRow = 10;
 		for (int row = 0; row < board.length; row++) {
@@ -195,7 +208,8 @@ public class MiniMax {
 	}
 
 
-	private int checkHorizontal3inRow(SlotState[][] board, SlotState player, int value) {
+	private int checkHorizontal3inRow(SlotState[][] board, SlotState player) {
+		int value = 0;
 		int h = 3;
 		int threeInRow = 1000;
 		for (int row = 0; row < board.length; row++) {
@@ -300,15 +314,11 @@ public class MiniMax {
 	}
 
 	private SlotState [][] generateSlotStateMatrix(Board board){
-		System.out.println(board.getBoard().length);
-		System.out.println(board.getBoard()[0].length);
 		SlotState[][] slotStateMatrix = new SlotState[board.getBoard().length][board.getBoard()[0].length];
 		for (int i = 0;i<board.getBoard().length;i++){
 			for (int p = 0;p<board.getBoard()[0].length;p++){
 				slotStateMatrix[i][p] = board.getSlot(i,p).getSlotState();
-				System.out.print(slotStateMatrix[i][p] + " ");
 			}
-			System.out.println();
 		}
 		return slotStateMatrix;
 	}
