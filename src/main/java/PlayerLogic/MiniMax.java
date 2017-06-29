@@ -286,7 +286,6 @@ public class MiniMax {
 	 * Vertical
 	 */
 	public int checkVertical2inRow(SlotState[][] board, SlotState player) {
-		System.out.println(player);
 		int v = 1;
 		int twoInRow = 10;
 		int value = 0;
