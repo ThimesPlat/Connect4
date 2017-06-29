@@ -70,9 +70,16 @@ public class MiniMaxTest extends TestDataProvider {
     public void testDiagonalTwoRow() {
 	    board = testingBoardDiagonalThree;
 	    player = SlotState.RED;
-	    assertEquals(miniMax.checkDiagonal2inRowLeft(board,player), 20);
+	   // assertEquals(miniMax.checkDiagonal2inRowLeft(board,player), 20);
+        assertEquals(miniMax.checkDiagonal2inRowRight(board,player), 20);
     }
 
-
+    // Diagonal test Three in a row Right & Left
+    @Test
+    public void testDiagonalThreeRow() {
+        board = testingBoardDiagonalThree;
+        player = SlotState.RED;
+        assertEquals(miniMax.checkDiagonal2inRowLeft(board,player), 20);
+    }
 
 }

@@ -67,10 +67,10 @@ public class TestDataProvider {
     // Diagonal
     protected final SlotState[][] testingBoardDiagonalThree = {
             {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
-            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
-            {emptySlot, emptySlot, redSlot, emptySlot, emptySlot, emptySlot, emptySlot},
-            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, redSlot, emptySlot},
             {emptySlot, emptySlot, emptySlot, emptySlot, redSlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
             {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot}
     };
 }
