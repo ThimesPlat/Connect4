@@ -73,4 +73,14 @@ public class TestDataProvider {
             {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
             {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot}
     };
+
+    protected final SlotState[][] testingBoardDiagonalThreeOpenEndedLeft = {
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, redSlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, redSlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, redSlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot},
+            {emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot, emptySlot}
+    };
+
 }
