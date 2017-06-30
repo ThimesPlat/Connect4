@@ -50,40 +50,44 @@ public class MiniMax {
 		int bestValue = 0;
 		int bestPath = 0;
 		Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
-
+		newlySimulatedGame.getGameStatus().setCurrentPlayer(player);
+		//printMatrix(newlySimulatedGame.getGameStatus().getBoard());
 		if(depth == maxDepth) {
 			return eval(generateSlotStateMatrix(newlySimulatedGame.getGameStatus().getBoard()), player.getColor());
 		}
-		else if(newlySimulatedGame.getGameStatus().getCurrentPlayer().getColor() == currentPlayer.getColor()) {	// MAX
+		else if(player.getColor() == currentPlayer.getColor()) {	// MAX
 			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
 				if(newlySimulatedGame.validateMove(column)) {
-					Slot slot = newlySimulatedGame.discDrop(column, otherPlayer);
+					Slot slot = newlySimulatedGame.discDrop(column, player);
 					if(newlySimulatedGame.checkWin(slot)) {
+						printMatrix(newlySimulatedGame.getGameStatus().getBoard());
 						bestValue = 1000000;
+					} else {
+						int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
+						if (value >= bestValue) {
+							bestValue = value;
+							bestPath = column;
+						}
 					}
-					int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
 					newlySimulatedGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY), slot.getRow(), slot.getColumn());
-					if (value >= bestValue) {
-						bestValue = value;
-						bestPath = column;
-					}
 				}
 			}
 		}
 		else { // MIN
 			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
 				if(newlySimulatedGame.validateMove(column)) {
-					Slot slot = newlySimulatedGame.discDrop(column, otherPlayer);
+					Slot slot = newlySimulatedGame.discDrop(column, player);
 					if(newlySimulatedGame.checkWin(slot)) {
 						bestValue = -1000000;
-					}
-					int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
-					newlySimulatedGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY), slot.getRow(), slot.getColumn());
+					} else {
+						int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
 
-					if (value <= bestValue) {
-						bestValue = value;
-						bestPath = column;
+						if (value <= bestValue) {
+							bestValue = value;
+							bestPath = column;
+						}
 					}
+					newlySimulatedGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY), slot.getRow(), slot.getColumn());
 				}
 			}
 		}

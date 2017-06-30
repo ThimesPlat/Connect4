@@ -57,7 +57,7 @@ public class Game extends Observable implements Observer {
         while(!gameStatus.isGameOver()) {
             newMove();
             setCurrentPlayer();
-            delay(1000);
+            delay(500);
 
         }
     }
@@ -127,6 +127,10 @@ public class Game extends Observable implements Observer {
 
 
     public boolean checkWin(Slot slot){
+        boolean hej = checkHorizontal(slot);
+        boolean hej1 = checkVertical(slot);
+        boolean hej2 = checkDiagonal(slot);
+        System.out.println(hej + " "+ hej1 + " " + hej2);
         return checkHorizontal(slot) || checkVertical(slot) || checkDiagonal(slot);
 
     }
@@ -148,10 +152,8 @@ public class Game extends Observable implements Observer {
     	int row = slot.getRow();
     	boolean checkLeft = true;
     	boolean checkRight = true;
-    	
 		Slot currentSlot;
     	SlotState playerColor = gameStatus.getCurrentPlayer().getColor();
-  
     	int counter = 0;
     	while(checkRight) {
     		column++;
@@ -290,6 +292,7 @@ public class Game extends Observable implements Observer {
                 nextSlot.setColumn(column);
                 nextSlot.setRow(i);
                 board.setSlot(nextSlot,nextSlot.getRow(),nextSlot.getColumn());
+                gameStatus.getBoard().setSlot(nextSlot,nextSlot.getRow(),nextSlot.getColumn());
                 return nextSlot;
             }
         }

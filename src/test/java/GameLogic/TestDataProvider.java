@@ -30,12 +30,12 @@ public abstract class TestDataProvider
 
 
     protected  final Slot[][] testingBoardHorizontalWin = {
-        {mockEmptySlot,realRedSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-        {mockEmptySlot,realRedSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-        {mockEmptySlot,realYellowSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-        {mockEmptySlot,realYellowSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-        {realYellowSlot,realYellowSlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
-        {realRedSlot,realYellowSlot,realRedSlot,realRedSlot, realRedSlot, realRedSlot, mockEmptySlot}
+        {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
+        {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
+        {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
+        {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
+        {mockEmptySlot,mockEmptySlot,mockEmptySlot,mockEmptySlot, mockEmptySlot, mockEmptySlot, mockEmptySlot},
+        {mockEmptySlot,mockEmptySlot,realRedSlot,realYellowSlot, realRedSlot, realRedSlot, mockEmptySlot}
     } ;
 
     protected  final Slot[][] testingBoardDiagonalWin = {
