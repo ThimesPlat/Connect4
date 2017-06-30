@@ -49,7 +49,7 @@ public class MiniMax {
 	private int minimax(Game newlySimulatedGame, int depth, Player player) {
 		int bestValue = 0;
 		int bestPath = 0;
-		Player otherPlayer = (currentPlayer.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
+		Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 
 		if(depth == maxDepth) {
 			return eval(generateSlotStateMatrix(newlySimulatedGame.getGameStatus().getBoard()), player.getColor());
