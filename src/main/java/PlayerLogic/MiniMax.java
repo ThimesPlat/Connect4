@@ -15,6 +15,7 @@ public class MiniMax {
 
 	public MiniMax(Game game) {
 		currentPlayer = game.getGameStatus().getCurrentPlayer();
+		System.out.println(currentPlayer.getColor());
 		this.game = game;
 
 		maxDepth = 0;
@@ -94,7 +95,7 @@ public class MiniMax {
 
 
 	public int eval(SlotState[][] board, SlotState player) {
-		player = currentPlayer.getColor();
+		player = currentPlayer.getColor();/*
         for (int i = 0;i<board.length;i++){
             for (int p = 0;p<board[0].length;p++){
                 System.out.print(board[i][p] + " ");
@@ -103,9 +104,9 @@ public class MiniMax {
         }
         System.out.println();
         System.out.println();
-
+*/
 		int value = 0;
-        System.out.println("Player: " + player);
+     //   System.out.println("Player: " + player);
         value += checkHorizontal2inRow(board, player);
 	    value += checkHorizontal3inRow(board, player);
 		value += checkVertical2inRow(board, player);
@@ -115,8 +116,8 @@ public class MiniMax {
         value += checkDiagonal2inRowLeft(board,player);
         value += checkDiagonal3inRowLeft(board,player);
         value += checkDiagonal3inRowRight(board,player);
-		System.out.println("VALUE: "+value);
-        separateStuff();
+	//	System.out.println("VALUE: "+value);
+     //   separateStuff();
         return value;
 	}
 

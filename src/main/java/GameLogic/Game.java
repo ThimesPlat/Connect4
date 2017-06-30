@@ -202,8 +202,6 @@ public class Game extends Observable implements Observer {
             if(!checkMatrixBoundaries(currentRow,column)) break;
             Slot currentSlot = board.getSlot(currentRow,column);
             SlotState slotColor = currentSlot.getSlotState();
-            System.out.println("New slots color: " + slot.getSlotState());
-            System.out.println("Slot under color: " + currentSlot.getSlotState());
             if (slotColor != playerColor) {
                 break;
             }
