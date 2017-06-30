@@ -53,7 +53,7 @@ public class MiniMax {
 		if(depth == maxDepth) {
 			return eval(generateSlotStateMatrix(newlySimulatedGame.getGameStatus().getBoard()), player.getColor());
 		}
-		else if(newlySimulatedGame.getGameStatus().getCurrentPlayer().getColor() == currentPlayer.getColor()) {
+		else if(newlySimulatedGame.getGameStatus().getCurrentPlayer().getColor() == currentPlayer.getColor()) {	// MAX
 			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
 				if(newlySimulatedGame.validateMove(column)) {
 					Slot slot = newlySimulatedGame.discDrop(column, otherPlayer);
@@ -69,7 +69,7 @@ public class MiniMax {
 				}
 			}
 		}
-		else {
+		else { // MIN
 			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
 				if(newlySimulatedGame.validateMove(column)) {
 					Slot slot = newlySimulatedGame.discDrop(column, otherPlayer);
@@ -93,78 +93,8 @@ public class MiniMax {
 	}
 
 
-	// calls it self and returns the best column that player will choose
-/*
-	private int negamax(Game newlySimulatedGame, int alpha, int depth, Player player) {
-		Slot currentSlot;
-
-		int bestPath = 0;
-		int bestValue = alpha;
-
-		Game copiedGame = new Game();
-		copiedGame.setBoard(newlySimulatedGame.getGameStatus().getBoard());
-		copiedGame.getGameStatus().setChangedSlot(newlySimulatedGame.getGameStatus().getChangedSlot());
-		copiedGame.getGameStatus().setCurrentPlayer(newlySimulatedGame.getGameStatus().getCurrentPlayer());
-
-		int playerFactor = (player.getColor() == copiedGame.getGameStatus().getCurrentPlayer().getColor())?1:-1;
-
-		currentSlot = copiedGame.getGameStatus().getChangedSlot();
-		if (copiedGame.checkWin(currentSlot)) {
-			bestValue = playerFactor * (10000000-depth);
-		} else if (copiedGame.checkBoardFull() && !copiedGame.checkWin(currentSlot)) {
-			bestValue = 0;
-		} else if (depth == maxDepth) {
-			SlotState[][] slotStateMatrix = generateSlotStateMatrix(copiedGame.getGameStatus().getBoard());
-
-			int score = (eval(slotStateMatrix, player.getColor()));
-			if (score != 0) {
-				bestValue = playerFactor * (score-depth);
-			} else {
-				bestValue = score-depth;
-			}
-		} else {
-			for (int c = 0; c < 7; c++) {
-				Game simGame = new Game();
-				simGame.setBoard(copiedGame.getGameStatus().getBoard());
-				simGame.getGameStatus().setChangedSlot(copiedGame.getGameStatus().getChangedSlot());
-				simGame.getGameStatus().setCurrentPlayer(copiedGame.getGameStatus().getCurrentPlayer());
-
-				if (depth < maxDepth) {
-					if (simGame.validateMove(c)) {
-						Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
-						Slot slot = simGame.discDrop(c, otherPlayer);
-						simGame.getGameStatus().getBoard().setSlot(slot,slot.getRow(),slot.getColumn());
-						simGame.getGameStatus().setChangedSlot(slot);
-						int value = -negamax(simGame, -100000, depth + 1, otherPlayer);
-
-						if (value >= bestValue) {
-							bestPath = c;
-							bestValue = value;
-						}
-						simGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY),slot.getRow(),slot.getColumn());
-					}
-
-				}
-			}
-
-			//	System.out.println(bestValue);
-			if (depth == 0) {
-				return bestPath;
-			} else {
-				return bestValue;
-			}
-		}
-
-
-		if (depth == 0) {
-			return bestPath;
-		} else {
-			return bestValue;
-		}
-	}
-*/
 	public int eval(SlotState[][] board, SlotState player) {
-
+		player = currentPlayer.getColor();
         for (int i = 0;i<board.length;i++){
             for (int p = 0;p<board[0].length;p++){
                 System.out.print(board[i][p] + " ");

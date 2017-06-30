@@ -234,7 +234,7 @@ public class Game extends Observable implements Observer {
             if (upLeftAndDownRight) tempRow--;
             else tempRow++;
             if(!checkMatrixBoundaries(tempRow,tempCol)) break;
-            if (board.getSlot(tempRow,tempCol).getSlotState()==currentPlayer.getColor()){
+            if (board.getSlot(tempRow,tempCol).getSlotState()==gameStatus.getCurrentPlayer().getColor()){
                 counter++;
                 winningSequence.add(board.getSlot(tempRow,tempCol));
             }
@@ -248,7 +248,7 @@ public class Game extends Observable implements Observer {
             if (upLeftAndDownRight) tempRow++;
             else tempRow--;
             if(!checkMatrixBoundaries(tempRow,tempCol)) break;
-            if (board.getSlot(tempRow,tempCol).getSlotState()==currentPlayer.getColor()){
+            if (board.getSlot(tempRow,tempCol).getSlotState()==gameStatus.getCurrentPlayer().getColor()){
                 counter++;
                 winningSequence.add(board.getSlot(tempRow,tempCol));
             }
