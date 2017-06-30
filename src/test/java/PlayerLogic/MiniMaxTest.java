@@ -70,6 +70,7 @@ public class MiniMaxTest extends TestDataProvider {
 		player = SlotState.RED;
 		assertEquals(miniMax.checkDiagonal3inRowOpenEndedRight(board, player), 4000);
 		assertEquals(miniMax.checkDiagonal3inRowOpenEndedLeft(board, player), 4000);
+
 	}
 
 	// Diagonal test Two in a row Right & Left
