@@ -56,7 +56,6 @@ public class Game extends Observable implements Observer {
        // newMove();
         while(!gameStatus.isGameOver()) {
             newMove();
-            setCurrentPlayer();
             delay(500);
 
         }
@@ -88,7 +87,10 @@ public class Game extends Observable implements Observer {
     	Slot slot;
         if(validateMove(column))
             slot = discDrop(column);
-        else return;
+        else {
+            System.out.println("FAIIIILLLLL");
+            return;
+        }
     	if (checkWin(slot)) {
             gameStatus.setGameOver(true);
 			gameStatus.setWinner(currentPlayer);
@@ -103,6 +105,8 @@ public class Game extends Observable implements Observer {
         gameStatus.setBoard(board);
 		//setCurrentPlayer();
       //  newMove();
+        setCurrentPlayer();
+
 
     }
 
@@ -114,6 +118,8 @@ public class Game extends Observable implements Observer {
     	this.currentPlayer = gameStatus.getCurrentPlayer();
     }
     private Player updateCurrentPlayer(){
+        return (currentPlayer.getColor()==SlotState.RED)? p2:p1;
+        /*
         if (gameStatus.getCurrentPlayer().getColor() == SlotState.RED) {
             return p2;
         }
@@ -122,15 +128,11 @@ public class Game extends Observable implements Observer {
             } else {
                 System.err.println("updateNextPlayer error : gameStatus next player is something inappropriate");
             }
-        return null;
+        return null;*/
     }
 
 
     public boolean checkWin(Slot slot){
-        boolean hej = checkHorizontal(slot);
-        boolean hej1 = checkVertical(slot);
-        boolean hej2 = checkDiagonal(slot);
-        System.out.println(hej + " "+ hej1 + " " + hej2);
         return checkHorizontal(slot) || checkVertical(slot) || checkDiagonal(slot);
 
     }
