@@ -47,7 +47,8 @@ public class MiniMax {
 
 
 	private int minimax(Game newlySimulatedGame, int depth, Player player) {
-		int bestValue = 0;
+
+		int bestValue = (player.getColor() == currentPlayer.getColor()? -1:1000);
 		int bestPath = 0;
 		Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 		newlySimulatedGame.getGameStatus().setCurrentPlayer(player);
@@ -74,6 +75,7 @@ public class MiniMax {
 			}
 		}
 		else { // MIN
+
 			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
 				if(newlySimulatedGame.validateMove(column)) {
 					Slot slot = newlySimulatedGame.discDrop(column, player);
