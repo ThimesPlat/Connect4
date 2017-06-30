@@ -62,7 +62,6 @@ public class MiniMax {
 					}
 					int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
 					newlySimulatedGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY), slot.getRow(), slot.getColumn());
-
 					if (value >= bestValue) {
 						bestValue = value;
 						bestPath = column;
@@ -177,7 +176,6 @@ public class MiniMax {
 
 		int value = 0;
         System.out.println("Player: " + player);
-
         value += checkHorizontal2inRow(board, player);
 	    value += checkHorizontal3inRow(board, player);
 		value += checkVertical2inRow(board, player);
@@ -187,13 +185,12 @@ public class MiniMax {
         value += checkDiagonal2inRowLeft(board,player);
         value += checkDiagonal3inRowLeft(board,player);
         value += checkDiagonal3inRowRight(board,player);
-
 		System.out.println("VALUE: "+value);
-        seperateStuff();
+        separateStuff();
         return value;
 	}
 
-	private void seperateStuff(){
+	private void separateStuff(){
         System.out.println();
         System.out.println();
         System.out.println("___________________________________________________________________________________");

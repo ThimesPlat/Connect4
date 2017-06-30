@@ -1,15 +1,23 @@
 package PlayerLogic;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import GameLogic.*;
+import GameLogic.Game;
+import GameLogic.SlotState;
 
 public class MiniMaxTest extends TestDataProvider {
+	@Test
+	public void checkDiagonal3inRowOpenEndedLeft() throws Exception
+	{
+	}
 
+	@Test
+	public void checkDiagonal3inRowOpenEndedRight() throws Exception
+	{
+	}
 
 
 	@Before
