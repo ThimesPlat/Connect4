@@ -122,8 +122,17 @@ public class MiniMax {
         value += checkDiagonal2inRowLeft(board,player);
         value += checkDiagonal3inRowLeft(board,player);
         value += checkDiagonal3inRowRight(board,player);
-	//	System.out.println("VALUE: "+value);
-     //   separateStuff();
+		System.out.println("PLAYER: " + player);
+		System.out.println("VALUE: "+value);
+		for (int i = 0;i<board.length;i++){
+			for (int p = 0;p<board[0].length;p++){
+				System.out.print(board[i][p] + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+		System.out.println();
+		separateStuff();
         return value;
 	}
 
