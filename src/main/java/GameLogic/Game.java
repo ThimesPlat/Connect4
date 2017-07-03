@@ -85,10 +85,11 @@ public class Game extends Observable implements Observer {
         miniMax.setDepth(miniMaxDepth);
         int column = miniMax.calcValue(currentPlayer);
     	Slot slot;
-        if(validateMove(column))
+        if(validateMove(column)) {
             slot = discDrop(column);
+            System.out.println("A move");
+        }
         else {
-            System.out.println("FAIIIILLLLL");
             return;
         }
     	if (checkWin(slot)) {

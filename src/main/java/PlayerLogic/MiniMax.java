@@ -15,7 +15,7 @@ public class MiniMax {
 
 	public MiniMax(Game game) {
 		currentPlayer = game.getGameStatus().getCurrentPlayer();
-		System.out.println(currentPlayer.getColor());
+		//System.out.println(currentPlayer.getColor());
 		this.game = game;
 
 		maxDepth = 0;
@@ -48,7 +48,7 @@ public class MiniMax {
 
 	private int minimax(Game newlySimulatedGame, int depth, Player player) {
 
-		int bestValue = 0;
+		int bestValue = -110;
 		int bestPath = 0;
 		Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 		newlySimulatedGame.getGameStatus().setCurrentPlayer(player);
@@ -62,8 +62,8 @@ public class MiniMax {
 				if(newlySimulatedGame.validateMove(column)) {
 					Slot slot = newlySimulatedGame.discDrop(column, player);
 					if(newlySimulatedGame.checkWin(slot)) {
-						printMatrix(newlySimulatedGame.getGameStatus().getBoard());
 						bestValue = 1000000;
+						bestPath = column;
 					} else {
 						int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
 						if (value >= bestValue) {
@@ -82,6 +82,7 @@ public class MiniMax {
 					Slot slot = newlySimulatedGame.discDrop(column, player);
 					if(newlySimulatedGame.checkWin(slot)) {
 						bestValue = -1000000;
+						bestPath = column;
 					} else {
 						int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
 
@@ -123,7 +124,7 @@ public class MiniMax {
         value += checkDiagonal2inRowLeft(board,player);
         value += checkDiagonal3inRowLeft(board,player);
         value += checkDiagonal3inRowRight(board,player);
-		System.out.println("PLAYER: " + player);
+	/*	System.out.println("PLAYER: " + player);
 		System.out.println("VALUE: "+value);
 		for (int i = 0;i<board.length;i++){
 			for (int p = 0;p<board[0].length;p++){
@@ -133,7 +134,7 @@ public class MiniMax {
 		}
 		System.out.println();
 		System.out.println();
-		separateStuff();
+		separateStuff();*/
         return value;
 	}
 
