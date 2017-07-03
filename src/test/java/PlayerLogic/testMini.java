@@ -4,7 +4,7 @@ import GameLogic.*;
 
 /**
  * Created by ndg on 2017-06-19.
- */
+ *//*
 public class testMini {
     public static void main(String[] args) {
         Game game = new Game();
@@ -20,3 +20,4 @@ public class testMini {
       //  System.out.print(r);
     }
 }
+*/

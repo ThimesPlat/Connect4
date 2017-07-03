@@ -9,6 +9,7 @@ import GameLogic.Game;
 import GameLogic.SlotState;
 
 public class MiniMaxTest extends TestDataProvider {
+	/*
 	@Test
 	public void checkDiagonal3inRowOpenEndedLeft() throws Exception
 	{
@@ -90,5 +91,5 @@ public class MiniMaxTest extends TestDataProvider {
         //assertEquals(miniMax.checkDiagonal3inRowLeft(board,player), 4000);
         assertEquals(miniMax.checkDiagonal3inRowRight(board,player), 4000);
     }
-
+*/
 }

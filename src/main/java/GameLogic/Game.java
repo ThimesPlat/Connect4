@@ -24,9 +24,14 @@ public class Game extends Observable implements Observer {
     MiniMax miniMax;
     int miniMaxDepth = 3;
 
-    public void setBoard(Board board) {
-        //this.board.createNewSlots(board);
-        this.board = board;
+    public void setBoard(SlotState[][] board) {
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                Slot slot = new Slot(board[i][j], i,j);
+                this.board.setSlot(slot,i,j);
+            }
+        }
         this.gameStatus.setBoard(this.board);
     }
 
@@ -80,14 +85,14 @@ public class Game extends Observable implements Observer {
         Random random = new Random();
         int column = random.nextInt(7);
 */
-
-        miniMax = new MiniMax(this);
+        SlotState[][] slotStateBoard = generateSlotStateMatrix(this.board);
+        miniMax = new MiniMax(slotStateBoard);
         miniMax.setDepth(miniMaxDepth);
         int column = miniMax.calcValue(currentPlayer);
     	Slot slot;
         if(validateMove(column)) {
             slot = discDrop(column);
-            System.out.println("A move");
+          //  System.out.println("A move");
         }
         else {
             return;
@@ -320,6 +325,15 @@ public class Game extends Observable implements Observer {
             }
             System.out.println();
         }
+    }
+    private SlotState [][] generateSlotStateMatrix(Board board){
+        SlotState[][] slotStateMatrix = new SlotState[board.getBoard().length][board.getBoard()[0].length];
+        for (int i = 0;i<board.getBoard().length;i++){
+            for (int p = 0;p<board.getBoard()[0].length;p++){
+                slotStateMatrix[i][p] = board.getSlot(i,p).getSlotState();
+            }
+        }
+        return slotStateMatrix;
     }
 
     @Override

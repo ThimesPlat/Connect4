@@ -13,10 +13,11 @@ public class MiniMax {
 	int roflcoptr = 0;
 	SlotState isEmpty = SlotState.EMPTY;
 
-	public MiniMax(Game game) {
-		currentPlayer = game.getGameStatus().getCurrentPlayer();
+	public MiniMax(SlotState[][] board) {
 		//System.out.println(currentPlayer.getColor());
-		this.game = game;
+		this.game = new Game();
+
+		this.game.setBoard(board);
 
 		maxDepth = 0;
 	}
@@ -24,6 +25,7 @@ public class MiniMax {
 	// decide which column we have to pick
 	public int calcValue(Player player) {
 
+		currentPlayer = player;
 		int count = 0;
 		for (int row = 0; row < 6; row++) {
 			for (int col = 0; col < 7; col++) {
@@ -48,7 +50,7 @@ public class MiniMax {
 
 	private int minimax(Game newlySimulatedGame, int depth, Player player) {
 
-		int bestValue = -110;
+		int bestValue = (player.getColor() == currentPlayer.getColor()? -1:1000);
 		int bestPath = 0;
 		Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 		newlySimulatedGame.getGameStatus().setCurrentPlayer(player);
@@ -61,7 +63,9 @@ public class MiniMax {
 			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
 				if(newlySimulatedGame.validateMove(column)) {
 					Slot slot = newlySimulatedGame.discDrop(column, player);
-					if(newlySimulatedGame.checkWin(slot)) {
+
+					if(newlySimulatedGame.checkWin(slot)) {		// check win horizontal does not work as supposed
+						//printMatrix(newlySimulatedGame.getGameStatus().getBoard());
 						bestValue = 1000000;
 						bestPath = column;
 					} else {
@@ -138,13 +142,13 @@ public class MiniMax {
         return value;
 	}
 
-	private void separateStuff(){
+	/*private void separateStuff(){
         System.out.println();
         System.out.println();
         System.out.println("___________________________________________________________________________________");
         System.out.println();
         System.out.println();
-    }
+    }*/
 
 	/*
 	 * Horizontal
@@ -162,7 +166,7 @@ public class MiniMax {
 					board[row][column + 3] == isEmpty
 						) {
 					value += twoInRow * h;
-					System.out.println("(xx00)");
+					//	System.out.println("(xx00)");
 
 				} //(x0x0)
 				else if(board[row][column] == player &&
@@ -171,7 +175,7 @@ public class MiniMax {
 						board[row][column + 3] == isEmpty
 						) {
 					value += twoInRow * h;
-					System.out.println("(x0x0)");
+					//	System.out.println("(x0x0)");
 				} //(x00x)
 				else if(board[row][column] == player &&
 						board[row][column + 1] == isEmpty &&
@@ -179,7 +183,7 @@ public class MiniMax {
 						board[row][column + 3] == player
 						) {
 					value += twoInRow * h;
-					System.out.println("(x00x)");
+					//System.out.println("(x00x)");
 				} //(0xx0)
 				else if(board[row][column] == isEmpty &&
 						board[row][column + 1] == player &&
@@ -187,7 +191,7 @@ public class MiniMax {
 						board[row][column + 3] == isEmpty
 						) {
 					value += 2 * twoInRow * h;
-					System.out.println("(0xx0)");
+					//System.out.println("(0xx0)");
 				} //(0x0x)
 				else if(board[row][column] == isEmpty &&
 						board[row][column + 1] == player &&
@@ -195,7 +199,7 @@ public class MiniMax {
 						board[row][column + 3] == player
 						) {
 					value += twoInRow * h;
-					System.out.println("(0x0x)");
+					//System.out.println("(0x0x)");
 				} //(00xx)
 				else if(board[row][column] == isEmpty &&
 						board[row][column + 1] == isEmpty &&
@@ -203,7 +207,7 @@ public class MiniMax {
 						board[row][column + 3] == player
 						) {
 					value += twoInRow * h;
-					System.out.println("(00xx)");
+					//System.out.println("(00xx)");
 				}
 			}
 		}
@@ -222,7 +226,7 @@ public class MiniMax {
 					board[row][column + 3] == player
 					) {
 					value += threeInRow * h;
-					System.out.println("(xx0x)");
+					//	System.out.println("(xx0x)");
 
 				} //(x0xx)
 				else if(board[row][column] == player &&
@@ -231,7 +235,7 @@ public class MiniMax {
 						board[row][column + 3] == player
 						) {
 					value += threeInRow * h;
-					System.out.println("(x0xx)");
+					//	System.out.println("(x0xx)");
 				} //(0xxx)
 				else if(board[row][column] == isEmpty &&
 						board[row][column + 1] == player &&
@@ -239,7 +243,7 @@ public class MiniMax {
 						board[row][column + 3] == player
 						) {
 					value += threeInRow * h;
-					System.out.println("(0xxx)");
+					//System.out.println("(0xxx)");
 				} //(xxx0)
 				else if(board[row][column] == player &&
 						board[row][column + 1] == player &&
@@ -247,7 +251,7 @@ public class MiniMax {
 						board[row][column + 3] == isEmpty
 						) {
 					value += threeInRow * h;
-					System.out.println("(xxx0)");
+					//System.out.println("(xxx0)");
 				}
 			}
 		}
@@ -267,7 +271,7 @@ public class MiniMax {
                    board[row][column+3] == player &&
                    board[row][column+4] == isEmpty){{
                        value+=threeInRow*h*2;
-                   System.out.println("(0xxx0)");
+				   // System.out.println("(0xxx0)");
                }}
             }
         }
@@ -296,7 +300,7 @@ public class MiniMax {
 					board[row-3][column] == isEmpty
 						) {
 					value += twoInRow * v;
-					System.out.format("(0)%n(0)%n(x)%n(x)%n");
+					//System.out.format("(0)%n(0)%n(x)%n(x)%n");
 
 				}
 			}
@@ -321,7 +325,7 @@ public class MiniMax {
 					board[row-3][column] == isEmpty
 						) {
 					value += threeInRow * v;
-					System.out.format("0%n0%nx%nx");
+					//	System.out.format("0%n0%nx%nx");
 
 				}
 			}
@@ -350,60 +354,60 @@ public class MiniMax {
                     board[row+1][column-1] == isEmpty &&
                     board[row+2][column-2] == player &&
                     board[row+3][column-3] == player){
-                    System.out.println("   (0)");
-                    System.out.println("  (0)");
-                    System.out.println(" (x)");
-                    System.out.println("(x)");
+					//   System.out.println("   (0)");
+					//   System.out.println("  (0)");
+					//   System.out.println(" (x)");
+					//   System.out.println("(x)");
 					value+=twoInRow*d;
                 }
                 else if(board[row][column] == player &&
                         board[row+1][column-1] == isEmpty &&
                         board[row+2][column-2] == isEmpty &&
                         board[row+3][column-3] == player){
-						System.out.println("   (x)");
-						System.out.println("  (0)");
-						System.out.println(" (0)");
-						System.out.println("(x)");
+					//	System.out.println("   (x)");
+					//	System.out.println("  (0)");
+					//	System.out.println(" (0)");
+					//	System.out.println("(x)");
                     value+=twoInRow*d;
                 }
                 else if(board[row][column] == player &&
                         board[row+1][column-1] == player &&
                         board[row+2][column-2] == isEmpty &&
                         board[row+3][column-3] == isEmpty){
-						System.out.println("   (x)");
-						System.out.println("  (x)");
-						System.out.println(" (0)");
-						System.out.println("(0)");
+					//System.out.println("   (x)");
+					//	System.out.println("  (x)");
+					//	System.out.println(" (0)");
+					//	System.out.println("(0)");
                     value+=twoInRow*d;
                 }
                 else if(board[row][column] == player &&
                         board[row+1][column-1] == isEmpty &&
                         board[row+2][column-2] == player &&
                         board[row+3][column-3] == isEmpty){
-						System.out.println("   (x)");
-						System.out.println("  (0)");
-						System.out.println(" (x)");
-						System.out.println("(0)");
+					//	System.out.println("   (x)");
+					//	System.out.println("  (0)");
+					//	System.out.println(" (x)");
+					//	System.out.println("(0)");
                     value+=twoInRow*d;
                 }
                 else if(board[row][column] == isEmpty &&
                         board[row+1][column-1] == player &&
                         board[row+2][column-2] == isEmpty &&
                         board[row+3][column-3] == player){
-						System.out.println("   (0)");
-						System.out.println("  (x)");
-						System.out.println(" (0)");
-						System.out.println("(x)");
+					//	System.out.println("   (0)");
+					//	System.out.println("  (x)");
+					//	System.out.println(" (0)");
+					//	System.out.println("(x)");
                     value+=twoInRow*d;
                 }
                 else if(board[row][column] == isEmpty &&
                         board[row+1][column-1] == player &&
                         board[row+2][column-2] == player &&
                         board[row+3][column-3] == isEmpty){
-						System.out.println("   (0)");
-						System.out.println("  (x)");
-						System.out.println(" (x)");
-						System.out.println("(0)");
+					//	System.out.println("   (0)");
+					//	System.out.println("  (x)");
+					//	System.out.println(" (x)");
+					//	System.out.println("(0)");
                     value+=twoInRow*d*2;
                 }
             }
@@ -423,60 +427,60 @@ public class MiniMax {
 					board[row+1][column+1] == isEmpty &&
 					board[row+2][column+2] == player &&
 					board[row+3][column+3] == player){
-                    System.out.println("(0)");
-                    System.out.println(" (0)");
-                    System.out.println("  (x)");
-                    System.out.println("   (x)");
+					//   System.out.println("(0)");
+					//  System.out.println(" (0)");
+					//  System.out.println("  (x)");
+					//  System.out.println("   (x)");
                     value+=twoInRow*d;
                 }
                 else if(board[row][column] == player &&
                         board[row+1][column+1] == isEmpty &&
                         board[row+2][column+2] == isEmpty &&
                         board[row+3][column+3] == player){
-						System.out.println("(x)");
-						System.out.println(" (0)");
-						System.out.println("  (0)");
-						System.out.println("   (x)");
+					//	System.out.println("(x)");
+					//	System.out.println(" (0)");
+					//	System.out.println("  (0)");
+					//	System.out.println("   (x)");
 						value+=twoInRow*d;
                 }
                 else if(board[row][column] == player &&
                         board[row+1][column+1] == player &&
                         board[row+2][column+2] == isEmpty &&
                         board[row+3][column+3] == isEmpty){
-						System.out.println("(x)");
-						System.out.println(" (x)");
-						System.out.println("  (0)");
-						System.out.println("   (0)");
+					//	System.out.println("(x)");
+					//	System.out.println(" (x)");
+					//	System.out.println("  (0)");
+					//	System.out.println("   (0)");
 						value+=twoInRow*d;
                 }
                 else if(board[row][column] == isEmpty &&
                         board[row+1][column+1] == player &&
                         board[row+2][column+2] == isEmpty &&
                         board[row+3][column+3] == player){
-						System.out.println("(x)");
-						System.out.println(" (0)");
-						System.out.println("  (x)");
-						System.out.println("   (0)");
+					//	System.out.println("(x)");
+					//	System.out.println(" (0)");
+					//	System.out.println("  (x)");
+					//	System.out.println("   (0)");
 						value+=twoInRow*d;
                 }
                 else if(board[row][column] == isEmpty &&
                         board[row+1][column+1] == player &&
                         board[row+2][column+2] == isEmpty &&
                         board[row+3][column+3] == player){
-						System.out.println("(0)");
-						System.out.println(" (x)");
-						System.out.println("  (0)");
-						System.out.println("   (x)");
+					//	System.out.println("(0)");
+					//	System.out.println(" (x)");
+					//	System.out.println("  (0)");
+					//	System.out.println("   (x)");
 						value+=twoInRow*d;
                 }
                 else if(board[row][column] == isEmpty &&
                         board[row+1][column+1] == player &&
                         board[row+2][column+2] == player &&
                         board[row+3][column+3] == isEmpty){
-						System.out.println("(0)");
-						System.out.println(" (x)");
-						System.out.println("  (x)");
-						System.out.println("   (0)");
+					//	System.out.println("(0)");
+					//	System.out.println(" (x)");
+					//	System.out.println("  (x)");
+					//	System.out.println("   (0)");
 						value+=twoInRow*d*2;
                 }
             }
@@ -501,40 +505,40 @@ public class MiniMax {
 					board[row+1][column+1] == player &&
 					board[row+2][column+2] == player &&
 					board[row+3][column+3] == player){
-                    System.out.println("(0)");
-                    System.out.println(" (x)");
-                    System.out.println("  (x)");
-                    System.out.println("   (x)");
+					//  System.out.println("(0)");
+					//   System.out.println(" (x)");
+					//   System.out.println("  (x)");
+					//   System.out.println("   (x)");
                     value+=threeInRow*d;
                 }
                 else if(board[row][column] == player &&
                         board[row+1][column+1] == isEmpty &&
                         board[row+2][column+2] == player &&
                         board[row+3][column+3] == player){
-						System.out.println("(x)");
-						System.out.println(" (0)");
-						System.out.println("  (x)");
-						System.out.println("   (x)");
+					//		System.out.println("(x)");
+					//		System.out.println(" (0)");
+					//		System.out.println("  (x)");
+					//	System.out.println("   (x)");
 						value+=threeInRow*d;
                 }
                 else if(board[row][column] == player &&
                         board[row+1][column+1] == player &&
                         board[row+2][column+2] == isEmpty &&
                         board[row+3][column+3] == player){
-						System.out.println("(x)");
-						System.out.println(" (x)");
-						System.out.println("  (0)");
-						System.out.println("   (x)");
+					//		System.out.println("(x)");
+					//		System.out.println(" (x)");
+					//		System.out.println("  (0)");
+					//			System.out.println("   (x)");
 						value+=threeInRow*d;
                 }
                 else if(board[row][column] == player &&
                         board[row+1][column+1] == player &&
                         board[row+2][column+2] == player &&
                         board[row+3][column+3] == isEmpty){
-						System.out.println("(x)");
-						System.out.println(" (x)");
-						System.out.println("  (x)");
-						System.out.println("   (0)");
+					//				System.out.println("(x)");
+					//				System.out.println(" (x)");
+					//				System.out.println("  (x)");
+					//				System.out.println("   (0)");
 						value+=threeInRow*d;
                 }
 
@@ -560,40 +564,40 @@ public class MiniMax {
 					board[row+1][column-1] == player &&
 					board[row+2][column-2] == player &&
 					board[row+3][column-3] == player){
-                    System.out.println("   (0)");
-                    System.out.println("  (x)");
-                    System.out.println(" (x)");
-                    System.out.println("(x)");
+					//	   System.out.println("   (0)");
+					//	    System.out.println("  (x)");
+					//	    System.out.println(" (x)");
+					//	    System.out.println("(x)");
                     value+=threeInRow*d;
                 }
                 else if(board[row][column] == player &&
                         board[row+1][column-1] == isEmpty &&
                         board[row+2][column-2] == player &&
                         board[row+3][column-3] == player){
-						System.out.println("   (x)");
-						System.out.println("  (0)");
-						System.out.println(" (x)");
-						System.out.println("(x)");
+					//			System.out.println("   (x)");
+					//			System.out.println("  (0)");
+					//			System.out.println(" (x)");
+					//		System.out.println("(x)");
 						value+=threeInRow*d;
                 }
                 else if(board[row][column] == player &&
                         board[row+1][column-1] == player &&
                         board[row+2][column-2] == isEmpty &&
                         board[row+3][column-3] == player){
-						System.out.println("   (x)");
-						System.out.println("  (x)");
-						System.out.println(" (0)");
-						System.out.println("(x)");
+					//			System.out.println("   (x)");
+					//		System.out.println("  (x)");
+					//		System.out.println(" (0)");
+					//		System.out.println("(x)");
 						value+=threeInRow*d;
                 }
                 else if(board[row][column] == player &&
                         board[row+1][column-1] == player &&
                         board[row+2][column-2] == player &&
                         board[row+3][column-3] == isEmpty){
-						System.out.println("   (x)");
-						System.out.println("  (x)");
-						System.out.println(" (x)");
-						System.out.println("(0)");
+					//		System.out.println("   (x)");
+					//			System.out.println("  (x)");
+					//			System.out.println(" (x)");
+					//			System.out.println("(0)");
 						value+=threeInRow*d;
                 }
 
