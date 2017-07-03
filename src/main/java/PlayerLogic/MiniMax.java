@@ -52,6 +52,7 @@ public class MiniMax {
 
 		int bestValue = (player.getColor() == currentPlayer.getColor()? -1:1000);
 		int bestPath = 0;
+
 		Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 		newlySimulatedGame.getGameStatus().setCurrentPlayer(player);
 		//printMatrix(newlySimulatedGame.getGameStatus().getBoard());
@@ -66,11 +67,18 @@ public class MiniMax {
 
 					if(newlySimulatedGame.checkWin(slot)) {		// check win horizontal does not work as supposed
 						//printMatrix(newlySimulatedGame.getGameStatus().getBoard());
+
 						bestValue = 1000000;
 						bestPath = column;
 					} else {
 						int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
 						if (value >= bestValue) {
+							roflcoptr++;
+							System.out.println("Counter: " + roflcoptr);
+							System.out.println("Player: " + currentPlayer.getColor());
+							System.out.println("Value: " + value);
+							System.out.println("Column: " + column);
+							System.out.println();
 							bestValue = value;
 							bestPath = column;
 						}

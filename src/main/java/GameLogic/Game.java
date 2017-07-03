@@ -61,7 +61,7 @@ public class Game extends Observable implements Observer {
        // newMove();
         while(!gameStatus.isGameOver()) {
             newMove();
-            delay(500);
+            delay(3);
 
         }
     }
@@ -91,8 +91,9 @@ public class Game extends Observable implements Observer {
         int column = miniMax.calcValue(currentPlayer);
     	Slot slot;
         if(validateMove(column)) {
+
             slot = discDrop(column);
-          //  System.out.println("A move");
+           System.out.println("A move was made in column: " + column);
         }
         else {
             return;
@@ -161,7 +162,7 @@ public class Game extends Observable implements Observer {
     	boolean checkLeft = true;
     	boolean checkRight = true;
 		Slot currentSlot;
-    	SlotState playerColor = gameStatus.getCurrentPlayer().getColor();
+    	SlotState playerColor = slot.getSlotState();
     	int counter = 0;
     	while(checkRight) {
     		column++;
@@ -242,7 +243,7 @@ public class Game extends Observable implements Observer {
             if (upLeftAndDownRight) tempRow--;
             else tempRow++;
             if(!checkMatrixBoundaries(tempRow,tempCol)) break;
-            if (board.getSlot(tempRow,tempCol).getSlotState()==gameStatus.getCurrentPlayer().getColor()){
+            if (board.getSlot(tempRow,tempCol).getSlotState()==slot.getSlotState()){
                 counter++;
                 winningSequence.add(board.getSlot(tempRow,tempCol));
             }
