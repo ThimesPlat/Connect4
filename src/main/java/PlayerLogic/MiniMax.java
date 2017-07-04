@@ -5,6 +5,8 @@ import GameLogic.Game;
 import GameLogic.Slot;
 import GameLogic.SlotState;
 
+import java.util.Scanner;
+
 public class MiniMax {
 
 	private Game game;
@@ -49,6 +51,7 @@ public class MiniMax {
 
 
 	private int minimax(Game newlySimulatedGame, int depth, Player player) {
+
 
 		int bestValue = (player.getColor() == currentPlayer.getColor()? -1:1000);
 		int bestPath = 0;
