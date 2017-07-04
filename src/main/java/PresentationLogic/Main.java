@@ -221,7 +221,7 @@ public class Main extends Application implements Observer{
             Slot newlyChangedSlot = newGameStatus.getChangedSlot();
             Color color = (newlyChangedSlot.getSlotState() == SlotState.RED) ? Color.RED : Color.YELLOW;
             board.changeCircleColor(newlyChangedSlot.getRow(), newlyChangedSlot.getColumn(), color);
-            turn = (game.getGameStatus().getCurrentPlayer().getColor() != SlotState.RED) ? 2 : 1;
+            turn = (game.getGameStatus().getCurrentPlayer().getColor() == SlotState.RED) ? 2 : 1;
             Main.this.changeLabel(turn, newGameStatus.isGameOver(), newGameStatus.getWinner());
         });
 
