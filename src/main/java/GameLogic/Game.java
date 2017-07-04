@@ -100,8 +100,9 @@ public class Game extends Observable implements Observer {
         miniMaxComputingTime = endTime-startTime;
     	Slot slot;
         if(validateMove(column)) {
+
             slot = discDrop(column);
-          //  System.out.println("A move");
+           System.out.println("A move was made in column: " + column);
         }
         else {
             return;
