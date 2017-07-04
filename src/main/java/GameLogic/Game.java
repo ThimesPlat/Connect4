@@ -3,7 +3,6 @@ package GameLogic ;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Timer;
 
 import PlayerLogic.MiniMax;
 import PlayerLogic.Player;
@@ -61,7 +60,8 @@ public class Game extends Observable implements Observer {
        // newMove();
         while(!gameStatus.isGameOver()) {
             newMove();
-            delay(3);
+            delay(750);
+
 
         }
     }
@@ -96,6 +96,7 @@ public class Game extends Observable implements Observer {
            System.out.println("A move was made in column: " + column);
         }
         else {
+            System.err.println("WRONG MOVE F****R!!!!");
             return;
         }
     	if (checkWin(slot)) {
@@ -110,11 +111,8 @@ public class Game extends Observable implements Observer {
             return;
         }
         gameStatus.setBoard(board);
-		//setCurrentPlayer();
-      //  newMove();
+        //delay(5);
         setCurrentPlayer();
-
-
     }
 
     public GameStatus getGameStatus() {
