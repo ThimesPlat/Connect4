@@ -60,9 +60,7 @@ public class Game extends Observable implements Observer {
        // newMove();
         while(!gameStatus.isGameOver()) {
             newMove();
-            delay(delayTime);
-
-
+            delay(750);
         }
     }
 
