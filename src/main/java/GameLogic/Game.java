@@ -13,13 +13,13 @@ import PlayerLogic.Player;
 
 public class Game extends Observable implements Observer {
     GameStatus gameStatus;
-
+    int delayTime = 1000;
     Board board;
     PlayerLogic.Player p1;
     PlayerLogic.Player p2;
     PlayerLogic.Player currentPlayer;
     int rounds = 0;
-
+    long miniMaxComputingTime;
     MiniMax miniMax;
     int miniMaxDepth = 3;
 
@@ -60,13 +60,17 @@ public class Game extends Observable implements Observer {
        // newMove();
         while(!gameStatus.isGameOver()) {
             newMove();
-            delay(750);
+            delay(delayTime);
 
 
         }
     }
 
     private void delay(int delay){
+        if (delay>=miniMaxComputingTime)
+            delay-=miniMaxComputingTime;
+        else
+            delay = 0;
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {
@@ -81,14 +85,22 @@ public class Game extends Observable implements Observer {
 
     public void newMove() {
 
-/*
+
         Random random = new Random();
-        int column = random.nextInt(7);
-*/
-        SlotState[][] slotStateBoard = generateSlotStateMatrix(this.board);
-        miniMax = new MiniMax(slotStateBoard);
-        miniMax.setDepth(miniMaxDepth);
-        int column = miniMax.calcValue(currentPlayer);
+        int column;
+
+        final long startTime = System.currentTimeMillis();
+        if (currentPlayer.getColor() == SlotState.YELLOW){
+            column = random.nextInt(7);
+        }
+        else {
+            SlotState[][] slotStateBoard = generateSlotStateMatrix(this.board);
+            miniMax = new MiniMax(slotStateBoard);
+            miniMax.setDepth(miniMaxDepth);
+            column = miniMax.calcValue(currentPlayer);
+        }
+        final long endTime = System.currentTimeMillis();
+        miniMaxComputingTime = endTime-startTime;
     	Slot slot;
         if(validateMove(column)) {
 
@@ -255,7 +267,7 @@ public class Game extends Observable implements Observer {
             if (upLeftAndDownRight) tempRow++;
             else tempRow--;
             if(!checkMatrixBoundaries(tempRow,tempCol)) break;
-            if (board.getSlot(tempRow,tempCol).getSlotState()==gameStatus.getCurrentPlayer().getColor()){
+            if (board.getSlot(tempRow,tempCol).getSlotState()==slot.getSlotState()){
                 counter++;
                 winningSequence.add(board.getSlot(tempRow,tempCol));
             }
@@ -314,7 +326,12 @@ public class Game extends Observable implements Observer {
     }
     
     private boolean columnNotFull(int column) {
-        return (board.getSlot(0,column).getSlotState() == SlotState.EMPTY);
+        Boolean hej = (board.getSlot(0,column).getSlotState() == SlotState.EMPTY);
+        //System.out.println((board.getSlot(0,column).getSlotState()));
+        if (!hej){
+            System.err.println("Full row!");
+        }
+        return hej;
     }
 
     private void printMatrix(Board board){
@@ -325,15 +342,6 @@ public class Game extends Observable implements Observer {
             System.out.println();
         }
     }
-    private SlotState [][] generateSlotStateMatrix(Board board){
-        SlotState[][] slotStateMatrix = new SlotState[board.getBoard().length][board.getBoard()[0].length];
-        for (int i = 0;i<board.getBoard().length;i++){
-            for (int p = 0;p<board.getBoard()[0].length;p++){
-                slotStateMatrix[i][p] = board.getSlot(i,p).getSlotState();
-            }
-        }
-        return slotStateMatrix;
-    }
 
     @Override
     public void update(Observable o, Object arg) {
@@ -343,5 +351,15 @@ public class Game extends Observable implements Observer {
     private void gameIsOver(){
         gameStatus.setBoard(board);
         setCurrentPlayer();
+    }
+
+    private SlotState[][] generateSlotStateMatrix(Board board){
+        SlotState[][] slotStateMatrix = new SlotState[board.getBoard().length][board.getBoard()[0].length];
+        for (int i = 0;i<board.getBoard().length;i++){
+            for (int p = 0;p<board.getBoard()[0].length;p++){
+                slotStateMatrix[i][p] = board.getSlot(i,p).getSlotState();
+            }
+        }
+        return slotStateMatrix;
     }
 }
