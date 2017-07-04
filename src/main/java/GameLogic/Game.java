@@ -9,9 +9,9 @@ import PlayerLogic.Player;
  * Created by eps on 2017-06-13.
  */
 
-public class Game extends Observable implements Observer {
+public class Game extends Observable{
     GameStatus gameStatus;
-    int delayTime = 1000;
+    int delayTime = 10;
     Board board;
     PlayerLogic.Player p1;
     PlayerLogic.Player p2;
@@ -91,10 +91,10 @@ public class Game extends Observable implements Observer {
             column = random.nextInt(7);
         }
         else {
-            SlotState[][] slotStateBoard = generateSlotStateMatrix(this.board);
-            miniMax = new MiniMax(slotStateBoard);
-            miniMax.setDepth(miniMaxDepth);
-            column = miniMax.calcValue(currentPlayer);
+        SlotState[][] slotStateBoard = generateSlotStateMatrix(this.board);
+        miniMax = new MiniMax(slotStateBoard);
+        miniMax.setDepth(miniMaxDepth);
+        column = miniMax.calcValue(currentPlayer);
         }
         final long endTime = System.currentTimeMillis();
         miniMaxComputingTime = endTime-startTime;
@@ -342,10 +342,7 @@ public class Game extends Observable implements Observer {
         }
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        newMove();
-    }
+
 
     private void gameIsOver(){
         gameStatus.setBoard(board);
