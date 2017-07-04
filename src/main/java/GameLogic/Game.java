@@ -1,6 +1,9 @@
 package GameLogic ;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Random;
 
 import PlayerLogic.MiniMax;
 import PlayerLogic.Player;
@@ -11,7 +14,7 @@ import PlayerLogic.Player;
 
 public class Game extends Observable{
     GameStatus gameStatus;
-    int delayTime = 10;
+    int delayTime = 200;
     Board board;
     PlayerLogic.Player p1;
     PlayerLogic.Player p2;
@@ -60,6 +63,7 @@ public class Game extends Observable{
             newMove();
             delay(delayTime);
 
+
         }
     }
 
@@ -87,15 +91,15 @@ public class Game extends Observable{
         int column;
 
         final long startTime = System.currentTimeMillis();
-        if (currentPlayer.getColor() == SlotState.YELLOW){
-            column = random.nextInt(7);
-        }
-        else {
+       // if (currentPlayer.getColor() == SlotState.YELLOW){
+         //   column = random.nextInt(7);
+        //}
+        //else {
         SlotState[][] slotStateBoard = generateSlotStateMatrix(this.board);
         miniMax = new MiniMax(slotStateBoard);
         miniMax.setDepth(miniMaxDepth);
         column = miniMax.calcValue(currentPlayer);
-        }
+        //}
         final long endTime = System.currentTimeMillis();
         miniMaxComputingTime = endTime-startTime;
     	Slot slot;
@@ -105,6 +109,7 @@ public class Game extends Observable{
            System.out.println("A move was made in column: " + column);
         }
         else {
+            System.err.println("WRONG MOVE F****R!!!!");
             return;
         }
     	if (checkWin(slot)) {
@@ -119,11 +124,8 @@ public class Game extends Observable{
             return;
         }
         gameStatus.setBoard(board);
-		//setCurrentPlayer();
-      //  newMove();
+        //delay(5);
         setCurrentPlayer();
-
-
     }
 
     public GameStatus getGameStatus() {

@@ -43,7 +43,7 @@ public class MiniMax {
 			return 3;
 		}
 
-		// If it is not the first round, return negamax
+		// If it is not the first round, return minimax
 
 		return minimax(this.game, 0, player);
 
@@ -53,9 +53,9 @@ public class MiniMax {
 	private int minimax(Game newlySimulatedGame, int depth, Player player) {
 
 
-		int bestValue = (player.getColor() == currentPlayer.getColor()? -1:1000);
-		int bestPath = 0;
+		int bestValue = (player.getColor() == currentPlayer.getColor()? -1000001:10000);
 
+		int bestPath = 0;
 		Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 		newlySimulatedGame.getGameStatus().setCurrentPlayer(player);
 		//printMatrix(newlySimulatedGame.getGameStatus().getBoard());
@@ -70,7 +70,6 @@ public class MiniMax {
 
 					if(newlySimulatedGame.checkWin(slot)) {		// check win horizontal does not work as supposed
 						//printMatrix(newlySimulatedGame.getGameStatus().getBoard());
-
 						bestValue = 1000000;
 						bestPath = column;
 					} else {
