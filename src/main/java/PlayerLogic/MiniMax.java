@@ -66,7 +66,7 @@ public class MiniMax {
 
 			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
 				if(newlySimulatedGame.validateMove(column)) {
-					Slot slot = newlySimulatedGame.discDrop(column, player);
+					Slot slot = newlySimulatedGame.simulatedDiscDrop(column, player);
 
 					if(newlySimulatedGame.checkWin(slot)) {		// check win horizontal does not work as supposed
 						//printMatrix(newlySimulatedGame.getGameStatus().getBoard());
@@ -76,10 +76,7 @@ public class MiniMax {
 						int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
 						if (value >= bestValue) {
 							roflcoptr++;
-							System.out.println("Counter: " + roflcoptr);
-							System.out.println("Player: " + currentPlayer.getColor());
-							System.out.println("Value: " + value);
-							System.out.println("Column: " + column);
+
 							System.out.println();
 							bestValue = value;
 							bestPath = column;
@@ -93,7 +90,7 @@ public class MiniMax {
 
 			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
 				if(newlySimulatedGame.validateMove(column)) {
-					Slot slot = newlySimulatedGame.discDrop(column, player);
+					Slot slot = newlySimulatedGame.simulatedDiscDrop(column, player);
 					if(newlySimulatedGame.checkWin(slot)) {
 						bestValue = -1000000;
 						bestPath = column;

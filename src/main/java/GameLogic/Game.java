@@ -1,8 +1,6 @@
 package GameLogic ;
-
 import java.util.ArrayList;
 import java.util.Observable;
-
 import PlayerLogic.MiniMax;
 import PlayerLogic.Player;
 
@@ -13,25 +11,13 @@ import PlayerLogic.Player;
 public class Game extends Observable{
     GameStatus gameStatus;
     Board board;
-    PlayerLogic.Player p1;
-    PlayerLogic.Player p2;
-    PlayerLogic.Player currentPlayer;
-
+    PlayerLogic.Player p1, p2, currentPlayer;
     MiniMax miniMax;
     int miniMaxDepth = 3;
 
-    public void setBoard(SlotState[][] board) {
-
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                Slot slot = new Slot(board[i][j], i,j);
-                this.board.setSlot(slot,i,j);
-            }
-        }
-        this.gameStatus.setBoard(this.board);
-    }
-
-
+    /*
+    * INIT
+    * */
     public Game(){
         p1 = new Player(SlotState.RED);
         p2 = new Player(SlotState.YELLOW);
@@ -44,9 +30,7 @@ public class Game extends Observable{
     public void startGame() {
         while(!gameStatus.isGameOver()) {
             newMove();
-            delay(750);
-
-
+            delay(5);
         }
     }
 
@@ -56,11 +40,6 @@ public class Game extends Observable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public void setMiniMaxDepth(int miniMaxDepth){
-        this.miniMaxDepth = miniMaxDepth;
     }
 
     public void newMove() {
@@ -90,23 +69,48 @@ public class Game extends Observable{
         setCurrentPlayer();
     }
 
-    public GameStatus getGameStatus() {
-        return gameStatus;
+    /*
+    * SETTERS
+    * */
+    public void setBoard(SlotState[][] board) {
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                Slot slot = new Slot(board[i][j], i,j);
+                this.board.setSlot(slot,i,j);
+            }
+        }
+        this.gameStatus.setBoard(this.board);
     }
+
+    public void setMiniMaxDepth(int miniMaxDepth){
+        this.miniMaxDepth = miniMaxDepth;
+    }
+
     private void setCurrentPlayer() {
         gameStatus.setCurrentPlayer(updateCurrentPlayer());
-    	this.currentPlayer = gameStatus.getCurrentPlayer();
+        this.currentPlayer = gameStatus.getCurrentPlayer();
     }
+
     private Player updateCurrentPlayer(){
         return (currentPlayer.getColor()==SlotState.RED)? p2:p1;
     }
 
+    /*
+    * GETTERS
+    * */
+    public GameStatus getGameStatus() {
+        return gameStatus;
+    }
 
+    /*
+    * CHECKERS
+    * */
     public boolean checkWin(Slot slot){
         return checkHorizontal(slot) || checkVertical(slot) || checkDiagonal(slot);
 
     }
-    
+
     public boolean checkBoardFull() {
     	Slot[][] slots = board.getBoard();
     	for(int i = 0; i < slots[0].length; i++) {
@@ -131,16 +135,15 @@ public class Game extends Observable{
     		column++;
             if(!checkMatrixBoundaries(row,column)) break;
     		currentSlot = board.getSlot(row, column);
-    	
+
 			if(playerColor != currentSlot.getSlotState()) {
 			    checkRight=false;
 			} else {
 				counter++;
                 winningSequence.add(currentSlot);
-
 			}
 
-    	} 
+    	}
     	column = slot.getColumn();
     	while(checkLeft) {
     		column--;
@@ -154,25 +157,25 @@ public class Game extends Observable{
                 winningSequence.add(currentSlot);
 			}
     	}
-
     	if (counter >= 3)
     	    gameStatus.getBoard().setWinningSequence(winningSequence);
 		return (counter >= 3);
 	}
 
-    public boolean checkVertical(Slot slot) {
+    private boolean checkVertical(Slot slot) {
         ArrayList<Slot> winningSequence = new ArrayList<>();
         winningSequence.add(slot);
-        SlotState playerColor = slot.getSlotState();
+        int column = slot.getColumn();
         int row = slot.getRow();
+        boolean checkUp = true;
+        SlotState playerColor = slot.getSlotState();
+        int counter=0;
+
         if (row > 2) {
             return false;
         }
-        int column = slot.getColumn();
-        boolean keepGoingVertical = true;
-        int counter=0;
         int currentRow = slot.getRow()+1;
-        while(keepGoingVertical){
+        while(checkUp){
             if(!checkMatrixBoundaries(currentRow,column)) break;
             Slot currentSlot = board.getSlot(currentRow,column);
             SlotState slotColor = currentSlot.getSlotState();
@@ -184,11 +187,13 @@ public class Game extends Observable{
             winningSequence.add(currentSlot);
 
         }
-        if(counter>=3) {
+
+       if(counter>=3) {
             gameStatus.getBoard().setWinningSequence(winningSequence);
             return true;
         }
         return false;
+
     }
 
     private boolean checkDiagonal(Slot slot,Boolean upLeftAndDownRight){
@@ -240,6 +245,9 @@ public class Game extends Observable{
         return checkDiagonal(slot, true) || checkDiagonal(slot, false);
     }
 
+    /*
+    * GAME ACTIONS
+    * */
     public Slot discDrop(int column) {
         Slot nextSlot = new Slot(currentPlayer.getColor());
         for(int i=5; i >= 0 ; i--) {
@@ -254,8 +262,8 @@ public class Game extends Observable{
         }
         return null;
     }
-
-    public Slot discDrop(int column, Player player) {
+    
+    public Slot simulatedDiscDrop(int column, Player player) {
         Slot nextSlot = new Slot(player.getColor());
         for(int i=5; i >= 0 ; i--) {
             Slot temp = board.getSlot(i,column);
@@ -269,6 +277,11 @@ public class Game extends Observable{
         }
         return null;
     }
+
+
+    /*
+    * VALIDATIONS
+    * */
     public boolean validateMove(int column){
         return (validateColumn(column) && columnNotFull(column));
     }
