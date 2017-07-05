@@ -24,10 +24,6 @@ public class GraphicalSlot {
         return c;
     }
 
-    public Color getColor() {
-        return this.color;
-    }
-
     public void setColor(Color color) {
         this.color = color;
         c.setFill(color);

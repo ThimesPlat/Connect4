@@ -7,10 +7,6 @@ import java.util.ArrayList;
 
 public class Board {
     private Slot[][] board;
-
-
-
-    //private Slot[] winningSequence;
     private ArrayList<Slot> winningSequence;
 
     public Board() {
@@ -21,18 +17,6 @@ public class Board {
                board[row][col] = new Slot(SlotState.EMPTY);
             }
         }
-    }
-
-    public Board copyBoard(Board board) {
-        Slot[][] newSlot = new Slot[6][7];
-        Board newBoard = new Board();
-        for (int row = 0; row < 6; row++) {
-            for (int col = 0; col < 7; col++) {
-                newSlot[row][col] = board.getSlot(row, col);
-            }
-        }
-        newBoard.setBoard(newSlot);
-        return newBoard;
     }
 
     public Slot[][] getBoard() {
@@ -52,10 +36,6 @@ public class Board {
         board[row][column] = slot;
     }
 
-    public void setSlotState(SlotState slotState, int row, int column) {
-        board[row][column].setSlotState(slotState);
-    }
-
     public ArrayList<Slot> getWinningSequence() {
         return winningSequence;
     }
@@ -64,14 +44,5 @@ public class Board {
         this.winningSequence = winningSequence;
     }
 
-    public void createNewSlots(Board board) {
-        for (int row = 0; row < board.getBoard().length; row++) {
-            for (int column = 0; column < board.getBoard()[0].length; column++) {
-                Slot oldSlot = board.getSlot(row,column);
-                Slot newSlot = new Slot(oldSlot.getSlotState(),oldSlot.getRow(),oldSlot.getColumn());
-                this.board[row][column] = null;
-                this.board[row][column] = newSlot;
-            }
-        }
-    }
+
 }
