@@ -2,8 +2,6 @@ package GameLogic ;
 
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
-import java.util.Random;
 
 import PlayerLogic.MiniMax;
 import PlayerLogic.Player;
@@ -14,13 +12,11 @@ import PlayerLogic.Player;
 
 public class Game extends Observable{
     GameStatus gameStatus;
-    int delayTime = 200;
     Board board;
     PlayerLogic.Player p1;
     PlayerLogic.Player p2;
     PlayerLogic.Player currentPlayer;
-    int rounds = 0;
-    long miniMaxComputingTime;
+
     MiniMax miniMax;
     int miniMaxDepth = 3;
 
@@ -35,9 +31,6 @@ public class Game extends Observable{
         this.gameStatus.setBoard(this.board);
     }
 
-    public void setGameStatus(GameStatus gameStatus){
-        this.gameStatus = gameStatus;
-    }
 
     public Game(){
         p1 = new Player(SlotState.RED);
@@ -49,27 +42,15 @@ public class Game extends Observable{
     }
     
     public void startGame() {
-       /* timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-    		@Override
-    		public void run() {
-    			Platform.runLater(() -> newMove());
-    		}
-    	}, 10, 100);
-        */
-       // addObserver(this);
-       // newMove();
         while(!gameStatus.isGameOver()) {
             newMove();
             delay(750);
+
+
         }
     }
 
     private void delay(int delay){
-        if (delay>=miniMaxComputingTime)
-            delay-=miniMaxComputingTime;
-        else
-            delay = 0;
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {
@@ -83,31 +64,15 @@ public class Game extends Observable{
     }
 
     public void newMove() {
-
-
-        Random random = new Random();
-        int column;
-
-        final long startTime = System.currentTimeMillis();
-       // if (currentPlayer.getColor() == SlotState.YELLOW){
-         //   column = random.nextInt(7);
-        //}
-        //else {
         SlotState[][] slotStateBoard = generateSlotStateMatrix(this.board);
         miniMax = new MiniMax(slotStateBoard);
         miniMax.setDepth(miniMaxDepth);
-        column = miniMax.calcValue(currentPlayer);
-        //}
-        final long endTime = System.currentTimeMillis();
-        miniMaxComputingTime = endTime-startTime;
+        int column = miniMax.calcValue(currentPlayer);
     	Slot slot;
         if(validateMove(column)) {
-
             slot = discDrop(column);
-           System.out.println("A move was made in column: " + column);
         }
         else {
-            System.err.println("WRONG MOVE F****R!!!!");
             return;
         }
     	if (checkWin(slot)) {
@@ -122,7 +87,6 @@ public class Game extends Observable{
             return;
         }
         gameStatus.setBoard(board);
-        //delay(5);
         setCurrentPlayer();
     }
 
@@ -135,16 +99,6 @@ public class Game extends Observable{
     }
     private Player updateCurrentPlayer(){
         return (currentPlayer.getColor()==SlotState.RED)? p2:p1;
-        /*
-        if (gameStatus.getCurrentPlayer().getColor() == SlotState.RED) {
-            return p2;
-        }
-        else if (gameStatus.getCurrentPlayer().getColor() == SlotState.YELLOW) {
-                return p1;
-            } else {
-                System.err.println("updateNextPlayer error : gameStatus next player is something inappropriate");
-            }
-        return null;*/
     }
 
 
@@ -238,7 +192,6 @@ public class Game extends Observable{
     }
 
     private boolean checkDiagonal(Slot slot,Boolean upLeftAndDownRight){
-     //   Slot[] winningSequence = new Slot[4];
         ArrayList<Slot> winningSequence = new ArrayList<>();
         int counter = 0;
         winningSequence.add(slot);
@@ -266,7 +219,7 @@ public class Game extends Observable{
             if (upLeftAndDownRight) tempRow++;
             else tempRow--;
             if(!checkMatrixBoundaries(tempRow,tempCol)) break;
-            if (board.getSlot(tempRow,tempCol).getSlotState()==slot.getSlotState()){
+            if (board.getSlot(tempRow,tempCol).getSlotState()==gameStatus.getCurrentPlayer().getColor()){
                 counter++;
                 winningSequence.add(board.getSlot(tempRow,tempCol));
             }
@@ -325,31 +278,10 @@ public class Game extends Observable{
     }
     
     private boolean columnNotFull(int column) {
-        Boolean hej = (board.getSlot(0,column).getSlotState() == SlotState.EMPTY);
-        //System.out.println((board.getSlot(0,column).getSlotState()));
-        if (!hej){
-            System.err.println("Full row!");
-        }
-        return hej;
+        return (board.getSlot(0,column).getSlotState() == SlotState.EMPTY);
     }
 
-    private void printMatrix(Board board){
-        for (int i = 0;i<board.getBoard().length;i++){
-            for (int p = 0;p<board.getBoard()[0].length;p++){
-                System.out.print(board.getBoard()[i][p].getSlotState() + " ");
-            }
-            System.out.println();
-        }
-    }
-
-
-
-    private void gameIsOver(){
-        gameStatus.setBoard(board);
-        setCurrentPlayer();
-    }
-
-    private SlotState[][] generateSlotStateMatrix(Board board){
+    private SlotState [][] generateSlotStateMatrix(Board board){
         SlotState[][] slotStateMatrix = new SlotState[board.getBoard().length][board.getBoard()[0].length];
         for (int i = 0;i<board.getBoard().length;i++){
             for (int p = 0;p<board.getBoard()[0].length;p++){
@@ -357,5 +289,10 @@ public class Game extends Observable{
             }
         }
         return slotStateMatrix;
+    }
+
+    private void gameIsOver(){
+        gameStatus.setBoard(board);
+        setCurrentPlayer();
     }
 }
