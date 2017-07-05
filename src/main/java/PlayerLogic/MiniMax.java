@@ -10,15 +10,11 @@ public class MiniMax {
 	private Game game;
 	private int maxDepth;
 	Player currentPlayer;
-	int roflcoptr = 0;
 	SlotState isEmpty = SlotState.EMPTY;
 
 	public MiniMax(SlotState[][] board) {
-		//System.out.println(currentPlayer.getColor());
 		this.game = new Game();
-
 		this.game.setBoard(board);
-
 		maxDepth = 0;
 	}
 
@@ -49,62 +45,36 @@ public class MiniMax {
 
 
 	private int minimax(Game newlySimulatedGame, int depth, Player player) {
-
+		Boolean maxPlayer = player.getColor() == currentPlayer.getColor();
 		int bestValue = (player.getColor() == currentPlayer.getColor()? -1000001:10000);
 		int bestPath = 0;
 		Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 		newlySimulatedGame.getGameStatus().setCurrentPlayer(player);
-        //printMatrix(newlySimulatedGame.getGameStatus().getBoard());
         if(depth == maxDepth) {
             return eval(generateSlotStateMatrix(newlySimulatedGame.getGameStatus().getBoard()), player.getColor());
         }
-		else if(player.getColor() == currentPlayer.getColor()) {	// MAX
-
 			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
 				if(newlySimulatedGame.validateMove(column)) {
 					Slot slot = newlySimulatedGame.discDrop(column, player);
 
 					if(newlySimulatedGame.checkWin(slot)) {		// check win horizontal does not work as supposed
-						//printMatrix(newlySimulatedGame.getGameStatus().getBoard());
-						bestValue = 1000000;
+						bestValue = (maxPlayer)? 1000000:-1000000;
 						bestPath = column;
 					} else {
 						int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
-						if (value >= bestValue) {
-							roflcoptr++;
-							System.out.println("Counter: " + roflcoptr);
-							System.out.println("Player: " + currentPlayer.getColor());
-							System.out.println("Value: " + value);
-							System.out.println("Column: " + column);
-							System.out.println();
-							bestValue = value;
-							bestPath = column;
-						}
+							if (value >= bestValue && maxPlayer) {
+								bestValue = value;
+								bestPath = column;
+							}
+							else if (value <= bestValue && !maxPlayer){
+								bestValue = value;
+								bestPath = column;
+							}
 					}
 					newlySimulatedGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY), slot.getRow(), slot.getColumn());
 				}
 			}
-		}
-		else { // MIN
 
-			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
-				if(newlySimulatedGame.validateMove(column)) {
-					Slot slot = newlySimulatedGame.discDrop(column, player);
-					if(newlySimulatedGame.checkWin(slot)) {
-						bestValue = -1000000;
-						bestPath = column;
-					} else {
-						int value = minimax(newlySimulatedGame, depth + 1, otherPlayer);
-
-						if (value <= bestValue) {
-							bestValue = value;
-							bestPath = column;
-						}
-					}
-					newlySimulatedGame.getGameStatus().getBoard().setSlot(new Slot(SlotState.EMPTY), slot.getRow(), slot.getColumn());
-				}
-			}
-		}
 		if(depth == 0) {
 			return bestPath;
 		}
@@ -113,18 +83,8 @@ public class MiniMax {
 
 
 	public int eval(SlotState[][] board, SlotState player) {
-		player = currentPlayer.getColor();/*
-        for (int i = 0;i<board.length;i++){
-            for (int p = 0;p<board[0].length;p++){
-                System.out.print(board[i][p] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println();
-*/
+		player = currentPlayer.getColor();
 		int value = 0;
-     //   System.out.println("Player: " + player);
         value += checkHorizontal2inRow(board, player);
 	    value += checkHorizontal3inRow(board, player);
 		value += checkVertical2inRow(board, player);
@@ -134,27 +94,9 @@ public class MiniMax {
         value += checkDiagonal2inRowLeft(board,player);
         value += checkDiagonal3inRowLeft(board,player);
         value += checkDiagonal3inRowRight(board,player);
-	/*	System.out.println("PLAYER: " + player);
-		System.out.println("VALUE: "+value);
-		for (int i = 0;i<board.length;i++){
-			for (int p = 0;p<board[0].length;p++){
-				System.out.print(board[i][p] + " ");
-			}
-			System.out.println();
-		}
-		System.out.println();
-		System.out.println();
-		separateStuff();*/
+
         return value;
 	}
-
-	/*private void separateStuff(){
-        System.out.println();
-        System.out.println();
-        System.out.println("___________________________________________________________________________________");
-        System.out.println();
-        System.out.println();
-    }*/
 
 	/*
 	 * Horizontal

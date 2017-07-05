@@ -18,8 +18,6 @@ public class Game extends Observable implements Observer {
     PlayerLogic.Player p1;
     PlayerLogic.Player p2;
     PlayerLogic.Player currentPlayer;
-    int rounds = 0;
-
     MiniMax miniMax;
     int miniMaxDepth = 3;
 
@@ -60,7 +58,7 @@ public class Game extends Observable implements Observer {
        // newMove();
         while(!gameStatus.isGameOver()) {
             newMove();
-            delay(750);
+            delay(200);
 
 
         }

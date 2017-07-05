@@ -116,9 +116,9 @@ public class Main extends Application implements Observer{
                     }
                 });
             }
-        }, 500, 500);
+        }, 0, 2000);
 
-        firstTimer.scheduleAtFixedRate(new TimerTask() {
+        secondTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
@@ -128,7 +128,7 @@ public class Main extends Application implements Observer{
                     }
                 });
             }
-        }, 1000, 500);
+        }, 1000, 2000);
     }
 
     private void setupUserLabel(){
