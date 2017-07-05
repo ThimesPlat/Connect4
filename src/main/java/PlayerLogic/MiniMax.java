@@ -54,10 +54,10 @@ public class MiniMax {
 		int bestPath = 0;
 		Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 		newlySimulatedGame.getGameStatus().setCurrentPlayer(player);
-		//printMatrix(newlySimulatedGame.getGameStatus().getBoard());
-		if(depth == maxDepth) {
-			return eval(generateSlotStateMatrix(newlySimulatedGame.getGameStatus().getBoard()), player.getColor());
-		}
+        //printMatrix(newlySimulatedGame.getGameStatus().getBoard());
+        if(depth == maxDepth) {
+            return eval(generateSlotStateMatrix(newlySimulatedGame.getGameStatus().getBoard()), player.getColor());
+        }
 		else if(player.getColor() == currentPlayer.getColor()) {	// MAX
 
 			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
