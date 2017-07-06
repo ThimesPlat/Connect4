@@ -23,8 +23,8 @@ import java.util.*;
 
 public class Main extends Application implements Observer{
 
-    private double windowWidth = 600;
-    private double windowHeight = 700;
+    private final double windowWidth = 600;
+    private final double windowHeight = 700;
 
     private GraphicalBoard board;
     private Pane layout;
@@ -57,16 +57,11 @@ public class Main extends Application implements Observer{
             if (gameStartedOnce)  // called second time game starts
                 resetApplicationVariables();
             setupUserLabel();
-       //     if (isInteger(textField.getText()))
             game.setMiniMaxDepth(Integer.valueOf(textField.getText()));
 
-            thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    game.startGame();
-                }
-            });
+            thread = new Thread(() -> game.startGame());
             thread.start();
+
             this.textField.setVisible(false);
             this.difficultyLevelLabel.setVisible(false);
             this.startGame.setVisible(false);
@@ -119,7 +114,7 @@ public class Main extends Application implements Observer{
     }
 
     private void setupUserLabel(){
-        this.usersTurn = new Label("Yellow users turn");
+        this.usersTurn = new Label("Yellow user turn");
         this.usersTurn.setLayoutY(20);
         this.usersTurn.setScaleX(3);
         this.usersTurn.setScaleY(3);
@@ -139,11 +134,11 @@ public class Main extends Application implements Observer{
             gameIsOver();
         }
         else {      // if game is NOT over, display next user
-            if (player == 1) {
-                this.usersTurn.setText("Red users turn");
+            if (player != 1) {
+                this.usersTurn.setText("Red user turn");
                 this.usersTurn.setTextFill(Color.RED);
             } else {
-                this.usersTurn.setText("Yellow users turn");
+                this.usersTurn.setText("Yellow user turn");
                 
                 this.usersTurn.setTextFill(Color.YELLOW);
             }

@@ -31,9 +31,7 @@ public class Game extends Observable{
     public void startGame() {
         while(!gameStatus.isGameOver()) {
             newMove();
-            delay(500);
-
-
+            delay(1000);
         }
     }
 
