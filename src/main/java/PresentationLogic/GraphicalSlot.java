@@ -9,8 +9,8 @@ import javafx.scene.shape.Circle;
 
 public class GraphicalSlot {
 
-    Circle c;
-    Color color;
+    private Circle c;
+    private Color color;
 
     public GraphicalSlot(double radius, Color color){
 
@@ -22,10 +22,6 @@ public class GraphicalSlot {
 
     public Circle getSlot(){
         return c;
-    }
-
-    public Color getColor() {
-        return this.color;
     }
 
     public void setColor(Color color) {

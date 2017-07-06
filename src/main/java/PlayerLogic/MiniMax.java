@@ -5,12 +5,14 @@ import GameLogic.Game;
 import GameLogic.Slot;
 import GameLogic.SlotState;
 
+import java.util.Scanner;
+
 public class MiniMax {
 
 	private Game game;
 	private int maxDepth;
-	Player currentPlayer;
-	SlotState isEmpty = SlotState.EMPTY;
+	private Player currentPlayer;
+	private SlotState isEmpty = SlotState.EMPTY;
 
 	public MiniMax(SlotState[][] board) {
 		this.game = new Game();
@@ -47,6 +49,7 @@ public class MiniMax {
 	private int minimax(Game newlySimulatedGame, int depth, Player player) {
 		Boolean maxPlayer = player.getColor() == currentPlayer.getColor();
 		int bestValue = (player.getColor() == currentPlayer.getColor()? -1000001:10000);
+
 		int bestPath = 0;
 		Player otherPlayer = (player.getColor() == SlotState.RED)?new Player(SlotState.YELLOW):new Player(SlotState.RED);
 		newlySimulatedGame.getGameStatus().setCurrentPlayer(player);
@@ -55,7 +58,7 @@ public class MiniMax {
         }
 			for (int column = 0; column < newlySimulatedGame.getGameStatus().getBoard().getBoard()[0].length; column++) {
 				if(newlySimulatedGame.validateMove(column)) {
-					Slot slot = newlySimulatedGame.discDrop(column, player);
+					Slot slot = newlySimulatedGame.simulatedDiscDrop(column, player);
 
 					if(newlySimulatedGame.checkWin(slot)) {		// check win horizontal does not work as supposed
 						bestValue = (maxPlayer)? 1000000:-1000000;

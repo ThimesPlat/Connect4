@@ -12,18 +12,16 @@ import javafx.beans.InvalidationListener;
 
 public class GameStatus extends Observable {
 
-   private Board board;
+    private Board board;
     private Player currentPlayer;
     private Slot changedSlot;
     private boolean gameOver;
     private Player winner;
-    private ArrayList<InvalidationListener> listOfObservers;
 
     public GameStatus(Board board, Player currentPlayer) {
         this.board = board;
         this.currentPlayer = currentPlayer;
         gameOver = false ;
-        listOfObservers = new ArrayList<>();
     }
 
     public Board getBoard() {

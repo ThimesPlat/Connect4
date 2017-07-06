@@ -11,8 +11,7 @@ public class Slot {
         this.slotState = slotState;
     }
 
-    public Slot(SlotState slotState, int row, int column)
-    {
+    public Slot(SlotState slotState, int row, int column) {
         this.slotState = slotState;
         this.row = row;
         this.column = column;
@@ -43,8 +42,7 @@ public class Slot {
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o)
             return true;
         if (o == null || getClass() != o.getClass())
@@ -58,7 +56,4 @@ public class Slot {
             return false;
         return slotState == slot.slotState;
     }
-
-
-
 }

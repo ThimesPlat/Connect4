@@ -9,7 +9,6 @@ import PlayerLogic.Player;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -17,11 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
-import sun.plugin2.util.ColorUtil;
-import javafx.stage.WindowEvent;
 
-import javax.xml.soap.Text;
-import java.io.IOException;
 import java.util.*;
 
 
@@ -68,7 +63,6 @@ public class Main extends Application implements Observer{
             thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("Starting Game!");
                     game.startGame();
                 }
             });
@@ -94,18 +88,11 @@ public class Main extends Application implements Observer{
         primaryStage.sizeToScene();
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
-            System.out.println("Closing Application...");
             Platform.exit();
             System.exit(0);
         });
     }
-/*
-    private boolean isInteger(String text) {
-        for(int i = 0; i<text.length();i++){
-            if (text.charAt(i))
-        }
-    }
-*/
+
     private void startWinningAnimation(){       // "show where the winning sequence is
         firstTimer.scheduleAtFixedRate(new TimerTask() {
             @Override

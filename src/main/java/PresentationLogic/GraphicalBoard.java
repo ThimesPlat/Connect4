@@ -10,18 +10,16 @@ import javafx.scene.shape.Rectangle;
  */
 public class GraphicalBoard {
 
-    Pane layout;
-    Rectangle r;
-    GraphicalSlot[][] slots = new GraphicalSlot[6][7];
+    private Pane layout;
+    private Rectangle r;
+    private GraphicalSlot[][] slots = new GraphicalSlot[6][7];
 
     public GraphicalBoard(Pane layout, double width, double height){
-
         this.layout = layout;
         this.r = new Rectangle(width, height);
         r.setHeight(height);
         r.setWidth(width);
         r.setFill(Color.BLUE);
-
 
         this.layout.getChildren().add(r);
         double ringSize = 42;
